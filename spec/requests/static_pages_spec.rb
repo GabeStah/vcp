@@ -14,6 +14,18 @@ describe "Static Pages" do
     end
   end
 
+  describe "Contact page" do
+    it "should have the content 'Contact'" do
+      visit '/static_pages/contact'
+      expect(page).to have_content('Contact')
+    end
+
+    it "should have the proper title" do
+      visit '/static_pages/contact'
+      expect(page).to have_title("VCP | Contact")
+    end
+  end
+
   describe "Help page" do
     it "should have the content 'Help'" do
       visit '/static_pages/help'
