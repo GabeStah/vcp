@@ -1,10 +1,15 @@
 Vcp::Application.routes.draw do
   resources :users
+  resources :sessions, only: [:new, :create, :destroy]
+
   root 'static_pages#home'
   get '/about' => 'static_pages#about'
   get '/contact' => 'static_pages#contact'
   get '/help' => 'static_pages#help'
+  get '/signin' => 'sessions#new'
+  get '/signout' => 'sessions#destroy'
   get '/signup' => 'users#new'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
