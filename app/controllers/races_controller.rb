@@ -28,7 +28,7 @@ class RacesController < ApplicationController
   def update
     @race = Race.find(params[:id])
     @race.update_attributes(race_params)
-    respond_with @race
+    respond_with_bip(@race)
   end
 
   private
