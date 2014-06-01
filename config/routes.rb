@@ -1,5 +1,5 @@
 Vcp::Application.routes.draw do
-  resources :races
+  resources :races, only: [:create, :destroy, :index, :update]
   resources :sessions, only: [:new, :create, :destroy]
   resources :users
 

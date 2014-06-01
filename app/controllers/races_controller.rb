@@ -6,31 +6,22 @@ class RacesController < ApplicationController
     @race = Race.new(race_params)
     if @race.save
       flash[:success] = "Race created!"
-      redirect_to @race
+      redirect_to races_path
     else
-      render 'new'
+      @races = Race.all.order(:name)
+      render 'index'
     end
   end
 
   def destroy
     Race.find(params[:id]).destroy
     flash[:success] = "Race deleted."
-    redirect_to races_url
-  end
-
-  def edit
+    redirect_to races_path
   end
 
   def index
     @races = Race.all.order(:name)
-  end
-
-  def new
     @race = Race.new
-  end
-
-  def show
-    @race = Race.find(params[:id])
   end
 
   def update
