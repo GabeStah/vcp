@@ -1,6 +1,7 @@
 Vcp::Application.routes.draw do
-  resources :users
+  resources :races
   resources :sessions, only: [:new, :create, :destroy]
+  resources :users
 
   root 'static_pages#home'
   match '/about',   to: 'static_pages#about',   via: 'get'

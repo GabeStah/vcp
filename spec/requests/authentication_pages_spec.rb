@@ -25,6 +25,13 @@ describe "Authentication" do
         end
       end
 
+      describe "in the Races controller" do
+        describe "visiting the race index" do
+          before { visit races_path }
+          it { should have_title('Sign in') }
+        end
+      end
+
       describe "in the Users controller" do
 
         describe "visiting the edit page" do

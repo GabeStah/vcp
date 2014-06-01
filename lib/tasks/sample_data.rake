@@ -15,5 +15,11 @@ namespace :db do
                    password: password,
                    password_confirmation: password)
     end
+
+    races = ["Tauren", "Pandaren", "Blood Elf", "Night Elf", "Draenei", "Gnome", "Goblin"]
+    # Race populate
+    races.each do |race|
+      Race.create!(name: race)
+    end
   end
 end
