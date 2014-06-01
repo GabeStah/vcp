@@ -6,7 +6,9 @@ describe "Race pages" do
 
   describe "index" do
     let(:race) { FactoryGirl.create(:race) }
+    let(:user) { FactoryGirl.create(:user) }
     before(:each) do
+      sign_in user
       visit races_path
     end
 

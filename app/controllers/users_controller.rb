@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :signed_in_user, only: [:edit, :update]
+  before_action :require_login, only: [:edit, :update]
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: :destroy
 
@@ -44,6 +44,7 @@ class UsersController < ApplicationController
       render 'edit'
     end
   end
+
   private
     def user_params
       params.require(:user).permit(:name, :email, :password,

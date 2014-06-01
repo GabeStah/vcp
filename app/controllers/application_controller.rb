@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
       redirect_to(root_url) unless current_user?(@user)
     end
 
-    def signed_in_user
+    def require_login
       store_location
       redirect_to signin_url, notice: "Please sign in." unless signed_in?
     end

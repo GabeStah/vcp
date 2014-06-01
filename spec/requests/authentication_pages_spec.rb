@@ -7,6 +7,7 @@ describe "Authentication" do
   describe "authorization" do
 
     describe "for non-signed-in users" do
+      let(:race) { FactoryGirl.create(:race) }
       let(:user) { FactoryGirl.create(:user) }
 
       describe "when attempting to visit a protected page" do
@@ -29,6 +30,11 @@ describe "Authentication" do
         describe "visiting the race index" do
           before { visit races_path }
           it { should have_title('Sign in') }
+        end
+
+        describe "submitting to the update action" do
+          before { patch race_path(race) }
+          specify { expect(response).to redirect_to(signin_path) }
         end
       end
 
