@@ -75,14 +75,31 @@ describe "Authentication" do
     end
 
     describe "as non-admin user" do
-      let(:user) { FactoryGirl.create(:user) }
       let(:non_admin) { FactoryGirl.create(:user) }
+      let(:race) { FactoryGirl.create(:race) }
+      let(:user) { FactoryGirl.create(:user) }
 
-      before { sign_in non_admin, no_capybara: true }
+      describe "accessing" do
+        before { sign_in user, no_capybara: true }
 
-      describe "submitting a DELETE request to the Users#destroy action" do
-        before { delete user_path(user) }
-        specify { expect(response).to redirect_to(root_url) }
+        describe "Races index" do
+          before { get races_path }
+          specify { expect(response).to redirect_to(root_url) }
+        end
+      end
+
+      describe "requesting" do
+        before { sign_in user, no_capybara: true }
+
+        describe "DELETE to Races#destroy action" do
+          before { delete race_path(race) }
+          specify { expect(response).to redirect_to(root_url) }
+        end
+
+        describe "DELETE to Users#destroy action" do
+          before { delete user_path(user) }
+          specify { expect(response).to redirect_to(root_url) }
+        end
       end
     end
   end
