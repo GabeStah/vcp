@@ -6,7 +6,7 @@ class Race < ActiveRecord::Base
 
   def name_must_be_titleized
     unless name == name.titleize
-      errors.add(:name, "must be in CamelCase format.")
+      errors.add(:name, "must be in Titleized format.")
     end
   end
 end

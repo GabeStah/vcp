@@ -1,3 +1,7 @@
 <li>
   <%= best_in_place race, :name, :type => :input %>
+  <% if current_user && current_user.admin? %>
+    | <%= link_to "delete", race, method: :delete,
+                  data: { confirm: "You sure?" } %>
+  <% end %>
 </li>

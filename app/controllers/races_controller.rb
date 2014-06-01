@@ -6,7 +6,7 @@ class RacesController < ApplicationController
   def create
     @race = Race.new(race_params)
     if @race.save
-      flash[:success] = "Race created!"
+      flash[:success] = "Race added!"
       redirect_to races_path
     else
       @races = Race.all.order(:name)

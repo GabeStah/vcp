@@ -1,7 +1,7 @@
 FactoryGirl.define do
   FactoryGirl.define do
     factory :race do
-      name "Tauren"
+      sequence(:name)  { |n| "Race #{n}" }
     end
     factory :user do
       sequence(:name)  { |n| "Person #{n}" }
