@@ -102,6 +102,19 @@ describe "Authentication" do
         end
       end
     end
+
+    describe "as admin user" do
+      let(:admin) { FactoryGirl.create(:admin) }
+      before do
+        sign_in admin
+        visit root_path
+      end
+
+      describe "header menu" do
+        it { should have_link('Classes', href: '#') }
+        it { should have_link('Races',   href: races_path) }
+      end
+    end
   end
 
   describe "signin page" do
@@ -136,6 +149,8 @@ describe "Authentication" do
       it { should have_link('Settings',    href: edit_user_path(user)) }
       it { should have_link('Sign out',    href: signout_path) }
       it { should_not have_link('Sign in', href: signin_path) }
+      it { should_not have_link('Classes', href: '#') }
+      it { should_not have_link('Races',   href: races_path) }
 
       describe "followed by signout" do
         before { click_link "Sign out" }
