@@ -31,11 +31,6 @@ describe "Authentication" do
           before { visit races_path }
           it { should have_title('Sign in') }
         end
-
-        describe "submitting to the update action" do
-          before { patch race_path(race) }
-          specify { expect(response).to redirect_to(signin_path) }
-        end
       end
 
       describe "in the Users controller" do
@@ -45,60 +40,9 @@ describe "Authentication" do
           it { should have_title('Sign in') }
         end
 
-        describe "submitting to the update action" do
-          before { patch user_path(user) }
-          specify { expect(response).to redirect_to(signin_path) }
-        end
-
         describe "visiting the user index" do
           before { visit users_path }
           it { should have_title('All users') }
-        end
-      end
-    end
-
-    describe "as wrong user" do
-      let(:user) { FactoryGirl.create(:user) }
-      let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
-      before { sign_in user, no_capybara: true }
-
-      describe "submitting a GET request to the Users#edit action" do
-        before { get edit_user_path(wrong_user) }
-        specify { expect(response.body).not_to match(full_title('Edit user')) }
-        specify { expect(response).to redirect_to(root_url) }
-      end
-
-      describe "submitting a PATCH request to the Users#update action" do
-        before { patch user_path(wrong_user) }
-        specify { expect(response).to redirect_to(root_url) }
-      end
-    end
-
-    describe "as non-admin user" do
-      let(:non_admin) { FactoryGirl.create(:user) }
-      let(:race) { FactoryGirl.create(:race) }
-      let(:user) { FactoryGirl.create(:user) }
-
-      describe "accessing" do
-        before { sign_in user, no_capybara: true }
-
-        describe "Races index" do
-          before { get races_path }
-          specify { expect(response).to redirect_to(root_url) }
-        end
-      end
-
-      describe "requesting" do
-        before { sign_in user, no_capybara: true }
-
-        describe "DELETE to Races#destroy action" do
-          before { delete race_path(race) }
-          specify { expect(response).to redirect_to(root_url) }
-        end
-
-        describe "DELETE to Users#destroy action" do
-          before { delete user_path(user) }
-          specify { expect(response).to redirect_to(root_url) }
         end
       end
     end
