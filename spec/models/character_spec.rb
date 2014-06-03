@@ -1,7 +1,15 @@
 require 'spec_helper'
 
 describe Character do
-  before { @character = FactoryGirl.create(:character) }
+  before { @character = Character.new(achievement_points: 1500,
+                                      character_class: FactoryGirl.create(:character_class),
+                                      gender: 0,
+                                      level: 90,
+                                      portrait: "internal-record-3661/66/115044674-avatar.jpg",
+                                      name: "Kulldar",
+                                      race: FactoryGirl.create(:race),
+                                      rank: 1,
+                                      realm: "Hyjal") }
 
   subject { @character }
 
@@ -100,8 +108,11 @@ describe Character do
         it { should_not be_valid }
       end
 
-      describe "as number" do
-        before { @character.name = 12345 }
+      describe "should be unique with realm" do
+        before do
+          duplicate_character = @character.dup
+          duplicate_character.save
+        end
         it { should_not be_valid }
       end
     end
@@ -133,6 +144,14 @@ describe Character do
     describe "realm" do
       describe "as empty" do
         before { @character.realm = nil }
+        it { should_not be_valid }
+      end
+
+      describe "should be unique with name" do
+        before do
+          duplicate_character = @character.dup
+          duplicate_character.save
+        end
         it { should_not be_valid }
       end
     end

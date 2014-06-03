@@ -39,7 +39,10 @@ class Character < ActiveRecord::Base
             presence: true
   validates :name,
             format: { :with => /\A[a-zA-Z]+\z/ },
-            presence: true
+            presence: true,
+            uniqueness: { scope: :realm,
+                          message: "plus realm combination already exists",
+                          case_sensitive: false }
   validates :race,
             presence: true
   validates :rank,
@@ -47,6 +50,9 @@ class Character < ActiveRecord::Base
             numericality: { only_integer: true },
             presence: true
   validates :realm,
-            presence: true
+            presence: true,
+            uniqueness: { scope: :name,
+                          message: "plus name combination already exists",
+                          case_sensitive: false }
 
 end
