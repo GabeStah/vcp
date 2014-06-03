@@ -1,4 +1,5 @@
 class Race < ActiveRecord::Base
+  has_many :characters
   validates :name,
             presence: true,
             uniqueness: { case_sensitive: false }
