@@ -1,0 +1,7 @@
+<%= form_for @character_class, :url => classes_path do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  <div class="field">
+    <%= f.text_field :name, placeholder: "Add a new Class..." %>
+  </div>
+  <%= f.submit "Add", class: "btn btn-large btn-primary" %>
+<% end %>

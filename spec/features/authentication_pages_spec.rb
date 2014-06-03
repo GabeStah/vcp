@@ -55,7 +55,7 @@ describe "Authentication" do
       end
 
       describe "header menu" do
-        it { should have_link('Classes', href: '#') }
+        it { should have_link('Classes', href: classes_path) }
         it { should have_link('Races',   href: races_path) }
       end
     end

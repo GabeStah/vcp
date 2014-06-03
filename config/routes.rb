@@ -1,5 +1,8 @@
 Vcp::Application.routes.draw do
-  resources :races, only: [:create, :destroy, :index, :update]
+  scope '/admin' do
+    resources :classes, only: [:create, :destroy, :index, :update], controller: :character_classes
+    resources :races, only: [:create, :destroy, :index, :update]
+  end
   resources :sessions, only: [:new, :create, :destroy]
   resources :users
 
