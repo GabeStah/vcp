@@ -16,5 +16,17 @@ FactoryGirl.define do
         admin true
       end
     end
+
+    factory :character do
+      achievement_points 1500
+      character_class
+      gender 0
+      level 90
+      portrait "internal-record-3661/66/115044674-avatar.jpg"
+      name "Kulldar"
+      race
+      rank 1
+      realm "Hyjal"
+    end
   end
 end
