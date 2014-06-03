@@ -4,6 +4,7 @@ describe Character do
   before { @character = Character.new(achievement_points: 1500,
                                       character_class: FactoryGirl.create(:character_class),
                                       gender: 0,
+                                      guild: "Vox Immortalis",
                                       level: 90,
                                       portrait: "internal-record-3661/66/115044674-avatar.jpg",
                                       name: "Kulldar",
@@ -16,6 +17,7 @@ describe Character do
   it { should respond_to :achievement_points,
                          :character_class,
                          :gender,
+                         :guild,
                          :level,
                          :portrait,
                          :name,
@@ -59,6 +61,23 @@ describe Character do
 
       describe "out of range" do
         before { @character.gender = 3 }
+        it { should_not be_valid }
+      end
+    end
+
+    describe "guild" do
+      describe "as empty should be valid" do
+        before { @character.guild = nil }
+        it { should be_valid }
+      end
+
+      describe "too short" do
+        before { @character.guild = "a" * 1 }
+        it { should_not be_valid }
+      end
+
+      describe "too long" do
+        before { @character.guild = "a" * 1000 }
         it { should_not be_valid }
       end
     end

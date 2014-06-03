@@ -1,5 +1,3 @@
-#require 'uri'
-
 class Character < ActiveRecord::Base
   belongs_to :character_class
   belongs_to :race
@@ -30,15 +28,18 @@ class Character < ActiveRecord::Base
             inclusion: { in: [0, 1] },
             numericality: { only_integer: true },
             presence: true
+  validates :guild,
+            allow_blank: true,
+            length: { minimum: 3, maximum: 250 }
   validates :level,
             inclusion: { in: 0..100 },
             numericality: { only_integer: true },
             presence: true
   validates :portrait,
-            format: { :with => /internal-record-\d+\/\d+\/\d+-avatar.jpg|png/ },
+            format: { with: /internal-record-\d+\/\d+\/\d+-avatar.jpg|png/ },
             presence: true
   validates :name,
-            format: { :with => /\A[a-zA-Z]+\z/ },
+            format: { with: /\A[a-zA-Z]+\z/ },
             presence: true,
             uniqueness: { scope: :realm,
                           message: "plus realm combination already exists",
