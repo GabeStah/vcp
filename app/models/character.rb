@@ -1,6 +1,7 @@
 class Character < ActiveRecord::Base
   belongs_to :character_class
   belongs_to :race
+  after_initialize :defaults
 
   # {
   #     "character": {
@@ -56,4 +57,17 @@ class Character < ActiveRecord::Base
                           message: "plus name combination already exists",
                           case_sensitive: false }
 
+  private
+    def defaults
+      self.achievement_points = 1500
+      self.character_class ||= CharacterClass.find_by(:name => "Monk")
+      self.gender ||= 0
+      self.guild ||= "Vox Immortalis"
+      self.level ||= 90
+      self.portrait ||= "internal-record-3661/66/115044674-avatar.jpg"
+      self.name ||= "Kulldar"
+      self.race ||= Race.find_by(:name => "Pandaren")
+      self.rank ||= 5
+      self.realm ||= "Hyjal"
+    end
 end
