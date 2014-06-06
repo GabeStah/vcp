@@ -1,17 +1,6 @@
 require 'spec_helper'
 
 describe Character do
-  # before { @character = Character.new(achievement_points: 1500,
-  #                                     character_class: FactoryGirl.create(:character_class),
-  #                                     gender: 0,
-  #                                     guild: "Vox Immortalis",
-  #                                     level: 90,
-  #                                     portrait: "internal-record-3661/66/115044674-avatar.jpg",
-  #                                     name: "Kulldar",
-  #                                     race: FactoryGirl.create(:race),
-  #                                     rank: 1,
-  #                                     realm: "Hyjal") }
-
   before { @character = Character.new() }
 
   subject { @character }
