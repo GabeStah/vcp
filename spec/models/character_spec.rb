@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Character do
-  before { @character = Character.new() }
+  before { @character = Character.new(character_class: FactoryGirl.create(:character_class),
+                                      race: FactoryGirl.create(:race)) }
 
   subject { @character }
 
@@ -10,6 +11,7 @@ describe Character do
                          :gender,
                          :guild,
                          :level,
+                         :locale,
                          :portrait,
                          :name,
                          :race,
@@ -86,6 +88,41 @@ describe Character do
 
       describe "out of range" do
         before { @character.level = 150 }
+        it { should_not be_valid }
+      end
+    end
+
+    describe "locale" do
+      describe "as mixed string" do
+        before { @character.locale = "12345 blah" }
+        it { should_not be_valid }
+      end
+
+      describe "as empty" do
+        before { @character.locale = nil }
+        it { should_not be_valid }
+      end
+
+      describe "as non-lowercase" do
+        before { @character.locale = 'US' }
+        it { should_not be_valid }
+      end
+
+      describe "should be unique with name+realm" do
+        before do
+          duplicate_character = @character.dup
+          duplicate_character.save
+        end
+        it { should_not be_valid }
+      end
+
+      describe "too short" do
+        before { @character.locale = "a" * 1 }
+        it { should_not be_valid }
+      end
+
+      describe "too long" do
+        before { @character.locale = "a" * 3 }
         it { should_not be_valid }
       end
     end

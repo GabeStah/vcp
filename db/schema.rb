@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140603191035) do
+ActiveRecord::Schema.define(version: 20140606193347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,9 +35,10 @@ ActiveRecord::Schema.define(version: 20140603191035) do
     t.integer  "character_class_id"
     t.string   "realm"
     t.string   "guild"
+    t.string   "locale"
   end
 
-  add_index "characters", ["name", "realm"], name: "index_characters_on_name_and_realm", unique: true, using: :btree
+  add_index "characters", ["locale", "name", "realm"], name: "index_characters_on_locale_and_name_and_realm", unique: true, using: :btree
 
   create_table "races", force: true do |t|
     t.string   "name"

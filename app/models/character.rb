@@ -36,14 +36,21 @@ class Character < ActiveRecord::Base
             inclusion: { in: 0..100 },
             numericality: { only_integer: true },
             presence: true
+  validates :locale,
+            format: { with: /[a-z]+/ },
+            length: { minimum: 2, maximum: 2 },
+            presence: true,
+            uniqueness: { scope: [:name, :realm],
+                          message: "plus Name plus Realm combination already exists",
+                          case_sensitive: false }
   validates :portrait,
             format: { with: /internal-record-\d+\/\d+\/\d+-avatar.jpg|png/ },
             presence: true
   validates :name,
             format: { with: /\A[a-zA-Z]+\z/ },
             presence: true,
-            uniqueness: { scope: :realm,
-                          message: "plus realm combination already exists",
+            uniqueness: { scope: [:locale, :realm],
+                          message: "plus Locale plus Realm combination already exists",
                           case_sensitive: false }
   validates :race,
             presence: true
@@ -53,20 +60,19 @@ class Character < ActiveRecord::Base
             presence: true
   validates :realm,
             presence: true,
-            uniqueness: { scope: :name,
-                          message: "plus name combination already exists",
+            uniqueness: { scope: [:locale, :name],
+                          message: "plus Locale plus Name combination already exists",
                           case_sensitive: false }
 
   private
     def defaults
       self.achievement_points = 1500
-      self.character_class ||= CharacterClass.find_by(:name => "Monk")
       self.gender ||= 0
       self.guild ||= "Vox Immortalis"
       self.level ||= 90
+      self.locale ||= 'us'
       self.portrait ||= "internal-record-3661/66/115044674-avatar.jpg"
       self.name ||= "Kulldar"
-      self.race ||= Race.find_by(:name => "Pandaren")
       self.rank ||= 5
       self.realm ||= "Hyjal"
     end
