@@ -1,8 +1,16 @@
 class Race < ActiveRecord::Base
   has_many :characters
+  validates :blizzard_id,
+            presence: true,
+            uniqueness: true
   validates :name,
             presence: true,
-            uniqueness: { case_sensitive: false }
+            uniqueness: { scope: :blizzard_id,
+                          message: "plus Blizzard ID combination already exists",
+                          case_sensitive: false }
+  validates :side,
+            presence: true,
+            format: { with: /[a-z]+/, message: 'must be lowercase' }
   validate :name_must_be_titleized
 
   def name_must_be_titleized

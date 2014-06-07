@@ -2,6 +2,8 @@
   <%= render 'shared/error_messages', object: f.object %>
   <div class="field">
     <%= f.text_field :name, placeholder: "Add a new Race..." %>
+    <%= f.text_field :blizzard_id, placeholder: "Blizzard ID" %>
+    <%= f.select :side, [["horde", "horde"], ["alliance", "alliance"], ["neutral", "neutral"]], placeholder: "Faction" %>
   </div>
   <%= f.submit "Add", class: "btn btn-large btn-primary" %>
 <% end %>

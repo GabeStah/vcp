@@ -1,9 +1,11 @@
 FactoryGirl.define do
   FactoryGirl.define do
     factory :character_class do
+      sequence(:blizzard_id) { |n| n }
       sequence(:name)  { |n| "Class #{n}" }
     end
     factory :race do
+      sequence(:blizzard_id) { |n| n }
       sequence(:name)  { |n| "Race #{n}" }
     end
     factory :user do

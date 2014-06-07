@@ -64,6 +64,13 @@ class Character < ActiveRecord::Base
                           message: "plus Locale plus Name combination already exists",
                           case_sensitive: false }
 
+  def Character.from_url(url)
+    unless url.nil?
+      json = JSON.parse(Net::HTTP.get_response(URI.parse(url)).body)
+      puts json['members']
+    end
+  end
+
   private
     def defaults
       self.achievement_points = 1500

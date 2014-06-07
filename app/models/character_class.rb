@@ -1,5 +1,8 @@
 class CharacterClass < ActiveRecord::Base
   has_many :characters
+  validates :blizzard_id,
+            presence: true,
+            uniqueness: true
   validates :name,
             presence: true,
             uniqueness: { case_sensitive: false }

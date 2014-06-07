@@ -39,15 +39,15 @@ namespace :app do
     end
 
     # Class populate
-    classes = ["Death Knight", "Druid", "Hunter", "Mage", "Monk", "Paladin", "Priest", "Rogue", "Shaman", "Warlock", "Warrior"]
-    classes.each do |character_class|
-      CharacterClass.create!(name: character_class)
+    classes = JSON.parse(Net::HTTP.get_response(URI.parse('http://us.battle.net/api/wow/data/character/classes')).body)
+    classes['classes'].each do |character_class|
+      CharacterClass.create!(name: character_class['name'], blizzard_id: character_class['id'])
     end
 
     # Race populate
-    races = ["Blood Elf", "Draenei", "Dwarf", "Gnome", "Goblin", "Human", "Night Elf", "Orc", "Pandaren", "Tauren", "Troll", "Undead", "Worgen"]
-    races.each do |race|
-      Race.create!(name: race)
+    races = JSON.parse(Net::HTTP.get_response(URI.parse('http://us.battle.net/api/wow/data/character/races')).body)
+    races['races'].each do |race|
+      Race.create!(name: race['name'], blizzard_id: race['id'], side: race['side'])
     end
 
     # INSERT ABOVE
