@@ -26,9 +26,23 @@ describe "Authentication" do
         end
       end
 
+      describe "in the Classes controller" do
+        describe "visiting the classes index" do
+          before { visit classes_path }
+          it { should have_title('Sign in') }
+        end
+      end
+
       describe "in the Races controller" do
         describe "visiting the race index" do
           before { visit races_path }
+          it { should have_title('Sign in') }
+        end
+      end
+
+      describe "in the Settings controller" do
+        describe "visiting the settings index" do
+          before { visit settings_path }
           it { should have_title('Sign in') }
         end
       end
@@ -57,6 +71,7 @@ describe "Authentication" do
       describe "header menu" do
         it { should have_link('Classes', href: classes_path) }
         it { should have_link('Races',   href: races_path) }
+        it { should have_link('Settings',href: settings_path) }
       end
     end
   end

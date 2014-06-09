@@ -34,4 +34,12 @@ describe "Static Pages" do
     it { should have_title(full_title('')) }
     it { should_not have_title('| Home') }
   end
+
+  describe "Settings page" do
+    before { visit settings_path }
+
+    it { should have_content('Settings') }
+    it { should have_title(full_title('')) }
+    it { should_not have_title('| Settings') }
+  end
 end
