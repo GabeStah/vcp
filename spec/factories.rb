@@ -7,6 +7,7 @@ FactoryGirl.define do
     factory :race do
       sequence(:blizzard_id) { |n| n }
       sequence(:name)  { |n| "Race #{n}" }
+      side "horde"
     end
     factory :user do
       sequence(:name)  { |n| "Person #{n}" }

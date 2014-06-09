@@ -6,9 +6,9 @@ class CreateSettings < ActiveRecord::Migration
       t.string :data_type
 
       t.timestamps
-
-      add_index :settings, :name
-      add_index :settings, :value
     end
+
+    add_index :settings, :name
+    add_index :settings, :value
   end
 end
