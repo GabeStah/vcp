@@ -41,13 +41,16 @@ namespace :app do
     # Class populate
     classes = JSON.parse(Net::HTTP.get_response(URI.parse('http://us.battle.net/api/wow/data/character/classes')).body)
     classes['classes'].each do |character_class|
-      CharacterClass.create!(name: character_class['name'], blizzard_id: character_class['id'])
+      CharacterClass.create!(name: character_class['name'],
+                             blizzard_id: character_class['id'])
     end
 
     # Race populate
     races = JSON.parse(Net::HTTP.get_response(URI.parse('http://us.battle.net/api/wow/data/character/races')).body)
     races['races'].each do |race|
-      Race.create!(name: race['name'], blizzard_id: race['id'], side: race['side'])
+      Race.create!(name: race['name'],
+                   blizzard_id: race['id'],
+                   side: race['side'])
     end
 
     # INSERT ABOVE
