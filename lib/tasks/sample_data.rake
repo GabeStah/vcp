@@ -53,6 +53,9 @@ namespace :app do
                    side: race['side'])
     end
 
+    # Admin settings
+    Setting.set("guild", "Vox Immortalis")
+
     # INSERT ABOVE
   end
 
