@@ -1,9 +1,9 @@
 Vcp::Application.routes.draw do
+
   scope '/admin' do
     resources :classes, only: [:create, :destroy, :index, :update], controller: :character_classes
     resources :races, only: [:create, :destroy, :index, :update]
-    resources :settings, only: [:create, :destroy, :index, :update]
-    #match '/settings',   to: 'static_pages#settings',   via: 'get'
+    resources :settings, only: [:index, :update]
   end
   resources :sessions, only: [:new, :create, :destroy]
   resources :users

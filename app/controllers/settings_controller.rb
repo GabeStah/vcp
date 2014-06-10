@@ -1,26 +1,23 @@
 class SettingsController < ApplicationController
-  respond_to :html, :json
-  before_action :require_login, only: :settings
-  before_action :is_admin_user, only: :settings
-
-  def create
-  end
-
-  def destroy
-  end
+  before_action :require_login
+  before_action :is_admin_user
 
   def index
-    @guild = Setting.find_by(name: "guild")
+    @setting = Setting.find(1)
   end
 
   def update
     @setting = Setting.find(params[:id])
-    @setting.update_attributes(setting_params)
-    respond_with_bip(@setting)
+    if @setting.update_attributes(setting_params)
+      flash[:success] = "Settings updated."
+      redirect_to settings_path
+    else
+      render 'index'
+    end
   end
 
   private
     def setting_params
-      params.require(:setting).permit(:data_type, :name, :value)
+      params.require(:setting).permit(:guild, :realm, :locale)
     end
 end

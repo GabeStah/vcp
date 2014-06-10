@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140609010720) do
+ActiveRecord::Schema.define(version: 20140610001459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,15 +55,12 @@ ActiveRecord::Schema.define(version: 20140609010720) do
   add_index "races", ["blizzard_id"], name: "index_races_on_blizzard_id", using: :btree
 
   create_table "settings", force: true do |t|
-    t.string   "name"
-    t.string   "value"
-    t.string   "data_type"
+    t.string   "guild"
+    t.string   "realm"
+    t.string   "locale"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "settings", ["name"], name: "index_settings_on_name", using: :btree
-  add_index "settings", ["value"], name: "index_settings_on_value", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "name"

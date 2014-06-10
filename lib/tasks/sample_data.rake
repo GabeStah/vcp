@@ -54,7 +54,9 @@ namespace :app do
     end
 
     # Admin settings
-    Setting.set("guild", "Vox Immortalis")
+    Setting.create!(locale: "US",
+                    guild: "Vox Immortalis",
+                    realm: "Hyjal")
 
     # INSERT ABOVE
   end
