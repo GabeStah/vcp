@@ -38,25 +38,32 @@ namespace :app do
                    password_confirmation: password)
     end
 
+    # Admin settings
+    settings = Setting.create!(locale: "US",
+                               guild: "Vox Immortalis",
+                               realm: "Hyjal")
+
     # Class populate
-    classes = JSON.parse(Net::HTTP.get_response(URI.parse('http://us.battle.net/api/wow/data/character/classes')).body)
+    classes = JSON.parse(Net::HTTP.get_response(URI.parse("http://#{settings.locale.downcase}.battle.net/api/wow/data/character/classes")).body)
     classes['classes'].each do |character_class|
       CharacterClass.create!(name: character_class['name'],
                              blizzard_id: character_class['id'])
     end
 
     # Race populate
-    races = JSON.parse(Net::HTTP.get_response(URI.parse('http://us.battle.net/api/wow/data/character/races')).body)
+    races = JSON.parse(Net::HTTP.get_response(URI.parse("http://#{settings.locale.downcase}.battle.net/api/wow/data/character/races")).body)
     races['races'].each do |race|
-      Race.create!(name: race['name'],
+      Race.create!(name:        race['name'],
                    blizzard_id: race['id'],
-                   side: race['side'])
+                   side:        race['side'])
     end
 
-    # Admin settings
-    Setting.create!(locale: "US",
-                    guild: "Vox Immortalis",
-                    realm: "Hyjal")
+    # Generate initial Characters from API
+    battle_net = BattleNet.new(guild:   settings.guild,
+                               realm:   settings.realm,
+                               locale:  settings.locale,
+                               type:    "guild")
+    battle_net.populate_database
 
     # INSERT ABOVE
   end
