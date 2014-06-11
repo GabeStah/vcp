@@ -22,4 +22,19 @@ class BattleNet
       end
     end
   end
+
+  def populate_database
+    if self.valid?
+      case @type.downcase
+        when "guild"
+          json = self.to_json
+          unless json.nil? || json['status'] == 'nok'
+            # loop json members
+            json['members'].each do |member|
+              Character.update_from_json(member['character'], 'character', @locale.downcase, member['rank'])
+            end
+          end
+      end
+    end
+  end
 end

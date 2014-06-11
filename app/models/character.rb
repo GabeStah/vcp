@@ -71,9 +71,29 @@ class Character < ActiveRecord::Base
     end
   end
 
+  def self.update_from_json(json, format = 'character', locale = 'us', rank = 9)
+    unless json.nil?
+      case format
+        when 'character'
+          character = Character.find_or_initialize_by(name: json['name'],
+                                                      locale: locale,
+                                                      realm: json['realm'])
+          character.achievement_points = json['achievementPoints']
+          character.character_class = CharacterClass.find_by(blizzard_id: json['class']) || 0
+          character.gender = json['gender']
+          character.guild = json['guild']
+          character.level = json['level']
+          character.portrait = json['thumbnail']
+          character.race = Race.find_by(blizzard_id: json['race']) || 0
+          character.rank = rank
+          character.save
+      end
+    end
+  end
+
   private
     def defaults
-      self.achievement_points = 1500
+      self.achievement_points ||= 1500
       self.gender ||= 0
       self.guild ||= "Vox Immortalis"
       self.level ||= 90
