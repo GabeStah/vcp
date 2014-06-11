@@ -5,6 +5,7 @@ Vcp::Application.routes.draw do
     resources :races, only: [:create, :destroy, :index, :update]
     resources :settings, only: [:index, :update]
   end
+  resources :characters
   resources :sessions, only: [:new, :create, :destroy]
   resources :users
 

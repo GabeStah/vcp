@@ -1,12 +1,12 @@
 FactoryGirl.define do
   FactoryGirl.define do
     factory :character_class do
-      sequence(:blizzard_id) { |n| n }
-      sequence(:name)  { |n| "Class #{n}" }
+      sequence(:blizzard_id)
+      sequence(:name) { |n| "Class #{n}" }
     end
     factory :race do
-      sequence(:blizzard_id) { |n| n }
-      sequence(:name)  { |n| "Race #{n}" }
+      sequence(:blizzard_id)
+      sequence(:name) { |n| "Race #{n}" }
       side "horde"
     end
     factory :user do
@@ -25,11 +25,12 @@ FactoryGirl.define do
       character_class
       gender 0
       level 90
+      locale "us"
       portrait "internal-record-3661/66/115044674-avatar.jpg"
-      name "Kulldar"
+      name { Faker::Name.first_name } # Brackets required to force Faker to create unique entries
       race
-      rank 1
-      realm "Hyjal"
+      rank 9
+      realm { Faker::Name.last_name } # Brackets required to force Faker to create unique entries
     end
   end
 end

@@ -39,9 +39,9 @@ namespace :app do
     end
 
     # Admin settings
-    settings = Setting.create!(locale: "US",
-                               guild: "Vox Immortalis",
-                               realm: "Hyjal")
+    settings = Setting.find_or_create_by(locale: "US",
+                                         guild: "Vox Immortalis",
+                                         realm: "Hyjal")
 
     # Class populate
     classes = JSON.parse(Net::HTTP.get_response(URI.parse("http://#{settings.locale.downcase}.battle.net/api/wow/data/character/classes")).body)
