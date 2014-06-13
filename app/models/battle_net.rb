@@ -43,10 +43,14 @@ class BattleNet
       case @type.downcase
         when "guild"
           json = self.to_json
-          unless json.nil? || json['status'] == 'nok'
-            # loop json members
-            json['members'].each do |member|
-              Character.update_from_json(member['character'], 'guild-character', @locale.downcase, member['rank'])
+          unless json.nil?
+            if json['status'] == 'nok'
+              raise BattleNetError.new(message: json['reason'])
+            else
+              # loop json members
+              json['members'].each do |member|
+                Character.update_from_json(member['character'], 'guild-character', @locale.downcase, member['rank'])
+              end
             end
           end
       end
