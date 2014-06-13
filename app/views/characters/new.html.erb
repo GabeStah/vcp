@@ -6,13 +6,13 @@
     <%= form_for(@character) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       <%= f.label :name %>
-      <%= f.text_field :name %>
+      <%= f.text_field :name, placeholder: "Kulldar" %>
 
       <%= f.label :realm %>
-      <%= f.text_field :realm %>
+      <%= f.text_field :realm, placeholder: "Hyjal" %>
 
       <%= f.label :locale %>
-      <%= f.text_field :locale %>
+      <%= f.text_field :locale, placeholder: "US" %>
 
       <%= f.submit "Add Character", class: "btn btn-large btn-primary" %>
     <% end %>

@@ -1,7 +1,7 @@
 class Character < ActiveRecord::Base
   belongs_to :character_class
   belongs_to :race
-  after_initialize :defaults
+  #after_initialize :defaults
 
   # {
   #     "character": {
@@ -16,7 +16,7 @@ class Character < ActiveRecord::Base
   #     "thumbnail": "internal-record-3661/101/114196581-avatar.jpg",
   #     "guild": "Vox Immortalis",
   #     "guildRealm": "Hyjal"
-  # },
+  #     },
   #     "rank": 9
   # },
 

@@ -2,6 +2,7 @@ class BattleNet
   include ActiveModel::Model
   include Errors
   attr_accessor :type, :guild, :locale, :realm, :character_name
+  attr_reader :errors
   validates :character_name,
             allow_blank: true,
             length: { minimum: 2, maximum: 250 }
@@ -18,6 +19,14 @@ class BattleNet
             presence: true,
             inclusion: { in: %w( character CHARACTER guild GUILD ) }
 
+
+  def initialize
+    @errors = ActiveModel::Errors.new(self)
+  end
+
+  # def validate!
+  #   errors.add(:realm, "cannot be nil") if realm.nil?
+  # end
 
   def to_json
     if self.valid?
