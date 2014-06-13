@@ -20,6 +20,13 @@ class Character < ActiveRecord::Base
   #     "rank": 9
   # },
 
+  # 1. Guild (Guild, Realm, Locale)
+  # Character.new(guild, realm, locale)
+  # 2. Guild Character (All)
+  # Character.new(guild, realm, locale)
+  # 3. Character (All less Guild/Rank)
+
+
   validates :achievement_points,
             numericality: { only_integer: true },
             presence: true

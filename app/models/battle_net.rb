@@ -1,8 +1,13 @@
 class BattleNet
+  extend ActiveModel::Callbacks
   include ActiveModel::Model
   include Errors
+  define_model_callbacks :initialize
   attr_accessor :type, :guild, :locale, :realm, :character_name
   attr_reader :errors
+
+  after_initialize :validate, :connect
+
   validates :character_name,
             allow_blank: true,
             length: { minimum: 2, maximum: 250 }
@@ -20,13 +25,57 @@ class BattleNet
             inclusion: { in: %w( character CHARACTER guild GUILD ) }
 
 
-  def initialize
-    @errors = ActiveModel::Errors.new(self)
+  def connected?
+    @connected
   end
 
-  # def validate!
-  #   errors.add(:realm, "cannot be nil") if realm.nil?
-  # end
+  def connect
+    if self.valid?
+      case @type.downcase
+        when "character"
+          @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@locale.downcase}.battle.net/api/wow/character/#{@realm.downcase}/#{@character_name}"))).body)
+        when "guild"
+          @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@locale.downcase}.battle.net/api/wow/guild/#{@realm.downcase}/#{@guild}?fields=members"))).body)
+      end
+      if @json['status'] == 'nok'
+        errors.add(:battle_net_error, @json['reason'])
+        #raise BattleNetError.new(message: @json['reason'])
+      else
+        @connected = true
+      end
+    end
+  end
+
+  def json
+    @json
+  end
+
+  def initialize(args = {})
+    run_callbacks :initialize do
+      @character_name = args[:character_name]
+      @connected = false
+      @guild = args[:guild]
+      @locale = args[:locale]
+      @realm = args[:realm]
+      @type = args[:type] || 'guild'
+      @errors = ActiveModel::Errors.new(self)
+    end
+  end
+
+  def update
+    if self.valid? && self.connected?
+      case @type.downcase
+        when "guild"
+          unless @json.nil?
+            # loop json members
+            json['members'].each do |member|
+              #TODO: Update Character creation code
+              #Character.update_from_json(member['character'], 'guild-character', @locale.downcase, member['rank'])
+            end
+          end
+      end
+    end
+  end
 
   def to_json
     if self.valid?
@@ -65,4 +114,9 @@ class BattleNet
       end
     end
   end
+
+  private
+    def validate
+      self.valid?
+    end
 end

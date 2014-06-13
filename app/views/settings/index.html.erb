@@ -3,6 +3,7 @@
 
 <div class="row">
   <div class="span6 offset3">
+    <%= render 'shared/error_messages', object: @battle_net unless @battle_net.nil? %>
     <%= form_for(@setting) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
 

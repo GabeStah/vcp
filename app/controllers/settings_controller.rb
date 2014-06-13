@@ -7,14 +7,16 @@ class SettingsController < ApplicationController
   end
 
   def update
+    @setting = Setting.find(params[:id])
     # Repopulate character data
-    battle_net = BattleNet.new(guild:   setting_params[:guild],
-                               realm:   setting_params[:realm],
-                               locale:  setting_params[:locale],
-                               type:    "guild")
-    battle_net.populate_database
-    if battle_net.errors.empty?
-      @setting = Setting.find(params[:id])
+    @battle_net = BattleNet.new(guild:   setting_params[:guild],
+                                realm:   setting_params[:realm],
+                                locale:  setting_params[:locale],
+                                type:    "guild")
+
+    #battle_net.populate_database
+    if @battle_net.connected?
+      json = @battle_net.json
       if @setting.update_attributes(setting_params)
         flash[:success] = "Settings updated & data refreshed."
         redirect_to settings_path
@@ -22,7 +24,7 @@ class SettingsController < ApplicationController
         render 'index'
       end
     else
-      redirect_to settings_path
+      render 'index'
     end
   end
 
