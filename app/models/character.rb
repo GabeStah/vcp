@@ -44,7 +44,7 @@ class Character < ActiveRecord::Base
                           message: "plus Name plus Realm combination already exists",
                           case_sensitive: false }
   validates :portrait,
-            format: { with: /internal-record-\d+\/\d+\/\d+-avatar.jpg|png/ },
+            format: { with: /[\w+d+-]+\/\d+\/\d+-avatar\.((jpg)|(png))/ },
             presence: true
   validates :name,
             format: { with: /\A[a-zA-Z]+\z/ },

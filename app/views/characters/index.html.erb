@@ -1,6 +1,8 @@
 <% provide(:title, 'All characters') %>
 <h1>All characters</h1>
 
+<%= link_to "New Character", new_character_path, class: "btn btn-large btn-primary" %>
+
 <%= will_paginate %>
 
 <ul class="characters">
