@@ -64,17 +64,29 @@ class Character < ActiveRecord::Base
                           message: "plus Locale plus Name combination already exists",
                           case_sensitive: false }
 
-  def Character.from_url(url)
+  def self.from_url(url)
     unless url.nil?
       json = JSON.parse(Net::HTTP.get_response(URI.parse(url)).body)
       puts json['members']
     end
   end
 
-  def self.update_from_json(json, format = 'character', locale = 'us', rank = 9)
+  def self.update_from_json(json, format = 'guild-character', locale = 'us', rank = 9)
     unless json.nil?
       case format
         when 'character'
+          character = Character.find_or_initialize_by(name: json['name'],
+                                                      locale: locale,
+                                                      realm: json['realm'])
+          character.achievement_points = json['achievementPoints']
+          character.character_class = CharacterClass.find_by(blizzard_id: json['class']) || 0
+          character.gender = json['gender']
+          character.level = json['level']
+          character.portrait = json['thumbnail']
+          character.race = Race.find_by(blizzard_id: json['race']) || 0
+          character.save
+          character
+        when 'guild-character'
           character = Character.find_or_initialize_by(name: json['name'],
                                                       locale: locale,
                                                       realm: json['realm'])
@@ -87,6 +99,7 @@ class Character < ActiveRecord::Base
           character.race = Race.find_by(blizzard_id: json['race']) || 0
           character.rank = rank
           character.save
+          character
       end
     end
   end
