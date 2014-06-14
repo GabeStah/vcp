@@ -13,10 +13,7 @@ class SettingsController < ApplicationController
                                 realm:   setting_params[:realm],
                                 locale:  setting_params[:locale],
                                 type:    "guild")
-
-    #battle_net.populate_database
     if @battle_net.connected?
-      json = @battle_net.json
       if @setting.update_attributes(setting_params)
         flash[:success] = "Settings updated & data refreshed."
         redirect_to settings_path

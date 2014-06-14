@@ -1,8 +1,17 @@
 require 'spec_helper'
 
 describe Character do
-  before { @character = Character.new(character_class: FactoryGirl.create(:character_class),
-                                      race: FactoryGirl.create(:race)) }
+  before { @character = Character.new(achievement_points: 1500,
+                                      character_class: FactoryGirl.create(:character_class),
+                                      gender: 0,
+                                      guild: "Vox Immortalis",
+                                      level: 90,
+                                      locale: "us",
+                                      portrait: "internal-record-3661/66/115044674-avatar.jpg",
+                                      name: "Kulldar",
+                                      race: FactoryGirl.create(:race),
+                                      rank: 9,
+                                      realm: "Hyjal")}
 
   subject { @character }
 
@@ -20,7 +29,24 @@ describe Character do
 
   it { should be_valid }
 
+  describe "valid" do
+
+    describe "name with UTF-8 characters" do
+      before { @character.name = "Grünhilde" }
+      it { should be_valid }
+    end
+  end
+
   describe "invalid" do
+
+    describe "locale, name, and realm should be unique" do
+      before do
+        duplicate_character = @character.dup
+        duplicate_character.name = @character.name.upcase
+        duplicate_character.save
+      end
+      it { should_not be_valid }
+    end
 
     describe "achievement points" do
       describe "as string" do
@@ -108,14 +134,6 @@ describe Character do
         it { should_not be_valid }
       end
 
-      describe "should be unique with name+realm" do
-        before do
-          duplicate_character = @character.dup
-          duplicate_character.save
-        end
-        it { should_not be_valid }
-      end
-
       describe "too short" do
         before { @character.locale = "a" * 1 }
         it { should_not be_valid }
@@ -154,14 +172,6 @@ describe Character do
         before { @character.name = nil }
         it { should_not be_valid }
       end
-
-      describe "should be unique with realm" do
-        before do
-          duplicate_character = @character.dup
-          duplicate_character.save
-        end
-        it { should_not be_valid }
-      end
     end
 
     describe "race" do
@@ -191,14 +201,6 @@ describe Character do
     describe "realm" do
       describe "as empty" do
         before { @character.realm = nil }
-        it { should_not be_valid }
-      end
-
-      describe "should be unique with name" do
-        before do
-          duplicate_character = @character.dup
-          duplicate_character.save
-        end
         it { should_not be_valid }
       end
     end

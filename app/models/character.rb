@@ -51,10 +51,10 @@ class Character < ActiveRecord::Base
                           message: "plus Name plus Realm combination already exists",
                           case_sensitive: false }
   validates :portrait,
-            format: { with: /[\w+d+-]+\/\d+\/\d+-avatar\.((jpg)|(png))/ },
+            format: { with: /\A[\w+d+-]+\/\d+\/\d+-avatar\.((jpg)|(png))\z/ },
             presence: true
   validates :name,
-            format: { with: /\A[a-zA-Z]+\z/ },
+            format: { with: /\A[^\(\)0-9]*\z/ },
             presence: true,
             uniqueness: { scope: [:locale, :realm],
                           message: "plus Locale plus Realm combination already exists",
@@ -64,7 +64,8 @@ class Character < ActiveRecord::Base
   validates :rank,
             inclusion: { in: 0..12 },
             numericality: { only_integer: true },
-            presence: true
+            presence: true,
+            allow_blank: true
   validates :realm,
             presence: true,
             uniqueness: { scope: [:locale, :name],

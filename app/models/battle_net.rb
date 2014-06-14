@@ -2,10 +2,11 @@ class BattleNet
   extend ActiveModel::Callbacks
   include ActiveModel::Model
   include Errors
-  define_model_callbacks :initialize
+  define_model_callbacks :initialize, :connect
   attr_accessor :type, :guild, :locale, :realm, :character_name
   attr_reader :errors
 
+  after_connect :update
   after_initialize :validate, :connect
 
   validates :character_name,
@@ -30,18 +31,20 @@ class BattleNet
   end
 
   def connect
-    if self.valid?
-      case @type.downcase
-        when "character"
-          @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@locale.downcase}.battle.net/api/wow/character/#{@realm.downcase}/#{@character_name}"))).body)
-        when "guild"
-          @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@locale.downcase}.battle.net/api/wow/guild/#{@realm.downcase}/#{@guild}?fields=members"))).body)
-      end
-      if @json['status'] == 'nok'
-        errors.add(:battle_net_error, @json['reason'])
-        #raise BattleNetError.new(message: @json['reason'])
-      else
-        @connected = true
+    run_callbacks :connect do
+      if self.valid?
+        case @type.downcase
+          when "character"
+            @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@locale.downcase}.battle.net/api/wow/character/#{@realm.downcase}/#{@character_name}"))).body)
+          when "guild"
+            @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@locale.downcase}.battle.net/api/wow/guild/#{@realm.downcase}/#{@guild}?fields=members"))).body)
+        end
+        if @json['status'] == 'nok'
+          errors.add(:battle_net_error, @json['reason'])
+          #raise BattleNetError.new(message: @json['reason'])
+        else
+          @connected = true
+        end
       end
     end
   end
@@ -63,53 +66,27 @@ class BattleNet
   end
 
   def update
-    if self.valid? && self.connected?
-      case @type.downcase
-        when "guild"
-          unless @json.nil?
-            # loop json members
-            json['members'].each do |member|
-              #TODO: Update Character creation code
-              #Character.update_from_json(member['character'], 'guild-character', @locale.downcase, member['rank'])
-            end
-          end
-      end
-    end
-  end
-
-  def to_json
-    if self.valid?
+    if self.connected? && !@json.nil?
       case @type.downcase
         when "character"
-          json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@locale.downcase}.battle.net/api/wow/character/#{@realm.downcase}/#{@character_name}"))).body)
-          if json['status'] == 'nok'
-            raise BattleNetError.new(message: json['reason'])
-          end
-          json
+          character = Character.find_or_initialize_by(name:   @json['name'],
+                                                      locale: @locale,
+                                                      realm:  @json['realm'])
+          character.update_attributes(
+              achievement_points: @json['achievementPoints'],
+              character_class:    CharacterClass.find_by(blizzard_id: @json['class']) || 0,
+              gender:             @json['gender'],
+              level:              @json['level'],
+              portrait:           @json['thumbnail'],
+              race:               Race.find_by(blizzard_id: @json['race']) || 0
+          )
+          character.save
         when "guild"
-          json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@locale.downcase}.battle.net/api/wow/guild/#{@realm.downcase}/#{@guild}?fields=members"))).body)
-          if json['status'] == 'nok'
-            raise BattleNetError.new(message: json['reason'])
-          end
-          json
-      end
-    end
-  end
-
-  def populate_database
-    if self.valid?
-      case @type.downcase
-        when "guild"
-          json = self.to_json
-          unless json.nil?
-            if json['status'] == 'nok'
-              raise BattleNetError.new(message: json['reason'])
-            else
-              # loop json members
-              json['members'].each do |member|
-                Character.update_from_json(member['character'], 'guild-character', @locale.downcase, member['rank'])
-              end
-            end
+          @json['members'].each do |entry|
+            BattleNet.new(character_name: entry['character']['name'],
+                          locale:         @locale,
+                          realm:          entry['character']['realm'],
+                          type:           'character')
           end
       end
     end
