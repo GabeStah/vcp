@@ -9,13 +9,13 @@ class BattleNet
   after_initialize :validate, :connect
 
   validates :character_name,
-            allow_blank: true,
-            length: { minimum: 2, maximum: 250 }
+            length: { minimum: 2, maximum: 250 },
+            if: :type_is_character?
   validates :guild,
-            allow_blank: true,
-            length: { minimum: 3, maximum: 250 }
+            length: { minimum: 3, maximum: 250 },
+            if: :type_is_guild?
   validates :locale,
-            format: { with: /[A-Za-z]+/ },
+            inclusion: { in: %w( us eu kr tw US EU KR TW ) },
             length: { minimum: 2, maximum: 2 },
             presence: true
   validates :realm,
@@ -116,6 +116,12 @@ class BattleNet
   end
 
   private
+    def type_is_character?
+      self.type.downcase == 'character'
+    end
+    def type_is_guild?
+      self.type.downcase == 'guild'
+    end
     def validate
       self.valid?
     end

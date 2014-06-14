@@ -32,5 +32,11 @@ FactoryGirl.define do
       rank 9
       realm { Faker::Name.last_name } # Brackets required to force Faker to create unique entries
     end
+
+    factory :setting do
+      locale "US"
+      guild "Vox Immortalis"
+      realm "Hyjal"
+    end
   end
 end

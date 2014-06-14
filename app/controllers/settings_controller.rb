@@ -3,7 +3,7 @@ class SettingsController < ApplicationController
   before_action :is_admin_user
 
   def index
-    @setting = Setting.find(1)
+    @setting = Setting.first
   end
 
   def update
