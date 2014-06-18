@@ -4,13 +4,15 @@ class CharacterClass < ActiveRecord::Base
             presence: true,
             uniqueness: true
   validates :name,
-            presence: true,
-            uniqueness: { case_sensitive: false }
+            uniqueness: { case_sensitive: false },
+            presence: true
   validate :name_must_be_titleized
 
   def name_must_be_titleized
-    unless name == name.titleize
-      errors.add(:name, "must be in Titleized format.")
+    unless name.nil?
+      unless name == name.titleize
+        errors.add(:name, "must be in Titleized format.")
+      end
     end
   end
 end

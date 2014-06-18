@@ -129,11 +129,6 @@ describe Character do
         it { should_not be_valid }
       end
 
-      describe "as non-lowercase" do
-        before { @character.locale = 'US' }
-        it { should_not be_valid }
-      end
-
       describe "too short" do
         before { @character.locale = "a" * 1 }
         it { should_not be_valid }
@@ -184,11 +179,6 @@ describe Character do
     describe "rank" do
       describe "as string" do
         before { @character.rank = "12345 blah" }
-        it { should_not be_valid }
-      end
-
-      describe "as empty" do
-        before { @character.rank = nil }
         it { should_not be_valid }
       end
 

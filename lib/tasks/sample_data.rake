@@ -63,7 +63,6 @@ namespace :app do
                                realm:   settings.realm,
                                locale:  settings.locale,
                                type:    "guild")
-    battle_net.populate_database
 
     # INSERT ABOVE
   end

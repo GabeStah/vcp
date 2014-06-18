@@ -46,6 +46,49 @@ describe "Character pages" do
         end
       end
     end
+  end
 
+  describe "new page" do
+    before do
+      visit new_character_path
+    end
+
+    it { should have_title('Add Character') }
+    it { should have_content('Add Character') }
+
+
+    describe "adding new character" do
+      before do
+        fill_in "Name",    with: "Kulldar"
+        fill_in "Realm",   with: "Hyjal"
+        fill_in "Locale",  with: "US"
+      end
+
+      it "should increment the character number" do
+        expect do
+          click_button('Add Character', match: :first)
+        end.to change(Character, :count).by(1)
+      end
+    end
+
+    describe "updating existing character" do
+      before do
+        battle_net = BattleNet.new(character_name: "Kulldar",
+                                   locale: "US",
+                                   realm: "Hyjal",
+                                   type: 'character',
+                                   auto_connect: true)
+        battle_net.update if battle_net.connected?
+        fill_in "Name",    with: "Kulldar"
+        fill_in "Realm",   with: "Hyjal"
+        fill_in "Locale",  with: "US"
+      end
+
+      it "should not change character count" do
+        expect do
+          click_button('Add Character', match: :first)
+        end.not_to change(Character, :count)
+      end
+    end
   end
 end

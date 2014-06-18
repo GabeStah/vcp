@@ -2,12 +2,12 @@ class BattleNet
   extend ActiveModel::Callbacks
   include ActiveModel::Model
   include Errors
-  define_model_callbacks :initialize, :connect
+
   attr_accessor :type, :guild, :locale, :realm, :character_name
   attr_reader :errors
+  define_model_callbacks :initialize
 
-  after_connect :update
-  after_initialize :validate, :connect
+  after_initialize :validate
 
   validates :character_name,
             length: { minimum: 2, maximum: 250 },
@@ -26,27 +26,31 @@ class BattleNet
             inclusion: { in: %w( character CHARACTER guild GUILD ) }
 
 
+  def character
+    @character
+  end
+
   def connected?
     @connected
   end
 
   def connect
-    run_callbacks :connect do
-      if self.valid?
-        case @type.downcase
-          when "character"
-            @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@locale.downcase}.battle.net/api/wow/character/#{@realm.downcase}/#{@character_name}"))).body)
-          when "guild"
-            @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@locale.downcase}.battle.net/api/wow/guild/#{@realm.downcase}/#{@guild}?fields=members"))).body)
-        end
-        if @json['status'] == 'nok'
-          errors.add(:battle_net_error, @json['reason'])
-          #raise BattleNetError.new(message: @json['reason'])
-        else
-          @connected = true
-        end
+    if self.valid?
+      case @type.downcase
+        when "character"
+          @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@locale.downcase}.battle.net/api/wow/character/#{@realm.downcase}/#{@character_name}"))).body)
+        when "guild"
+          @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@locale.downcase}.battle.net/api/wow/guild/#{@realm.downcase}/#{@guild}?fields=members"))).body)
+      end
+      if @json['status'] == 'nok'
+        errors.add(:battle_net_error, @json['reason'])
+        #raise BattleNetError.new(message: @json['reason'])
+      else
+        @connected = true
       end
     end
+    @auto_connect = false if @auto_connect
+    @connected # return @connected to indicate success
   end
 
   def json
@@ -55,13 +59,16 @@ class BattleNet
 
   def initialize(args = {})
     run_callbacks :initialize do
+      @auto_connect = args[:auto_connect] || false
       @character_name = args[:character_name]
       @connected = false
+      @errors = ActiveModel::Errors.new(self)
       @guild = args[:guild]
       @locale = args[:locale]
       @realm = args[:realm]
       @type = args[:type] || 'guild'
-      @errors = ActiveModel::Errors.new(self)
+      # connect if auto_connect set
+      self.connect if @auto_connect
     end
   end
 
@@ -74,13 +81,14 @@ class BattleNet
                                                       realm:  @json['realm'])
           character.update_attributes(
               achievement_points: @json['achievementPoints'],
-              character_class:    CharacterClass.find_by(blizzard_id: @json['class']) || 0,
+              character_class:    CharacterClass.find_or_initialize_by(blizzard_id: @json['class']) || 0,
               gender:             @json['gender'],
               level:              @json['level'],
               portrait:           @json['thumbnail'],
-              race:               Race.find_by(blizzard_id: @json['race']) || 0
+              race:               Race.find_or_initialize_by(blizzard_id: @json['race']) || 0
           )
-          character.save
+          @character = character
+          puts "Character Updated: #{@json['name']}"
         when "guild"
           @json['members'].each do |entry|
             BattleNet.new(character_name: entry['character']['name'],

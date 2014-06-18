@@ -3,24 +3,19 @@ class CharactersController < ApplicationController
   before_action :is_admin_user, only: [:destroy]
 
   def create
-    battle_net = BattleNet.new(character_name: character_params[:name],
-                               locale: character_params[:locale],
-                               realm: character_params[:realm],
-                               type: 'character')
-    if battle_net.invalid?
-      flash[:error] = battle_net.errors.empty? ? "Error" : battle_net.errors.full_messages.to_sentence
-      redirect_to new_character_path
+    @battle_net = BattleNet.new(character_name: character_params[:name],
+                               locale:          character_params[:locale],
+                               realm:           character_params[:realm],
+                               type:            'character',
+                               auto_connect:    true)
+    if @battle_net.connected?
+      @battle_net.update
+      @character = @battle_net.character
+      flash[:success] = "Character created!"
+      redirect_to @character
     else
-      json = battle_net.to_json
-      unless json.nil?
-        @character = Character.update_from_json(json, 'character', character_params[:locale])
-        if @character
-          flash[:success] = "Character created!"
-          redirect_to @character
-        else
-          render 'new'
-        end
-      end
+      @character = Character.new
+      render 'new'
     end
   end
 
