@@ -91,10 +91,12 @@ class BattleNet
           puts "Character Updated: #{@json['name']}"
         when "guild"
           @json['members'].each do |entry|
-            BattleNet.new(character_name: entry['character']['name'],
-                          locale:         @locale,
-                          realm:          entry['character']['realm'],
-                          type:           'character')
+            battle_net = BattleNet.new(character_name: entry['character']['name'],
+                                       locale:         @locale,
+                                       realm:          entry['character']['realm'],
+                                       type:           'character',
+                                       auto_connect:   true)
+            battle_net.update if battle_net.connected?
           end
       end
     end

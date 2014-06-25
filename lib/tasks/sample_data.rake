@@ -18,14 +18,8 @@ namespace :app do
   # Populates development data
   desc "Populate the database with development data."
   task :populate => :environment do
-    if Rails.env.production?
-      # Heroku, reset migration
-      `heroku pg:reset DATABASE --confirm vox-vcp`
-      `heroku run rake db:migrate`
-    else
-      # Removes content before populating with data to avoid duplication
-      Rake::Task['db:reset'].invoke
-    end
+    # Removes content before populating with data to avoid duplication
+    Rake::Task['db:reset'].invoke
 
     # INSERT BELOW
 
@@ -65,10 +59,13 @@ namespace :app do
     end
 
     # Generate initial Characters from API
-    battle_net = BattleNet.new(guild:   settings.guild,
-                               realm:   settings.realm,
-                               locale:  settings.locale,
-                               type:    "guild")
+    battle_net = BattleNet.new(guild:        settings.guild,
+                               realm:        settings.realm,
+                               locale:       settings.locale,
+                               type:         "guild",
+                               auto_connect: true)
+
+    battle_net.update if battle_net.connected?
 
     # INSERT ABOVE
   end
