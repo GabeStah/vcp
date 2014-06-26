@@ -23,18 +23,10 @@ set :rails_env, "production"
 # Default value for keep_releases is 5
 set :keep_releases, 5
 
-# Ensure ssh prompts appear
-#default_run_options[:pty] = true
-
 set :ssh_options, { forward_agent: true, user: fetch(:user) }
 
 # Set temp directory
 set :tmp_dir, "/home/deploy/tmp"
-
-#RVM settings
-#set :rvm_type, :user                     # Defaults to: :auto
-#set :rvm_ruby_version, '2.0.0-p247'      # Defaults to: 'default'
-#set :rvm_custom_path, '~/.myveryownrvm'  # only needed if not detected
 
 # Simple Role Syntax
 # ==================
@@ -45,39 +37,11 @@ role :app, %w{gabestah.com}
 role :web, %w{gabestah.com}
 role :db,  %w{gabestah.com}
 
-# Extended Server Syntax
-# ======================
-# This can be used to drop a more detailed server
-# definition into the server list. The second argument
-# is something that quacks like a hash and can be used
-# to set extended properties on the server.
-# server 'example.com', roles: %w{web app}, my_property: :my_value
-
-# Default branch is :master
-# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
-
-# Default value for :format is :pretty
-# set :format, :pretty
-
-# Default value for :log_level is :debug
-# set :log_level, :debug
-
-# Default value for :pty is false
-# set :pty, true
-
-# Default value for :linked_files is []
-# set :linked_files, %w{config/database.yml}
-
-# Default value for linked_dirs is []
-# set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
-
-# Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
-
 namespace :deploy do
   desc 'Deploy the application'
   task :default do
     symlink_db_yml
+    upload_db_config
   end
 
   desc 'Restart application'
@@ -85,6 +49,18 @@ namespace :deploy do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
       execute :touch, current_path.join('tmp/restart.txt')
+    end
+  end
+
+  desc 'Create database.yml symlink'
+  task :symlink_db_yml do
+    execute :ln, '-sf', "#{shared_path}/config/database.yml", "#{release_path}/config/database.yml"
+  end
+
+  desc 'Upload database.yml'
+  task :upload_db_config do
+    run_locally do
+      execute :scp, '~/dev/projects/vcp/config/database.yml', 'deploy@gabestah.com:/var/www/vcp/shared/config/database.yml'
     end
   end
 
@@ -98,14 +74,4 @@ namespace :deploy do
       # end
     end
   end
-
-  desc 'Set proper permissions'
-  task :symlink_db_yml do
-    on roles(:all) do |host|
-      execute :ln, '-sf', "#{shared_path}/config/database.yml", "#{release_path}/config/database.yml"
-    end
-  end
-
 end
-
-before 'deploy:assets:precompile', 'deploy:symlink_db_yml'
