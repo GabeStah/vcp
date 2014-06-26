@@ -40,8 +40,7 @@ role :db,  %w{gabestah.com}
 namespace :deploy do
   desc 'Deploy the application'
   task :default do
-    symlink_db_yml
-    upload_db_config
+
   end
 
   desc 'Restart application'
@@ -54,18 +53,21 @@ namespace :deploy do
 
   desc 'Create database.yml symlink'
   task :symlink_db_yml do
-    execute :ln, '-sf', "#{shared_path}/config/database.yml", "#{release_path}/config/database.yml"
+    on roles(:all) do
+      execute :ln, '-sf', "#{shared_path}/config/database.yml", "#{release_path}/config/database.yml"
+    end
   end
 
   desc 'Upload database.yml'
-  task :upload_db_config do
+  task :upload_db_yml do
     run_locally do
       execute :scp, '~/dev/projects/vcp/config/database.yml', 'deploy@gabestah.com:/var/www/vcp/shared/config/database.yml'
     end
   end
 
-  after :publishing, :restart
+  before :started, :upload_db_yml
 
+  after :publishing, :restart
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
@@ -75,3 +77,6 @@ namespace :deploy do
     end
   end
 end
+
+# Update symlink after release path is generated
+before 'deploy:assets:precompile', 'deploy:symlink_db_yml'
