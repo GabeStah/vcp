@@ -84,8 +84,7 @@ namespace :deploy do
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
-      # execute :touch, release_path.join('tmp/restart.txt')
-      #run "touch #{ File.join(current_path, 'tmp', 'restart.txt') }"
+      execute :touch, current_path.join('tmp/restart.txt')
     end
   end
 
@@ -100,27 +99,8 @@ namespace :deploy do
     end
   end
 
-  desc "Symlink shared config files"
-  task :symlink_config_files do
-    run "ln -s #{ deploy_to }/shared/config/database.yml #{ current_path }/config/database.yml"
-  end
-
   desc 'Set proper permissions'
   task :symlink_db_yml do
-    #run "chmod -R g+w #{latest_release}" if fetch(:group_writable, true)
-
-    # mkdir -p is making sure that the directories are there for some SCM's that don't
-    # save empty folders
-    # run <<-CMD
-    #   rm -rf #{latest_release}/log #{latest_release}/public/system #{latest_release}/tmp/pids &&
-    #   mkdir -p #{latest_release}/public &&
-    #   mkdir -p #{latest_release}/tmp &&
-    #   ln -s #{shared_path}/log #{latest_release}/log &&
-    #   ln -s #{shared_path}/system #{latest_release}/public/system &&
-    #   ln -s #{shared_path}/pids #{latest_release}/tmp/pids
-    #   ln -sf #{shared_path}/config/database.yml #{latest_release}/config/database.yml
-    # CMD
-
     on roles(:all) do |host|
       execute :ln, '-sf', "#{shared_path}/config/database.yml", "#{release_path}/config/database.yml"
     end
@@ -128,6 +108,4 @@ namespace :deploy do
 
 end
 
-#after "deploy:assets:precompile", "deploy:symlink_config_files"
-#before "deploy:assets:precompile", "deploy:symlink_config_files"
 before 'deploy:assets:precompile', 'deploy:symlink_db_yml'
