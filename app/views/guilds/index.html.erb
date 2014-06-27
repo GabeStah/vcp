@@ -1,0 +1,12 @@
+<% provide(:title, 'All guilds') %>
+<h1>All guilds</h1>
+
+<%= link_to "New Guild", new_guild_path, class: "btn btn-large btn-primary" %>
+
+<%= will_paginate %>
+
+<ul class="guilds">
+  <%= render @guilds %>
+</ul>
+
+<%= will_paginate %>

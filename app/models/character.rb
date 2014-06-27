@@ -1,5 +1,6 @@
 class Character < ActiveRecord::Base
   belongs_to :character_class
+  belongs_to :guild
   belongs_to :race
   before_validation :ensure_locale_is_lowercase
   #after_initialize :defaults
@@ -37,9 +38,6 @@ class Character < ActiveRecord::Base
             inclusion: { in: [0, 1] },
             numericality: { only_integer: true },
             presence: true
-  validates :guild,
-            allow_blank: true,
-            length: { minimum: 3, maximum: 250 }
   validates :level,
             inclusion: { in: 0..100 },
             numericality: { only_integer: true },

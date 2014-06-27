@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140610001459) do
+ActiveRecord::Schema.define(version: 20140627104626) do
 
   create_table "character_classes", force: true do |t|
     t.string   "name"
@@ -39,6 +39,25 @@ ActiveRecord::Schema.define(version: 20140610001459) do
   end
 
   add_index "characters", ["locale", "name", "realm"], name: "index_characters_on_locale_and_name_and_realm", unique: true, using: :btree
+
+  create_table "guilds", force: true do |t|
+    t.integer  "achievement_points"
+    t.boolean  "active"
+    t.string   "battlegroup"
+    t.boolean  "default"
+    t.integer  "level"
+    t.string   "name"
+    t.string   "realm"
+    t.string   "region"
+    t.integer  "side"
+    t.boolean  "verified"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "guilds", ["name", "realm", "region"], name: "index_guilds_on_name_and_realm_and_region", unique: true, using: :btree
+  add_index "guilds", ["name", "realm"], name: "index_guilds_on_name_and_realm", using: :btree
+  add_index "guilds", ["name"], name: "index_guilds_on_name", using: :btree
 
   create_table "races", force: true do |t|
     t.string   "name"

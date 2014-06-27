@@ -7,17 +7,27 @@ FactoryGirl.define do
     factory :race do
       sequence(:blizzard_id)
       sequence(:name) { |n| "Race #{n}" }
-      side "horde"
+      side 'horde'
     end
     factory :user do
       sequence(:name)  { |n| "Person #{n}" }
       sequence(:email) { |n| "person_#{n}@example.com"}
-      password "foobar"
-      password_confirmation "foobar"
+      password 'foobar'
+      password_confirmation 'foobar'
 
       factory :admin do
         admin true
       end
+    end
+
+    factory :guild do
+      achievement_points 2500
+      battlegroup 'Vengeance'
+      level 20
+      sequence(:name) { |n| "Name #{n}" }
+      region 'us'
+      realm 'Hyjal'
+      side 0
     end
 
     factory :character do
@@ -25,8 +35,8 @@ FactoryGirl.define do
       character_class
       gender 0
       level 90
-      locale "us"
-      portrait "internal-record-3661/66/115044674-avatar.jpg"
+      locale 'us'
+      portrait 'internal-record-3661/66/115044674-avatar.jpg'
       name { Faker::Name.first_name } # Brackets required to force Faker to create unique entries
       race
       rank 9
@@ -34,9 +44,9 @@ FactoryGirl.define do
     end
 
     factory :setting do
-      locale "US"
-      guild "Vox Immortalis"
-      realm "Hyjal"
+      locale 'US'
+      guild 'Vox Immortalis'
+      realm 'Hyjal'
     end
   end
 end

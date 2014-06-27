@@ -2,6 +2,7 @@ Vcp::Application.routes.draw do
 
   scope '/admin' do
     resources :classes, only: [:create, :destroy, :index, :update], controller: :character_classes
+    resources :guilds
     resources :races, only: [:create, :destroy, :index, :update]
     resources :settings, only: [:index, :update]
   end
