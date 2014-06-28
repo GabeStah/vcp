@@ -70,19 +70,5 @@ describe 'Character pages', type: :feature do
         end.to change(Character, :count).by(1)
       end
     end
-
-    describe 'updating existing character' do
-      # before do
-      #   fill_in 'Name',    with: 'Kulldar'
-      #   fill_in 'Realm',   with: 'Hyjal'
-      #   select  'US',      from: 'Region'
-      # end
-      #
-      # it 'should not change character count' do
-      #   expect do
-      #     click_button('Add Character', match: :first)
-      #   end.not_to change(Character, :count)
-      # end
-    end
   end
 end
