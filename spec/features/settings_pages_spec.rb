@@ -30,9 +30,9 @@ describe "Settings pages", type: :feature do
 
     describe "with valid information" do
       before do
-        fill_in "Guild",  with: 'Vox Immortalis'
-        fill_in "Realm",  with: 'Hyjal'
-        select "US", from: 'Region'
+        fill_in 'Guild',  with: 'Vox Immortalis'
+        fill_in 'Realm',  with: 'Hyjal'
+        select  'US',     from: 'Region'
         click_button "Save changes"
       end
 

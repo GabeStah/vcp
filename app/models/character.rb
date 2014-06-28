@@ -31,46 +31,38 @@ class Character < ActiveRecord::Base
   validates_associated :character_class, :guild, :race
 
   validates :achievement_points,
-            numericality: { only_integer: true },
-            presence: true
-  validates :character_class,
-            presence: true
+            allow_blank: true,
+            numericality: { only_integer: true }
   validates :gender,
-            inclusion: { in: [0, 1] },
-            numericality: { only_integer: true },
-            presence: true
+            allow_blank: true,
+            inclusion: [0, 1],
+            numericality: { only_integer: true }
   validates :level,
-            inclusion: { in: 0..100 },
-            numericality: { only_integer: true },
-            presence: true
+            allow_blank: true,
+            inclusion: 0..100,
+            numericality: { only_integer: true }
   validates :region,
             format: { with: /[a-z]+/ },
             length: { minimum: 2, maximum: 2 },
-            presence: true,
-            uniqueness: { scope: [:name, :realm],
-                          message: "plus Name plus Realm combination already exists",
-                          case_sensitive: false }
-  validates :portrait,
-            format: { with: /\A[\w+d+-]+\/\d+\/\d+-avatar\.((jpg)|(png))\z/ },
             presence: true
+  validates :portrait,
+            allow_blank: true,
+            format: { with: /\A[\w+d+-]+\/\d+\/\d+-avatar\.((jpg)|(png))\z/ }
   validates :name,
             format: { with: /\A[^\(\)0-9]*\z/ },
             presence: true,
             uniqueness: { scope: [:region, :realm],
-                          message: "plus Region plus Realm combination already exists",
+                          message: "+ Realm + Region combination already exists",
                           case_sensitive: false }
-  validates :race,
-            presence: true
   validates :rank,
+            allow_blank: true,
             inclusion: { in: 0..12 },
-            numericality: { only_integer: true },
-            presence: true,
-            allow_blank: true
+            numericality: { only_integer: true }
   validates :realm,
-            presence: true,
-            uniqueness: { scope: [:region, :name],
-                          message: "plus Region plus Name combination already exists",
-                          case_sensitive: false }
+            presence: true
+  validates :region,
+            inclusion: WOW_REGION_LIST,
+            presence: true
 
   private
     def ensure_region_is_lowercase

@@ -12,7 +12,7 @@
       <%= f.text_field :realm, placeholder: "Hyjal" %>
 
       <%= f.label :region %>
-      <%= f.text_field :region, placeholder: "US" %>
+      <%= f.select :region, WOW_REGION_HASH %>
 
       <%= f.submit "Add Character", class: "btn btn-large btn-primary" %>
     <% end %>

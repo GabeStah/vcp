@@ -12,7 +12,7 @@
       <%= f.text_field :realm, placeholder: "Hyjal" %>
 
       <%= f.label :region %>
-      <%= f.text_field :region, placeholder: "US" %>
+      <%= f.select :region, WOW_REGION_HASH %>
 
       <%= f.label :active %>
       <%= f.check_box :active %>

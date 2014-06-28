@@ -14,7 +14,7 @@
       <%= f.text_field :realm %>
 
       <%= f.label :region %>
-      <%= f.select :region, [["US", "us"], ["EU", "eu"], ["KR", "kr"], ["TW", "tw"]] %>
+      <%= f.select :region, WOW_REGION_HASH %>
 
       <%= f.submit "Save changes", class: "btn btn-large btn-primary" %>
     <% end %>

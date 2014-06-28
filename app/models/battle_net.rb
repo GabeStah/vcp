@@ -16,14 +16,14 @@ class BattleNet
             length: { minimum: 3, maximum: 250 },
             if: :type_is_guild?
   validates :region,
-            inclusion: { in: %w( us eu kr tw US EU KR TW ) },
+            inclusion: WOW_REGION_LIST,
             length: { minimum: 2, maximum: 2 },
             presence: true
   validates :realm,
             presence: true
   validates :type,
             presence: true,
-            inclusion: { in: %w( character CHARACTER guild GUILD ) }
+            inclusion: %w( character CHARACTER guild GUILD )
 
 
   def character

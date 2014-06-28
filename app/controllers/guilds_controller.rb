@@ -6,7 +6,7 @@ class GuildsController < ApplicationController
     @guild = Guild.new(guild_params)
     if @guild.save
       flash[:success] = 'Guild added!'
-      redirect_to guilds_path
+      redirect_to guild_path(@guild)
     else
       @character = Character.new
       render 'new'

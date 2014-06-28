@@ -61,7 +61,7 @@ describe 'Guild pages', type: :feature do
       before do
         fill_in 'Name',    with: 'Vox Immortalis'
         fill_in 'Realm',   with: 'Hyjal'
-        fill_in 'Region',  with: 'US'
+        select  'US',      from: 'Region'
       end
 
       it 'should increment the guild number' do

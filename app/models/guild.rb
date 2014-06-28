@@ -27,7 +27,7 @@ class Guild < ActiveRecord::Base
   validates :realm,
             presence: true
   validates :region,
-            inclusion: { in: %w( us eu kr tw US EU KR TW ) },
+            inclusion: WOW_REGION_LIST,
             length: { minimum: 2, maximum: 2 },
             presence: true
   validates :side,
