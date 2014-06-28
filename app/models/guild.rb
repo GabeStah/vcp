@@ -12,8 +12,6 @@ class Guild < ActiveRecord::Base
   validates :battlegroup,
             allow_blank: true,
             length: { minimum: 3, maximum: 250 }
-  validates :default,
-            inclusion: [true, false]
   validates :level,
             allow_blank: true,
             numericality: { only_integer: true },
@@ -22,8 +20,10 @@ class Guild < ActiveRecord::Base
             presence: true,
             length: { minimum: 3, maximum: 250 },
             uniqueness: { scope: [:realm, :region],
-                          message: "+ Realm + Region combination already exists",
+                          message: '+ Realm + Region combination already exists',
                           case_sensitive: false }
+  validates :primary,
+            inclusion: [true, false]
   validates :realm,
             presence: true
   validates :region,
@@ -39,7 +39,7 @@ class Guild < ActiveRecord::Base
   private
     def defaults
       self.active = false if self.active.nil?
-      self.default = false if self.default.nil?
+      self.primary = false if self.primary.nil?
       self.verified = false if self.verified.nil?
     end
     def ensure_region_is_downcase

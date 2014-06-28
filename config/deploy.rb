@@ -38,11 +38,6 @@ role :web, %w{gabestah.com}
 role :db,  %w{gabestah.com}
 
 namespace :deploy do
-  desc 'Deploy the application'
-  task :default do
-
-  end
-
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do

@@ -14,9 +14,9 @@ describe Guild do
   it { should respond_to :achievement_points,
                          :active,
                          :battlegroup,
-                         :default,
                          :level,
                          :name,
+                         :primary,
                          :region,
                          :realm,
                          :side,
@@ -58,19 +58,9 @@ describe Guild do
         before { @guild.achievement_points = '12345 blah' }
         it { should_not be_valid }
       end
-
-      describe 'as empty' do
-        before { @guild.achievement_points = nil }
-        it { should_not be_valid }
-      end
     end
 
     describe 'battlegroup' do
-      describe 'as empty should be invalid' do
-        before { @guild.battlegroup = nil }
-        it { should_not be_valid }
-      end
-
       describe 'too short' do
         before { @guild.battlegroup = 'a' * 1 }
         it { should_not be_valid }

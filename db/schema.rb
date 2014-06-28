@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140627104626) do
+ActiveRecord::Schema.define(version: 20140628094253) do
 
   create_table "character_classes", force: true do |t|
     t.string   "name"
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 20140627104626) do
     t.integer  "achievement_points"
     t.boolean  "active"
     t.string   "battlegroup"
-    t.boolean  "default"
+    t.boolean  "primary"
     t.integer  "level"
     t.string   "name"
     t.string   "realm"
