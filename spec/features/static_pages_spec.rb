@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Static Pages" do
+describe "Static Pages", type: :feature do
 
   subject { page }
 

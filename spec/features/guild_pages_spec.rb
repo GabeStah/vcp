@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Guild pages' do
+describe 'Guild pages', type: :feature do
 
   subject { page }
 

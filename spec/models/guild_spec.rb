@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Guild do
+describe Guild, type: :model do
   before { @guild = Guild.new(achievement_points: 2500,
                               battlegroup: 'Vengeance',
                               level: 20,

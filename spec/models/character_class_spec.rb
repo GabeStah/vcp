@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CharacterClass do
+describe CharacterClass, type: :model do
   before { @character_class = CharacterClass.new(name: "Warrior", blizzard_id: 1) }
 
   subject { @character_class }

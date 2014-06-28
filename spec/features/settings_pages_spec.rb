@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Settings pages" do
+describe "Settings pages", type: :feature do
 
   subject { page }
 

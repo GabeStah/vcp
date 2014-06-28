@@ -30,6 +30,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'cucumber-rails', '1.4.0', :require => false
   gem 'database_cleaner', github: 'bmabey/database_cleaner'
+  gem 'rspec-its'
 
   # Uncomment this line on OS X.
   # gem 'growl', '1.0.3'

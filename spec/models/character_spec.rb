@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Character do
+describe Character, type: :model do
   before { @character = Character.new(achievement_points: 1500,
                                       character_class: FactoryGirl.create(:character_class),
                                       gender: 0,

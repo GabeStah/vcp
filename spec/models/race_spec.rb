@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Race do
+describe Race, type: :model do
   before { @race = Race.new(name: "Tauren", blizzard_id: 6, side: 'horde') }
 
   subject { @race }

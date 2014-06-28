@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Race pages" do
+describe "Race pages", type: :feature do
 
   subject { page }
 

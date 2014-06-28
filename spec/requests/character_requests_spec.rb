@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Character request" do
+describe "Character request", type: :request do
 
   subject { page }
 

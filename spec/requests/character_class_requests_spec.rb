@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Class request" do
+describe "Class request", type: :request do
 
   subject { page }
 

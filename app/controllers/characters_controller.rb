@@ -1,6 +1,6 @@
 class CharactersController < ApplicationController
   before_action :require_login, only: [:destroy]
-  before_action :is_admin_user, only: [:destroy]
+  before_action :admin_user, only: [:destroy]
 
   def create
     @battle_net = BattleNet.new(character_name: character_params[:name],

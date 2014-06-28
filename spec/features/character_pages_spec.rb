@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Character pages' do
+describe 'Character pages', type: :feature do
 
   subject { page }
 

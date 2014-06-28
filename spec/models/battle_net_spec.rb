@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe BattleNet do
+describe BattleNet, type: :model do
 
   describe 'should respond properly' do
     before { @battle_net = BattleNet.new }
