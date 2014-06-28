@@ -6,7 +6,7 @@ describe Character, type: :model do
                                       gender: 0,
                                       guild: 'Vox Immortalis',
                                       level: 90,
-                                      locale: 'us',
+                                      region: 'us',
                                       portrait: 'internal-record-3661/66/115044674-avatar.jpg',
                                       name: 'Kulldar',
                                       race: FactoryGirl.create(:race),
@@ -20,7 +20,7 @@ describe Character, type: :model do
                          :gender,
                          :guild,
                          :level,
-                         :locale,
+                         :region,
                          :portrait,
                          :name,
                          :race,
@@ -39,7 +39,7 @@ describe Character, type: :model do
 
   describe 'invalid' do
 
-    describe 'locale, name, and realm should be unique' do
+    describe 'region, name, and realm should be unique' do
       before do
         duplicate_character = @character.dup
         duplicate_character.name = @character.name.upcase
@@ -118,24 +118,24 @@ describe Character, type: :model do
       end
     end
 
-    describe 'locale' do
+    describe 'region' do
       describe 'as mixed string' do
-        before { @character.locale = '12345 blah' }
+        before { @character.region = '12345 blah' }
         it { should_not be_valid }
       end
 
       describe 'as empty' do
-        before { @character.locale = nil }
+        before { @character.region = nil }
         it { should_not be_valid }
       end
 
       describe 'too short' do
-        before { @character.locale = 'a' * 1 }
+        before { @character.region = 'a' * 1 }
         it { should_not be_valid }
       end
 
       describe 'too long' do
-        before { @character.locale = 'a' * 3 }
+        before { @character.region = 'a' * 3 }
         it { should_not be_valid }
       end
     end

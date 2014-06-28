@@ -61,7 +61,7 @@ describe 'Character pages', type: :feature do
       before do
         fill_in 'Name',    with: 'Kulldar'
         fill_in 'Realm',   with: 'Hyjal'
-        fill_in 'Locale',  with: 'US'
+        fill_in 'Region',  with: 'US'
       end
 
       it 'should increment the character number' do
@@ -74,14 +74,14 @@ describe 'Character pages', type: :feature do
     describe 'updating existing character' do
       before do
         battle_net = BattleNet.new(character_name: 'Kulldar',
-                                   locale: 'US',
+                                   region: 'US',
                                    realm: 'Hyjal',
                                    type: 'character',
                                    auto_connect: true)
         battle_net.update if battle_net.connected?
         fill_in 'Name',    with: 'Kulldar'
         fill_in 'Realm',   with: 'Hyjal'
-        fill_in 'Locale',  with: 'US'
+        fill_in 'Region',  with: 'US'
       end
 
       it 'should not change character count' do

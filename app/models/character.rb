@@ -2,7 +2,7 @@ class Character < ActiveRecord::Base
   belongs_to :character_class
   belongs_to :guild
   belongs_to :race
-  before_validation :ensure_locale_is_lowercase
+  before_validation :ensure_region_is_lowercase
   #after_initialize :defaults
 
   # {
@@ -28,6 +28,7 @@ class Character < ActiveRecord::Base
   # Character.new(guild, realm, locale)
   # 3. Character (All less Guild/Rank)
 
+  validates_associated :character_class, :guild, :race
 
   validates :achievement_points,
             numericality: { only_integer: true },
@@ -42,7 +43,7 @@ class Character < ActiveRecord::Base
             inclusion: { in: 0..100 },
             numericality: { only_integer: true },
             presence: true
-  validates :locale,
+  validates :region,
             format: { with: /[a-z]+/ },
             length: { minimum: 2, maximum: 2 },
             presence: true,
@@ -72,9 +73,9 @@ class Character < ActiveRecord::Base
                           case_sensitive: false }
 
   private
-    def ensure_locale_is_lowercase
-      unless self.locale.nil?
-        self.locale = self.locale.downcase
+    def ensure_region_is_lowercase
+      unless self.region.nil?
+        self.region = self.region.downcase
       end
     end
 end

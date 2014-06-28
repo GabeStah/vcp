@@ -4,7 +4,7 @@ class CharactersController < ApplicationController
 
   def create
     @battle_net = BattleNet.new(character_name: character_params[:name],
-                               locale:          character_params[:locale],
+                               region:          character_params[:region],
                                realm:           character_params[:realm],
                                type:            'character',
                                auto_connect:    true)
@@ -49,7 +49,7 @@ class CharactersController < ApplicationController
 
   private
     def character_params
-      params.require(:character).permit(:locale,
+      params.require(:character).permit(:region,
                                         :name,
                                         :realm)
     end
