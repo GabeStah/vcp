@@ -10,6 +10,8 @@ describe CharacterClass, type: :model do
 
   it { should be_valid }
 
+  it { should normalize_attribute(:name).from('  Warrior  ').to('Warrior') }
+
   describe "when blizzard_id is missing" do
     before { @character_class.blizzard_id = "" }
     it { should_not be_valid }

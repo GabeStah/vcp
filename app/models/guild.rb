@@ -36,6 +36,9 @@ class Guild < ActiveRecord::Base
   validates :verified,
             inclusion: [true, false]
 
+  normalize_attributes :region
+  normalize_attribute :battlegroup, :name, :realm, :with => :squish
+
   private
     def defaults
       self.active = false if self.active.nil?

@@ -33,8 +33,15 @@ describe "Authentication", type: :feature do
         end
       end
 
+      describe "in the Guilds controller" do
+        describe "visiting the guilds index" do
+          before { visit guilds_path }
+          it { should have_title('Sign in') }
+        end
+      end
+
       describe "in the Races controller" do
-        describe "visiting the race index" do
+        describe "visiting the races index" do
           before { visit races_path }
           it { should have_title('Sign in') }
         end
@@ -70,6 +77,7 @@ describe "Authentication", type: :feature do
 
       describe "header menu" do
         it { should have_link('Classes', href: classes_path) }
+        it { should have_link('Guilds',  href: guilds_path) }
         it { should have_link('Races',   href: races_path) }
         it { should have_link('Settings',href: settings_path) }
       end

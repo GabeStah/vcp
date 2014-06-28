@@ -24,7 +24,6 @@ class CharactersController < ApplicationController
       flash[:success] = 'Character Added!'
       redirect_to character_path(@character)
     else
-      @character = Character.new
       render 'new'
     end
   end

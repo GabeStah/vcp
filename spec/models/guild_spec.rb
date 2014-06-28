@@ -24,6 +24,11 @@ describe Guild, type: :model do
 
   it { should be_valid }
 
+  it { should normalize_attribute(:battlegroup).from('  Vengeance  ').to('Vengeance') }
+  it { should normalize_attribute(:name).from('  Vox    Immortalis  ').to('Vox Immortalis') }
+  it { should normalize_attribute(:region).from('  us  ').to('us') }
+  it { should normalize_attribute(:realm).from('  Realm   Name ').to('Realm Name') }
+
   describe 'valid' do
 
     describe 'battlegroup with UTF-8 characters' do

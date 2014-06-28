@@ -11,6 +11,9 @@ describe Race, type: :model do
 
   it { should be_valid }
 
+  it { should normalize_attribute(:name).from('  Blood    Elf  ').to('Blood Elf') }
+  it { should normalize_attribute(:side).from('  horde  ').to('horde') }
+
   describe "when blizzard_id is missing" do
     before { @race.blizzard_id = "" }
     it { should_not be_valid }

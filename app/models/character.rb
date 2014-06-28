@@ -41,10 +41,6 @@ class Character < ActiveRecord::Base
             allow_blank: true,
             inclusion: 0..100,
             numericality: { only_integer: true }
-  validates :region,
-            format: { with: /[a-z]+/ },
-            length: { minimum: 2, maximum: 2 },
-            presence: true
   validates :portrait,
             allow_blank: true,
             format: { with: /\A[\w+d+-]+\/\d+\/\d+-avatar\.((jpg)|(png))\z/ }
@@ -63,6 +59,9 @@ class Character < ActiveRecord::Base
   validates :region,
             inclusion: WOW_REGION_LIST,
             presence: true
+
+  normalize_attributes :name, :portrait, :region
+  normalize_attribute :realm, :with => :squish
 
   private
     def ensure_region_is_lowercase

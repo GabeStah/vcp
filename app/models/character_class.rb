@@ -8,6 +8,8 @@ class CharacterClass < ActiveRecord::Base
             presence: true
   validate :name_must_be_titleized
 
+  normalize_attributes :name
+
   def name_must_be_titleized
     unless name.nil?
       unless name == name.titleize

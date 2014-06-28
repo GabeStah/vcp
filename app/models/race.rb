@@ -14,6 +14,8 @@ class Race < ActiveRecord::Base
             format: { with: /[a-z]+/, message: 'must be lowercase' }
   validate :name_must_be_titleized
 
+  normalize_attribute :name, :side, :with => :squish
+
   def name_must_be_titleized
     unless name.nil?
       unless name == name.titleize

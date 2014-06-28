@@ -29,6 +29,15 @@ describe Character, type: :model do
 
   it { should be_valid }
 
+  it { should normalize_attribute(:achievement_points).from('  123  ').to(123) }
+  it { should normalize_attribute(:gender).from('  0  ').to(0) }
+  it { should normalize_attribute(:level).from('  90  ').to(90) }
+  it { should normalize_attribute(:region).from('  us  ').to('us') }
+  it { should normalize_attribute(:portrait).from('  internal-record-3661/66/115044674-avatar.jpg  ').to('internal-record-3661/66/115044674-avatar.jpg') }
+  it { should normalize_attribute(:name).from('  Kulldar  ').to('Kulldar') }
+  it { should normalize_attribute(:rank).from('  9  ').to(9) }
+  it { should normalize_attribute(:realm).from('  Realm   Name  ').to('Realm Name') }
+
   describe 'name with UTF-8 characters' do
     before { @character.name = 'Grünhilde' }
     it { should be_valid }
@@ -80,7 +89,7 @@ describe Character, type: :model do
   end
 
   describe 'guild' do
-    describe 'as empty should be valid' do
+    describe 'as empty' do
       before { @character.guild = nil }
       it { should be_valid }
     end

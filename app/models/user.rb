@@ -13,6 +13,9 @@ class User < ActiveRecord::Base
             length: { minimum: 6 }
   has_secure_password
 
+  normalize_attribute :name, :with => :squish
+  normalize_attribute :email
+
   def User.new_remember_token
     SecureRandom.urlsafe_base64
   end

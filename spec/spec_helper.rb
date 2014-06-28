@@ -90,5 +90,9 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 
+  # testing only
+  #config.raise_errors_for_deprecations!
+
+  config.include AttributeNormalizer::RSpecMatcher, :type => :model
   config.include Capybara::DSL
 end

@@ -17,6 +17,9 @@ describe User, type: :model do
 
   it { should be_valid }
 
+  it { should normalize_attribute(:email) }
+  it { should normalize_attribute(:name).from('  Example    User  ').to('Example User') }
+
   describe "with admin attribute set to 'true'" do
     before do
       @user.save!
