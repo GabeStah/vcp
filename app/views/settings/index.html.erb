@@ -13,8 +13,8 @@
       <%= f.label :realm %>
       <%= f.text_field :realm %>
 
-      <%= f.label :locale %>
-      <%= f.select :locale, [["US", "us"], ["EU", "eu"], ["KR", "kr"], ["TW", "tw"]] %>
+      <%= f.label :region %>
+      <%= f.select :region, [["US", "us"], ["EU", "eu"], ["KR", "kr"], ["TW", "tw"]] %>
 
       <%= f.submit "Save changes", class: "btn btn-large btn-primary" %>
     <% end %>

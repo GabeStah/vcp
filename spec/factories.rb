@@ -44,7 +44,7 @@ FactoryGirl.define do
     end
 
     factory :setting do
-      locale 'US'
+      region 'US'
       guild 'Vox Immortalis'
       realm 'Hyjal'
     end

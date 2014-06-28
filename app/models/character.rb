@@ -56,8 +56,8 @@ class Character < ActiveRecord::Base
   validates :name,
             format: { with: /\A[^\(\)0-9]*\z/ },
             presence: true,
-            uniqueness: { scope: [:locale, :realm],
-                          message: "plus Locale plus Realm combination already exists",
+            uniqueness: { scope: [:region, :realm],
+                          message: "plus Region plus Realm combination already exists",
                           case_sensitive: false }
   validates :race,
             presence: true
@@ -68,8 +68,8 @@ class Character < ActiveRecord::Base
             allow_blank: true
   validates :realm,
             presence: true,
-            uniqueness: { scope: [:locale, :name],
-                          message: "plus Locale plus Name combination already exists",
+            uniqueness: { scope: [:region, :name],
+                          message: "plus Region plus Name combination already exists",
                           case_sensitive: false }
 
   private

@@ -12,7 +12,7 @@ end
 
 Spork.each_run do
   # This code will be run each time you run your specs.
-
+  #FactoryGirl.reload
 end
 
 # --- Instructions ---
@@ -62,6 +62,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 
 RSpec.configure do |config|
+  config.before(:suite) { FactoryGirl.reload }
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:

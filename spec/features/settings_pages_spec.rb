@@ -32,7 +32,7 @@ describe "Settings pages", type: :feature do
       before do
         fill_in "Guild",  with: 'Vox Immortalis'
         fill_in "Realm",  with: 'Hyjal'
-        select "US", from: 'Locale'
+        select "US", from: 'Region'
         click_button "Save changes"
       end
 

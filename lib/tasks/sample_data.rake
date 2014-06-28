@@ -39,19 +39,19 @@ namespace :app do
     end
 
     # Admin settings
-    settings = Setting.find_or_create_by(locale: "US",
+    settings = Setting.find_or_create_by(region: "US",
                                          guild: "Vox Immortalis",
                                          realm: "Hyjal")
 
     # Class populate
-    classes = JSON.parse(Net::HTTP.get_response(URI.parse("http://#{settings.locale.downcase}.battle.net/api/wow/data/character/classes")).body)
+    classes = JSON.parse(Net::HTTP.get_response(URI.parse("http://#{settings.region.downcase}.battle.net/api/wow/data/character/classes")).body)
     classes['classes'].each do |character_class|
       CharacterClass.create!(name: character_class['name'],
                              blizzard_id: character_class['id'])
     end
 
     # Race populate
-    races = JSON.parse(Net::HTTP.get_response(URI.parse("http://#{settings.locale.downcase}.battle.net/api/wow/data/character/races")).body)
+    races = JSON.parse(Net::HTTP.get_response(URI.parse("http://#{settings.region.downcase}.battle.net/api/wow/data/character/races")).body)
     races['races'].each do |race|
       Race.create!(name:        race['name'],
                    blizzard_id: race['id'],
@@ -61,7 +61,7 @@ namespace :app do
     # Generate initial Characters from API
     battle_net = BattleNet.new(guild:        settings.guild,
                                realm:        settings.realm,
-                               locale:       settings.locale,
+                               region:       settings.region,
                                type:         "guild",
                                auto_connect: true)
 

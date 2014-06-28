@@ -3,7 +3,7 @@ class BattleNet
   include ActiveModel::Model
   include Errors
 
-  attr_accessor :type, :guild, :locale, :realm, :character_name
+  attr_accessor :type, :guild, :region, :realm, :character_name
   attr_reader :errors
   define_model_callbacks :initialize
 
@@ -15,7 +15,7 @@ class BattleNet
   validates :guild,
             length: { minimum: 3, maximum: 250 },
             if: :type_is_guild?
-  validates :locale,
+  validates :region,
             inclusion: { in: %w( us eu kr tw US EU KR TW ) },
             length: { minimum: 2, maximum: 2 },
             presence: true
@@ -38,9 +38,9 @@ class BattleNet
     if self.valid?
       case @type.downcase
         when "character"
-          @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@locale.downcase}.battle.net/api/wow/character/#{@realm.downcase}/#{@character_name}"))).body)
+          @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@region.downcase}.battle.net/api/wow/character/#{@realm.downcase}/#{@character_name}"))).body)
         when "guild"
-          @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@locale.downcase}.battle.net/api/wow/guild/#{@realm.downcase}/#{@guild}?fields=members"))).body)
+          @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@region.downcase}.battle.net/api/wow/guild/#{@realm.downcase}/#{@guild}?fields=members"))).body)
       end
       if @json['status'] == 'nok'
         errors.add(:battle_net_error, @json['reason'])
@@ -64,8 +64,8 @@ class BattleNet
       @connected = false
       @errors = ActiveModel::Errors.new(self)
       @guild = args[:guild]
-      @locale = args[:locale]
       @realm = args[:realm]
+      @region = args[:region]
       @type = args[:type] || 'guild'
       # connect if auto_connect set
       self.connect if @auto_connect
@@ -77,7 +77,7 @@ class BattleNet
       case @type.downcase
         when "character"
           character = Character.find_or_initialize_by(name:   @json['name'],
-                                                      locale: @locale,
+                                                      region: @region,
                                                       realm:  @json['realm'])
           character.update_attributes(
               achievement_points: @json['achievementPoints'],
@@ -92,7 +92,7 @@ class BattleNet
         when "guild"
           @json['members'].each do |entry|
             battle_net = BattleNet.new(character_name: entry['character']['name'],
-                                       locale:         @locale,
+                                       region:         @region,
                                        realm:          entry['character']['realm'],
                                        type:           'character',
                                        auto_connect:   true)
