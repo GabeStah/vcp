@@ -3,28 +3,11 @@ class BattleNet
   include ActiveModel::Model
   include Errors
 
-  attr_accessor :type, :guild, :region, :realm, :character_name
+  attr_accessor :guild, :character
   attr_reader :errors
   define_model_callbacks :initialize
 
   after_initialize :validate
-
-  validates :character_name,
-            length: { minimum: 2, maximum: 250 },
-            if: :type_is_character?
-  validates :guild,
-            length: { minimum: 3, maximum: 250 },
-            if: :type_is_guild?
-  validates :region,
-            inclusion: WOW_REGION_LIST,
-            length: { minimum: 2, maximum: 2 },
-            presence: true
-  validates :realm,
-            presence: true
-  validates :type,
-            presence: true,
-            inclusion: %w( character CHARACTER guild GUILD )
-
 
   def character
     @character
@@ -35,22 +18,23 @@ class BattleNet
   end
 
   def connect
-    if self.valid?
-      case @type.downcase
-        when "character"
-          @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@region.downcase}.battle.net/api/wow/character/#{@realm.downcase}/#{@character_name}"))).body)
-        when "guild"
-          @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@region.downcase}.battle.net/api/wow/guild/#{@realm.downcase}/#{@guild}?fields=members"))).body)
-      end
-      if @json['status'] == 'nok'
-        errors.add(:battle_net_error, @json['reason'])
-        #raise BattleNetError.new(message: @json['reason'])
-      else
-        @connected = true
-      end
+    case @type.downcase
+      when "character"
+        @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@region.downcase}.battle.net/api/wow/character/#{@realm.downcase}/#{@character_name}"))).body)
+      when "guild"
+        @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{@region.downcase}.battle.net/api/wow/guild/#{@realm.downcase}/#{@guild}?fields=members"))).body)
+    end
+    if @json['status'] == 'nok'
+      raise BattleNetError.new(message: @json['reason'])
+    else
+      @connected = true
     end
     @auto_connect = false if @auto_connect
     @connected # return @connected to indicate success
+  end
+
+  def guild
+    @guild
   end
 
   def json

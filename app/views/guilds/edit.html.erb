@@ -15,7 +15,17 @@
       <%= f.label :region %>
       <%= f.select :region, WOW_REGION_HASH %>
 
+      <%= f.label :active %>
+      <%= f.check_box :active %>
+
+      <%= f.label :primary %>
+      <%= f.check_box :primary %>
+
+      <%= label_tag 'Update from Battle.net?' %>
+      <%= check_box_tag 'battle_net_update', 1 %>
+
       <%= f.submit "Save changes", class: "btn btn-large btn-primary" %>
     <% end %>
+    <%=  %>
   </div>
 </div>

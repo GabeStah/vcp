@@ -1,9 +1,11 @@
 class Guild < ActiveRecord::Base
+  include Errors
   has_many :characters
 
   after_initialize :defaults
   before_validation :ensure_region_is_downcase
   before_save :reset_primary_flags
+  after_create :generate_battle_net_worker
 
   validates :achievement_points,
             allow_blank: true,
@@ -46,6 +48,34 @@ class Guild < ActiveRecord::Base
     Guild.where.not(id: self).where(primary: true).update_all(primary: false) if self.primary?
   end
 
+  # Update data from Battle.net
+  def update_from_battle_net(type = 'guild')
+    # Establish connection
+    # Retrieve json
+    case type
+      when 'guild'
+        @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{self.region.downcase}.battle.net/api/wow/guild/#{self.realm.downcase}/#{self.name}"))).body)
+      when 'members'
+        @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{self.region.downcase}.battle.net/api/wow/guild/#{self.realm.downcase}/#{self.name}?fields=members"))).body)
+    end
+    # Process json
+    if @json['status'] == 'nok'
+      raise BattleNetError.new(message: @json['reason'])
+    else
+      # Update record
+      case type
+        when 'guild'
+          self.update_attributes(achievement_points: @json['achievementPoints'],
+                                 battlegroup: @json['battlegroup'],
+                                 level: @json['level'],
+                                 side: @json['side'],
+                                 verified: true)
+        when 'members'
+
+      end
+    end
+  end
+
   private
     def defaults
       self.active = false if self.active.nil?
@@ -56,5 +86,8 @@ class Guild < ActiveRecord::Base
       unless self.region.nil?
         self.region = self.region.downcase
       end
+    end
+    def generate_battle_net_worker
+      BattleNetWorker.perform_async(self.id, 'guild')
     end
 end

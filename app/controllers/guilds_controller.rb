@@ -18,7 +18,7 @@ class GuildsController < ApplicationController
     redirect_to guilds_url
   end
   def edit
-
+    @guild = Guild.find(params[:id])
   end
   def index
     @guilds = Guild.paginate(page: params[:page]).order(:name)
@@ -32,8 +32,13 @@ class GuildsController < ApplicationController
 
   def update
     @guild = Guild.find(params[:id])
-    if @guild.update_attributes(user_params)
-      flash[:success] = 'Guild updated'
+    if @guild.update_attributes(guild_params)
+      if params['battle_net_update']
+        flash[:success] = 'Guild updated & Battle.net Update job queued'
+        BattleNetWorker.perform_async(@guild.id, 'guild')
+      else
+        flash[:success] = 'Guild updated'
+      end
       redirect_to @guild
     else
       render 'edit'
