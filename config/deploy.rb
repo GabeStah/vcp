@@ -46,6 +46,17 @@ namespace :deploy do
     end
   end
 
+  desc "Seed the database."
+  task :seed_db do
+    on roles(:app) do
+      within "#{current_path}" do
+        with rails_env: :production do
+          execute :rake, "db:seed"
+        end
+      end
+    end
+  end
+
   desc 'Create database.yml symlink'
   task :symlink_db_yml do
     on roles(:all) do
@@ -63,6 +74,7 @@ namespace :deploy do
   before :started, :upload_db_yml
 
   after :publishing, :restart
+  after :publishing, :seed_db
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
