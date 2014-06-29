@@ -3,6 +3,7 @@ class Guild < ActiveRecord::Base
 
   after_initialize :defaults
   before_validation :ensure_region_is_downcase
+  before_save :reset_primary_flags
 
   validates :achievement_points,
             allow_blank: true,
@@ -38,6 +39,12 @@ class Guild < ActiveRecord::Base
 
   normalize_attributes :region
   normalize_attribute :battlegroup, :name, :realm, :with => :squish
+
+  # Ensure only one primary record at a time
+  # Find all guilds where primary: true, excluding current, and set primary: false
+  def reset_primary_flags
+    Guild.where.not(id: self).where(primary: true).update_all(primary: false) if self.primary?
+  end
 
   private
     def defaults

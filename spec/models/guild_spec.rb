@@ -137,4 +137,37 @@ describe Guild, type: :model do
       end
     end
   end
+
+  describe 'setting primary should revoke other primary flags' do
+    before do
+      @primary_guild = Guild.create(name: 'Vox Immortalis',
+                                    region: 'us',
+                                    realm: 'Hyjal',
+                                    primary: true)
+      @secondary_guild = Guild.create(name: 'Vox Immortalis',
+                                      region: 'us',
+                                      realm: 'Stormrage')
+    end
+
+    specify 'primary guild count should be one' do
+      expect(Guild.where(primary: true).all.count).to eq 1
+    end
+    specify 'primary guild should be first created' do
+      expect(Guild.find_by(primary: true)).to eq @primary_guild
+    end
+    describe 'setting primary of secondary guild' do
+      before do
+        @secondary_guild.update_attributes(primary: true)
+      end
+      specify 'primary guild count should be one' do
+        expect(Guild.where(primary: true).all.count).to eq 1
+      end
+      specify 'primary guild should be second created' do
+        expect(Guild.find_by(primary: true)).to eq @secondary_guild
+      end
+      specify 'first guild should not be primary' do
+        expect(Guild.find(@primary_guild).primary).to eq false
+      end
+    end
+  end
 end
