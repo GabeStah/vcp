@@ -47,6 +47,18 @@ namespace :deploy do
     end
   end
 
+  desc "Recreate the database."
+  task :recreate_db do
+    on roles(:app) do
+      within "#{current_path}" do
+        with rails_env: :production do
+          execute :rake, "db:drop"
+          execute :rake, "db:create"
+        end
+      end
+    end
+  end
+
   desc "Seed the database."
   task :seed_db do
     on roles(:app) do
@@ -89,3 +101,4 @@ end
 
 # Update symlink after release path is generated
 before 'deploy:assets:precompile', 'deploy:symlink_db_yml'
+after 'deploy:assets:precompile', 'deploy:recreate_db'
