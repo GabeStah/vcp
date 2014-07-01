@@ -31,3 +31,14 @@ BattleNetWorker.perform_async(type: 'class-population')
 Race.delete_all
 # Race populate
 BattleNetWorker.perform_async(type: 'race-population')
+
+# Delete characters
+Character.delete_all
+
+# Delete guilds
+Guild.delete_all
+if Rails.env.development?
+  Guild.create!(name: 'Vox Immortalis',
+                realm: 'Hyjal',
+                region: 'us')
+end

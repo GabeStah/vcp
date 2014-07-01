@@ -1,4 +1,5 @@
 class Character < ActiveRecord::Base
+  include Errors
   belongs_to :character_class
   belongs_to :guild
   belongs_to :race
@@ -70,7 +71,12 @@ class Character < ActiveRecord::Base
     @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{self.region.downcase}.battle.net/api/wow/character/#{self.realm.downcase}/#{self.name}"))).body)
     # Process json
     if @json['status'] == 'nok'
-      raise BattleNetError.new(message: @json['reason'])
+      unless @json['reason'] == 'Character not found.'
+        raise CharacterError.new(message: @json['reason'],
+                                 name: self.name,
+                                 realm: self.realm,
+                                 region: self.region)
+      end
     else
       # Update record
       self.update_attributes(
@@ -79,7 +85,8 @@ class Character < ActiveRecord::Base
           gender:             @json['gender'],
           level:              @json['level'],
           portrait:           @json['thumbnail'],
-          race:               Race.find_by(blizzard_id: @json['race'])
+          race:               Race.find_by(blizzard_id: @json['race']),
+          verified:           true
       )
       puts "Character Updated: #{self.name}"
     end

@@ -15,9 +15,15 @@ module Errors
   class CharacterError < StandardError
     def initialize(args = {})
       @message = args[:message]
+      @name = args[:name]
+      @realm = args[:realm]
+      @region = args[:region]
     end
 
     def message
+      if @name && @realm && @region
+        @message = "#{@message}: #{@name} of #{@realm}-#{@region}."
+      end
       @message
     end
   end

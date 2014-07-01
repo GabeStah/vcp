@@ -75,9 +75,9 @@ class Guild < ActiveRecord::Base
         when 'guild-members'
           @json['members'].each do |entry|
             # Create or lookup character
-            character = Character.find_or_initialize_by(name: entry['character']['name'],
-                                                        realm: entry['character']['realm'],
-                                                        region: self.region)
+            character = Character.find_or_create_by(name: entry['character']['name'],
+                                                    realm: entry['character']['realm'],
+                                                    region: self.region)
             # Add guild record
             character.update_attributes(guild: self,
                                         rank: entry['rank'])
