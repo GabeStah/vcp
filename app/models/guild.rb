@@ -74,13 +74,18 @@ class Guild < ActiveRecord::Base
           BattleNetWorker.perform_async(id: self.id, type: 'guild-members')
         when 'guild-members'
           @json['members'].each do |entry|
-            # Create or lookup character
+            # Create or lookup characterb
             character = Character.find_or_create_by(name: entry['character']['name'],
                                                     realm: entry['character']['realm'],
                                                     region: self.region)
+
             # Add guild record
-            character.update_attributes(guild: self,
-                                        rank: entry['rank'])
+            if character.update_attributes(guild: self,
+                                           rank: entry['rank'])
+            else
+              puts "#{entry['character']['name']} FAILED TO CREATE OR FIND"
+              logger.debug "#{entry['character']['name']} FAILED TO CREATE OR FIND"
+            end
             # Create a character worker
             BattleNetWorker.perform_async(id: character.id, type: 'character')
           end

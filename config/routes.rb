@@ -9,12 +9,6 @@ Vcp::Application.routes.draw do
     resources :settings, only: [:index, :update]
     mount Sidekiq::Web => '/sidekiq', as: 'sidekiq'
   end
-  # resources :characters do
-  #   match ':controller/:action', only: :index, via: [:get]
-  #   match ':controller/:region/:realm/:name/:action', only: [:destroy, :new, :show, :update], via: [:get, :delete, :patch, :post]
-  #   match ':controller/:region/:realm/:name/:action', only: [:create, :edit], via: [:get], via: [:get, :post]
-  # end
-
   # characters      GET    /characters(.:format)            characters#index
   #                 POST   /characters(.:format)            characters#create
   # new_character   GET    /characters/new(.:format)        characters#new
@@ -24,16 +18,16 @@ Vcp::Application.routes.draw do
   #                 PUT    /characters/:id(.:format)        characters#update
   #                 DELETE /characters/:id(.:format)        characters#destroy
 
+  # match '/characters/:region/:realm/:name',      to: 'characters#show',     via: 'get',   as: 'character'
+  # match '/characters/:region/:realm/:name',      to: 'characters#destroy',  via: 'delete'
+  # match '/characters/:region/:realm/:name',      to: 'characters#update',   via: 'patch'
+  # match '/characters/:region/:realm/:name',      to: 'characters#update',   via: 'put'
+  # match '/characters/:region/:realm/:name/edit', to: 'characters#edit',     via: 'get',   as: 'edit_character'
+  #
+  # resources :characters, except: [:destroy, :edit, :show, :update]
 
-  match '/characters/:region/:realm/:name',      to: 'characters#show',     via: 'get',   as: 'character'
-  match '/characters/:region/:realm/:name',      to: 'characters#destroy',  via: 'delete'
-  match '/characters/:region/:realm/:name',      to: 'characters#update',   via: 'patch'
-  match '/characters/:region/:realm/:name',      to: 'characters#update',   via: 'put'
-  match '/characters/:region/:realm/:name/edit', to: 'characters#edit',     via: 'get',   as: 'edit_character'
+  resources :characters
 
-  resources :characters, except: [:destroy, :edit, :show, :update]
-
-  # match ':controller/:region/:realm/:name/:action', via: 'get', controller: :character
   resources :sessions, only: [:new, :create, :destroy]
   resources :users
 

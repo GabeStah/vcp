@@ -19,7 +19,7 @@ class CharactersController < ApplicationController
     redirect_to characters_url
   end
   def edit
-    @character = Character.find_by_param(params)
+    @character = Character.find(params[:id])
   end
   def index
     @characters = Character.paginate(page: params[:page]).order(:name)
@@ -28,11 +28,11 @@ class CharactersController < ApplicationController
     @character = Character.new
   end
   def show
-    @character = Character.find_by_param(params)
+    @character = Character.find(params[:id])
   end
 
   def update
-    @character = Character.find_by_param(params)
+    @character = Character.find(params[:id])
     if @character.update_attributes(character_params)
       @character.update_attributes(verified: false)
       BattleNetWorker.perform_async(id: @character.id, type: 'character')

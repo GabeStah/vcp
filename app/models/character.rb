@@ -1,11 +1,10 @@
 class Character < ActiveRecord::Base
   include Errors
-  include FriendlyId
-  friendly_id :region_realm_name, use: [:finders, :slugged], sequence_separator: '/'
   belongs_to :character_class
   belongs_to :guild
   belongs_to :race
   before_validation :ensure_region_is_lowercase
+  before_validation :generate_slug
 
   normalize_attributes :name, :portrait, :region
   normalize_attribute :realm, :with => :squish
@@ -41,35 +40,17 @@ class Character < ActiveRecord::Base
   validates :region,
             inclusion: WOW_REGION_LIST,
             presence: true
+  validates :slug,
+            presence: true,
+            uniqueness: { case_sensitive: false }
 
-  def self.find_by_param(param)
-    find_by(name: param['name'],
-            realm: param['realm'],
-            region: param['region'])
-  end
-
-  def self.from_param(param)
-    find_by(name: param['name'],
-            realm: param['realm'],
-            region: param['region'])
-  end
-
-  def params
-    [region: region, realm: realm, name: name]
+  def self.find(input)
+    input.to_i == 0 ? find_by(slug: input) : super
   end
 
   # #Alter the primary parameter from :id
   def to_param
-    [region, realm, name].join('/')
-  end
-
-  def region_realm_name
-    "#{region}/#{realm}/#{name}"
-    #[region, realm, name].join('/')
-  end
-
-  def should_generate_new_friendly_id?
-    name_changed? || region_changed? || realm_changed?
+    slug
   end
 
   # Update data from Battle.net
@@ -105,5 +86,8 @@ class Character < ActiveRecord::Base
       unless self.region.nil?
         self.region = self.region.downcase
       end
+    end
+    def generate_slug
+      self.slug = [region.upcase, realm, name].join(' ').gsub(/\s+/, '-')
     end
 end

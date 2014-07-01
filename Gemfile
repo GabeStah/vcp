@@ -13,8 +13,6 @@ gem 'sidekiq'
 # Enabled for Sidekiq frontend
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'attribute_normalizer'
-# format friendly URLs
-gem 'friendly_id', '~> 5.0.0'
 
 group :development, :test do
   gem 'rspec-rails'

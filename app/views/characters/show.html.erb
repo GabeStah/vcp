@@ -3,7 +3,7 @@
   <aside class="span4">
     <section>
       <h1>
-        <%= link_to @character.name, edit_character_path(name: @character.name, realm: @character.realm, region: @character.region) %>
+        <%= link_to @character.name, edit_character_path(@character) %>
       </h1>
       <p>Achievement Points: <%= @character.achievement_points %></p>
       <p>Verified: <%= @character.verified? ? 'Yes' : 'No' %></p>
