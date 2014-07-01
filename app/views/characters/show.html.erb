@@ -3,10 +3,11 @@
   <aside class="span4">
     <section>
       <h1>
-        <%= @character.name %>
+        <%= link_to @character.name, edit_character_path(@character) %>
       </h1>
       <p>Achievement Points: <%= @character.achievement_points %></p>
       <p>Verified: <%= @character.verified %></p>
+      <p>Last Synced: <%= @character.synced_at ? "#{distance_of_time_in_words_to_now(@character.synced_at, include_sections: true)} ago" : 'Never' %></p>
     </section>
   </aside>
 </div>

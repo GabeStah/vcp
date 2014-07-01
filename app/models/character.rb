@@ -4,7 +4,6 @@ class Character < ActiveRecord::Base
   belongs_to :guild
   belongs_to :race
   before_validation :ensure_region_is_lowercase
-  #after_initialize :defaults
 
   # {
   #     "character": {
@@ -23,11 +22,8 @@ class Character < ActiveRecord::Base
   #     "rank": 9
   # },
 
-  # 1. Guild (Guild, Realm, Locale)
-  # Character.new(guild, realm, locale)
-  # 2. Guild Character (All)
-  # Character.new(guild, realm, locale)
-  # 3. Character (All less Guild/Rank)
+  normalize_attributes :name, :portrait, :region
+  normalize_attribute :realm, :with => :squish
 
   validates_associated :character_class, :guild, :race
 
@@ -61,9 +57,6 @@ class Character < ActiveRecord::Base
             inclusion: WOW_REGION_LIST,
             presence: true
 
-  normalize_attributes :name, :portrait, :region
-  normalize_attribute :realm, :with => :squish
-
   # Update data from Battle.net
   def update_from_battle_net
     # Establish connection
@@ -86,9 +79,9 @@ class Character < ActiveRecord::Base
           level:              @json['level'],
           portrait:           @json['thumbnail'],
           race:               Race.find_by(blizzard_id: @json['race']),
+          synced_at:          DateTime.now,
           verified:           true
       )
-      puts "Character Updated: #{self.name}"
     end
   end
 

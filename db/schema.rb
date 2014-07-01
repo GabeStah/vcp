@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140701022527) do
+ActiveRecord::Schema.define(version: 20140701031425) do
 
   create_table "character_classes", force: true do |t|
     t.string   "name"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20140701022527) do
     t.string   "region"
     t.integer  "guild_id"
     t.boolean  "verified",           default: false
+    t.datetime "synced_at"
   end
 
   add_index "characters", ["guild_id"], name: "index_characters_on_guild_id", using: :btree
