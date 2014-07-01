@@ -26,7 +26,6 @@ class Character < ActiveRecord::Base
             allow_blank: true,
             format: { with: /\A[\w+d+-]+\/\d+\/\d+-avatar\.((jpg)|(png))\z/ }
   validates :name,
-            format: { with: /\A[^\(\)0-9]*\z/ },
             presence: true,
             uniqueness: { scope: [:region, :realm],
                           message: "+ Realm + Region combination already exists",
@@ -88,6 +87,6 @@ class Character < ActiveRecord::Base
       end
     end
     def generate_slug
-      self.slug = [region.upcase, realm, name].join(' ').gsub(/\s+/, '-')
+      self.slug = [region, realm, name].join(' ').gsub(/\s+/, '-').downcase
     end
 end
