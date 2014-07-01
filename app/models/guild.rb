@@ -49,13 +49,13 @@ class Guild < ActiveRecord::Base
   end
 
   # Update data from Battle.net
-  def update_from_battle_net(type = 'guild')
+  def update_from_battle_net(type: 'guild')
     # Establish connection
     # Retrieve json
     case type
       when 'guild'
         @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{self.region.downcase}.battle.net/api/wow/guild/#{self.realm.downcase}/#{self.name}"))).body)
-      when 'members'
+      when 'guild-members'
         @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{self.region.downcase}.battle.net/api/wow/guild/#{self.realm.downcase}/#{self.name}?fields=members"))).body)
     end
     # Process json
@@ -70,8 +70,20 @@ class Guild < ActiveRecord::Base
                                  level: @json['level'],
                                  side: @json['side'],
                                  verified: true)
-        when 'members'
-
+          # Update guild members
+          BattleNetWorker.perform_async(id: self.id, type: 'guild-members')
+        when 'guild-members'
+          @json['members'].each do |entry|
+            # Create or lookup character
+            character = Character.find_or_initialize_by(name: entry['character']['name'],
+                                                        realm: entry['character']['realm'],
+                                                        region: self.region)
+            # Add guild record
+            character.update_attributes(guild: self,
+                                        rank: entry['rank'])
+            # Create a character worker
+            BattleNetWorker.perform_async(id: character.id, type: 'character')
+          end
       end
     end
   end
@@ -88,6 +100,6 @@ class Guild < ActiveRecord::Base
       end
     end
     def generate_battle_net_worker
-      BattleNetWorker.perform_async(self.id, 'guild')
+      BattleNetWorker.perform_async(id: self.id, type: 'guild')
     end
 end

@@ -12,4 +12,22 @@ module Errors
       @message
     end
   end
+  class CharacterError < StandardError
+    def initialize(args = {})
+      @message = args[:message]
+    end
+
+    def message
+      @message
+    end
+  end
+  class GuildError < StandardError
+    def initialize(args = {})
+      @message = args[:message]
+    end
+
+    def message
+      @message
+    end
+  end
 end

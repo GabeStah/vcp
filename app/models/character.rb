@@ -63,6 +63,28 @@ class Character < ActiveRecord::Base
   normalize_attributes :name, :portrait, :region
   normalize_attribute :realm, :with => :squish
 
+  # Update data from Battle.net
+  def update_from_battle_net
+    # Establish connection
+    # Retrieve json
+    @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{self.region.downcase}.battle.net/api/wow/character/#{self.realm.downcase}/#{self.name}"))).body)
+    # Process json
+    if @json['status'] == 'nok'
+      raise BattleNetError.new(message: @json['reason'])
+    else
+      # Update record
+      self.update_attributes(
+          achievement_points: @json['achievementPoints'],
+          character_class:    CharacterClass.find_by(blizzard_id: @json['class']),
+          gender:             @json['gender'],
+          level:              @json['level'],
+          portrait:           @json['thumbnail'],
+          race:               Race.find_by(blizzard_id: @json['race'])
+      )
+      puts "Character Updated: #{self.name}"
+    end
+  end
+
   private
     def ensure_region_is_lowercase
       unless self.region.nil?

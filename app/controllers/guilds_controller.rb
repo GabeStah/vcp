@@ -35,7 +35,7 @@ class GuildsController < ApplicationController
     if @guild.update_attributes(guild_params)
       if params['battle_net_update']
         flash[:success] = 'Guild updated & Battle.net Update job queued'
-        BattleNetWorker.perform_async(@guild.id, 'guild')
+        BattleNetWorker.perform_async(id: @guild.id, type: 'guild')
       else
         flash[:success] = 'Guild updated'
       end
