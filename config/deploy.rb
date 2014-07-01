@@ -1,3 +1,4 @@
+require 'capistrano/sidekiq'
 # config valid only for Capistrano 3.1
 lock '3.2.1'
 
@@ -74,7 +75,8 @@ namespace :deploy do
   before :started, :upload_db_yml
 
   after :publishing, :restart
-  after :publishing, :seed_db
+  #after :publishing, :seed_db
+  after :restart, :seed_db
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:

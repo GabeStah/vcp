@@ -25,6 +25,7 @@ group :development, :test do
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
+  gem 'capistrano-sidekiq' , github: 'seuros/capistrano-sidekiq'
 end
 
 group :test do
