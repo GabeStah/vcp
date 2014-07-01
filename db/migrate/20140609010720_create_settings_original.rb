@@ -1,5 +1,4 @@
-class CreateSettingsOriginal < ActiveRecord::Migrationclass AddIndexToRacesBlizzardIdName < ActiveRecord::Migration
-
+class CreateSettingsOriginal < ActiveRecord::Migration
   def change
     create_table :settings do |t|
       t.string :name
