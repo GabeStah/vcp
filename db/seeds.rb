@@ -37,8 +37,8 @@ Character.delete_all
 
 # Delete guilds
 Guild.delete_all
-if Rails.env.development?
+#if Rails.env.development?
   Guild.create!(name: 'Vox Immortalis',
                 realm: 'Hyjal',
                 region: 'us')
-end
+#end
