@@ -3,6 +3,6 @@ class RemoveIndexToCharactersNameRealm < ActiveRecord::Migration
     remove_index :characters, [:name, :realm]
   end
   def down
-    add_index :characters, [:name, :realm], :unique => true, name: 'char_name_realm'
+    add_index :characters, [:name, :realm], :unique => true
   end
 end
