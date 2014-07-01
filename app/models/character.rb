@@ -1,26 +1,11 @@
 class Character < ActiveRecord::Base
   include Errors
+  include FriendlyId
+  friendly_id :region_realm_name, use: [:finders, :slugged], sequence_separator: '/'
   belongs_to :character_class
   belongs_to :guild
   belongs_to :race
   before_validation :ensure_region_is_lowercase
-
-  # {
-  #     "character": {
-  #     "name": "Sonodesu",
-  #     "realm": "Hyjal",
-  #     "battlegroup": "Vengeance",
-  #     "class": 8,
-  #     "race": 5,
-  #     "gender": 0,
-  #     "level": 80,
-  #     "achievementPoints": 0,
-  #     "thumbnail": "internal-record-3661/101/114196581-avatar.jpg",
-  #     "guild": "Vox Immortalis",
-  #     "guildRealm": "Hyjal"
-  #     },
-  #     "rank": 9
-  # },
 
   normalize_attributes :name, :portrait, :region
   normalize_attribute :realm, :with => :squish
@@ -56,6 +41,36 @@ class Character < ActiveRecord::Base
   validates :region,
             inclusion: WOW_REGION_LIST,
             presence: true
+
+  def self.find_by_param(param)
+    find_by(name: param['name'],
+            realm: param['realm'],
+            region: param['region'])
+  end
+
+  def self.from_param(param)
+    find_by(name: param['name'],
+            realm: param['realm'],
+            region: param['region'])
+  end
+
+  def params
+    [region: region, realm: realm, name: name]
+  end
+
+  # #Alter the primary parameter from :id
+  def to_param
+    [region, realm, name].join('/')
+  end
+
+  def region_realm_name
+    "#{region}/#{realm}/#{name}"
+    #[region, realm, name].join('/')
+  end
+
+  def should_generate_new_friendly_id?
+    name_changed? || region_changed? || realm_changed?
+  end
 
   # Update data from Battle.net
   def update_from_battle_net

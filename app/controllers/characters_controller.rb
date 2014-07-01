@@ -14,12 +14,12 @@ class CharactersController < ApplicationController
   end
 
   def destroy
-    Character.find(params[:id]).destroy
+    Character.find_by_param(params).destroy
     flash[:success] = "Character deleted."
     redirect_to characters_url
   end
   def edit
-    @character = Character.find(params[:id])
+    @character = Character.find_by_param(params)
   end
   def index
     @characters = Character.paginate(page: params[:page]).order(:name)
@@ -28,11 +28,11 @@ class CharactersController < ApplicationController
     @character = Character.new
   end
   def show
-    @character = Character.find(params[:id])
+    @character = Character.find_by_param(params)
   end
 
   def update
-    @character = Character.find(params[:id])
+    @character = Character.find_by_param(params)
     if @character.update_attributes(character_params)
       @character.update_attributes(verified: false)
       BattleNetWorker.perform_async(id: @character.id, type: 'character')
