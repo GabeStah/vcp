@@ -51,7 +51,7 @@ namespace :deploy do
     on roles(:app) do
       within "#{current_path}" do
         with rails_env: :production do
-          execute :rake, "db:seed"
+          execute :rake, "app:reset"
         end
       end
     end
