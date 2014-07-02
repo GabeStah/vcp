@@ -8,4 +8,9 @@
       </h1>
     </section>
   </aside>
+  <section>
+    <% @user.characters.each do |character| %>
+      <%= render partial: 'character', object: character %>
+    <% end %>
+  </section>
 </div>

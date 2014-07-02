@@ -10,7 +10,7 @@ class CharacterClassesController < ApplicationController
       redirect_to classes_path
     else
       @character_classes = CharacterClass.all.order(:name)
-      render 'index'
+      render :index
     end
   end
 

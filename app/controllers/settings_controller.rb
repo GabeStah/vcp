@@ -20,10 +20,10 @@ class SettingsController < ApplicationController
         flash[:success] = "Settings updated & data refreshed."
         redirect_to settings_path
       else
-        render 'index'
+        render :index
       end
     else
-      render 'index'
+      render :index
     end
   end
 

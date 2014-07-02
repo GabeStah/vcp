@@ -58,6 +58,15 @@ class Character < ActiveRecord::Base
     Digest::SHA2.hexdigest(self.slug)
   end
 
+  # Retrieve the full portrait path
+  def portrait_url(full = false)
+    if full
+      "http://#{self.region.downcase}.battle.net/static-render/#{self.region.downcase}/#{self.portrait.sub!('avatar', 'profilemain')}"
+    else
+      "http://#{self.region.downcase}.battle.net/static-render/#{self.region.downcase}/#{self.portrait}"
+    end
+  end
+
   # #Alter the primary parameter from :id
   def to_param
     slug

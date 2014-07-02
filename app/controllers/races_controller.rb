@@ -10,7 +10,7 @@ class RacesController < ApplicationController
       redirect_to races_path
     else
       @races = Race.all.order(:name)
-      render 'index'
+      render :index
     end
   end
 

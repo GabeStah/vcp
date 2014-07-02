@@ -9,7 +9,7 @@ class CharactersController < ApplicationController
       flash[:success] = 'Character Added!'
       redirect_to character_path(@character)
     else
-      render 'new'
+      render :new
     end
   end
 
@@ -21,18 +21,22 @@ class CharactersController < ApplicationController
         redirect_to character_path(@character)
       else
         flash[:error] = 'Key matched but claim failed.'
-        render 'show'
+        render :show
       end
     else
       flash[:error] = 'Claim Failed: Provided key does not match.'
-      render 'show'
+      render :show
     end
   end
 
   def destroy
-    Character.find(params).destroy
+    Character.find(params[:id]).destroy
     flash[:success] = "Character deleted."
-    redirect_to characters_url
+    if params[:source].present? && params[:source] == 'user-profile'
+      redirect_to current_user
+    else
+      redirect_to characters_url
+    end
   end
   def edit
     @character = Character.find(params[:id])
@@ -69,6 +73,25 @@ class CharactersController < ApplicationController
     redirect_to @character
   end
 
+  def unclaim
+    @character = Character.find(params[:id])
+    if @character.update_attributes(user: nil)
+      flash[:success] = 'Claim relinquished!'
+      if params[:source].present? && params[:source] == 'user-profile'
+        redirect_to current_user
+      else
+        redirect_to character_path(@character)
+      end
+    else
+      flash[:error] = 'Unclaim failed.'
+      if params[:source].present? && params[:source] == 'user-profile'
+        redirect_to current_user
+      else
+        render :show
+      end
+    end
+  end
+
   def update
     @character = Character.find(params[:id])
     if @character.update_attributes(character_params)
@@ -77,7 +100,7 @@ class CharactersController < ApplicationController
       flash[:success] = "Character updated & Battle.net sync added to queue."
       redirect_to @character
     else
-      render 'edit'
+      render :edit
     end
   end
 
@@ -96,13 +119,6 @@ class CharactersController < ApplicationController
     end
     def user_owns_character?
       @character = Character.find(params[:id])
-      return current_user && current_user.character.includ?(@character)
-    end
-    def owns_or_admin(character = nil)
-      if admin_user
-
-      else
-
-      end
+      return current_user && current_user.characters.include?(@character)
     end
 end
