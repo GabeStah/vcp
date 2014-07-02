@@ -12,6 +12,7 @@ describe User, type: :model do
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:remember_token) }
+  it { should respond_to(:secret_key) }
   it { should respond_to(:authenticate) }
   it { should respond_to(:admin) }
 
@@ -105,7 +106,7 @@ describe User, type: :model do
       let(:user_for_invalid_password) { found_user.authenticate("invalid") }
 
       it { should_not eq user_for_invalid_password }
-      specify { expect(user_for_invalid_password).to be_false }
+      specify { expect(user_for_invalid_password).to eq false }
     end
   end
 

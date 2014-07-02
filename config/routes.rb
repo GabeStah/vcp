@@ -9,24 +9,9 @@ Vcp::Application.routes.draw do
     resources :settings, only: [:index, :update]
     mount Sidekiq::Web => '/sidekiq', as: 'sidekiq'
   end
-  # characters      GET    /characters(.:format)            characters#index
-  #                 POST   /characters(.:format)            characters#create
-  # new_character   GET    /characters/new(.:format)        characters#new
-  # edit_character  GET    /characters/:id/edit(.:format)   characters#edit
-  # character       GET    /characters/:id(.:format)        characters#show
-  #                 PATCH  /characters/:id(.:format)        characters#update
-  #                 PUT    /characters/:id(.:format)        characters#update
-  #                 DELETE /characters/:id(.:format)        characters#destroy
-
-  # match '/characters/:region/:realm/:name',      to: 'characters#show',     via: 'get',   as: 'character'
-  # match '/characters/:region/:realm/:name',      to: 'characters#destroy',  via: 'delete'
-  # match '/characters/:region/:realm/:name',      to: 'characters#update',   via: 'patch'
-  # match '/characters/:region/:realm/:name',      to: 'characters#update',   via: 'put'
-  # match '/characters/:region/:realm/:name/edit', to: 'characters#edit',     via: 'get',   as: 'edit_character'
-  #
-  # resources :characters, except: [:destroy, :edit, :show, :update]
 
   resources :characters
+  match '/characters/:id', to: 'characters#claim', via: 'post'
 
   resources :sessions, only: [:new, :create, :destroy]
   resources :users

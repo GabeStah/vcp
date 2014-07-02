@@ -11,7 +11,8 @@ describe Character, type: :model do
                                       name: 'Kulldar',
                                       race: FactoryGirl.create(:race),
                                       rank: 9,
-                                      realm: 'Hyjal')}
+                                      realm: 'Hyjal',
+                                      user: FactoryGirl.create(:user))}
 
   subject { @character }
 
@@ -25,7 +26,9 @@ describe Character, type: :model do
                          :name,
                          :race,
                          :rank,
-                         :realm }
+                         :realm,
+                         :user,
+                         :verified }
 
   it { should be_valid }
 
@@ -46,7 +49,6 @@ describe Character, type: :model do
   describe 'region, name, and realm should be unique' do
     before do
       duplicate_character = @character.dup
-      duplicate_character.name = @character.name.upcase
       duplicate_character.save
     end
     it { should_not be_valid }
@@ -191,6 +193,13 @@ describe Character, type: :model do
     describe 'as empty' do
       before { @character.realm = nil }
       it { should_not be_valid }
+    end
+  end
+
+  describe 'user' do
+    describe 'as empty' do
+      before { @character.user = nil }
+      it { should be_valid }
     end
   end
 end

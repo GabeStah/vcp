@@ -80,12 +80,8 @@ class Guild < ActiveRecord::Base
                                                     region: self.region)
 
             # Add guild record
-            if character.update_attributes(guild: self,
-                                           rank: entry['rank'])
-            else
-              puts "#{entry['character']['name']} FAILED TO CREATE OR FIND"
-              logger.debug "#{entry['character']['name']} FAILED TO CREATE OR FIND"
-            end
+            character.update_attributes(guild: self,
+                                        rank: entry['rank'])
             # Create a character worker
             BattleNetWorker.perform_async(id: character.id, type: 'character')
           end

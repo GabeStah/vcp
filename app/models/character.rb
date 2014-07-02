@@ -1,15 +1,15 @@
 class Character < ActiveRecord::Base
   include Errors
+  include SessionsHelper
   belongs_to :character_class
   belongs_to :guild
   belongs_to :race
+  belongs_to :user
   before_validation :ensure_region_is_lowercase
   before_validation :generate_slug
 
   normalize_attributes :name, :portrait, :region
   normalize_attribute :realm, :with => :squish
-
-  validates_associated :character_class, :guild, :race
 
   validates :achievement_points,
             allow_blank: true,
@@ -45,6 +45,17 @@ class Character < ActiveRecord::Base
 
   def self.find(input)
     input.to_i == 0 ? find_by(slug: input) : super
+  end
+
+  # determine if passed key (user_key + character_key) = combined
+  def key_match?(passed_key, user)
+    return false unless passed_key
+    return passed_key == Digest::SHA2.hexdigest("#{user.secret_key}#{self.key}")
+  end
+
+  # generate basic key identifier
+  def key
+    Digest::SHA2.hexdigest(self.slug)
   end
 
   # #Alter the primary parameter from :id

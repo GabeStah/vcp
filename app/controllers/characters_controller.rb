@@ -1,5 +1,5 @@
 class CharactersController < ApplicationController
-  before_action :require_login, only: [:destroy]
+  before_action :require_login, only: [:claim, :destroy]
   before_action :admin_user, only: [:destroy]
 
   def create
@@ -13,8 +13,24 @@ class CharactersController < ApplicationController
     end
   end
 
+  def claim
+    @character = Character.find(params[:id])
+    if @character.key_match?(params[:key], current_user)
+      if @character.update_attributes(user: current_user)
+        flash[:success] = 'Character Claimed!'
+        redirect_to character_path(@character)
+      else
+        flash[:error] = 'Key matched but claim failed.'
+        render 'show'
+      end
+    else
+      flash[:error] = 'Claim Failed: Provided key does not match.'
+      render 'show'
+    end
+  end
+
   def destroy
-    Character.find_by_param(params).destroy
+    Character.find(params).destroy
     flash[:success] = "Character deleted."
     redirect_to characters_url
   end
@@ -29,6 +45,16 @@ class CharactersController < ApplicationController
   end
   def show
     @character = Character.find(params[:id])
+    # Does user own character?
+    if current_user
+      if current_user.characters.include?(@character)
+        @already_claimed = true
+      else
+        @already_claimed = false
+      end
+    end
+    # Add key for basic testing
+    @generated_key = Digest::SHA2.hexdigest("#{current_user.secret_key}#{@character.key}") if signed_in? && current_user
   end
 
   def update

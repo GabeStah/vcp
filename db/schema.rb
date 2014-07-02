@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140701140454) do
+ActiveRecord::Schema.define(version: 20140702095330) do
 
   create_table "character_classes", force: true do |t|
     t.string   "name"
@@ -39,11 +39,13 @@ ActiveRecord::Schema.define(version: 20140701140454) do
     t.boolean  "verified",           default: false
     t.datetime "synced_at"
     t.string   "slug"
+    t.integer  "user_id"
   end
 
   add_index "characters", ["guild_id"], name: "index_characters_on_guild_id", using: :btree
   add_index "characters", ["region", "name", "realm"], name: "index_characters_on_region_and_name_and_realm", unique: true, using: :btree
   add_index "characters", ["slug"], name: "index_characters_on_slug", unique: true, using: :btree
+  add_index "characters", ["user_id"], name: "index_characters_on_user_id", using: :btree
   add_index "characters", ["verified"], name: "index_characters_on_verified", using: :btree
 
   create_table "guilds", force: true do |t|
@@ -92,9 +94,11 @@ ActiveRecord::Schema.define(version: 20140701140454) do
     t.string   "password_digest"
     t.string   "remember_token"
     t.boolean  "admin",           default: false
+    t.string   "secret_key"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
+  add_index "users", ["secret_key"], name: "index_users_on_secret_key", unique: true, using: :btree
 
 end
