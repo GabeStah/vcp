@@ -7,11 +7,14 @@
       </h1>
       <p>Achievement Points: <%= @character.achievement_points %></p>
       <p>Verified: <%= @character.verified? ? 'Yes' : 'No' %></p>
-      <p>Last Synced: <%= @character.synced_at ? "#{distance_of_time_in_words_to_now(@character.synced_at, include_sections: true).camelize} ago" : 'Never' %></p>
-      <p>Claimed: <%= @already_claimed ? 'Yes' : 'No' %></p>
+      <p>
+        Last Synced: <%= @character.synced_at ? "#{distance_of_time_in_words_to_now(@character.synced_at, include_sections: true).camelize} ago" : 'Never' %>
+        <%= link_to 'Sync', sync_character_path(@character) if @owned_character %>
+      </p>
+      <p>Claimed: <%= @owned_character ? 'Yes' : 'No' %></p>
     </section>
   </aside>
-  <% if signed_in? && !@already_claimed %>
+  <% if signed_in? && !@owned_character %>
     <div class="span6 offset3">
       <%= form_tag do %>
         <%= label_tag(:key, "In-Game Key:") %>

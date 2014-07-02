@@ -1,9 +1,9 @@
 class CharactersController < ApplicationController
-  before_action :require_login, only: [:claim, :destroy]
+  before_action :require_login, only: [:destroy]
+  before_action :user_owns_character, only: [:claim, :sync]
   before_action :admin_user, only: [:destroy]
 
   def create
-    # TODO: Add Sidekiq integration for battle.net retrieval
     @character = Character.new(character_params)
     if @character.save
       flash[:success] = 'Character Added!'
@@ -46,15 +46,27 @@ class CharactersController < ApplicationController
   def show
     @character = Character.find(params[:id])
     # Does user own character?
-    if current_user
-      if current_user.characters.include?(@character)
-        @already_claimed = true
-      else
-        @already_claimed = false
-      end
+    if user_owns_character(@character)
+      @owned_character = true
+    else
+      @owned_character = false
     end
     # Add key for basic testing
     @generated_key = Digest::SHA2.hexdigest("#{current_user.secret_key}#{@character.key}") if signed_in? && current_user
+  end
+
+  def sync
+    @character = Character.find(params[:id])
+    if user_owns_character(@character)
+      @owned_character = true
+      BattleNetWorker.perform_async(id: @character.id,
+                                    type: 'character')
+      flash[:success] = 'Sync requested, character will be updated shortly.'
+    else
+      @owned_character = false
+      flash[:alert] = 'You cannot sync a character you do not own.'
+    end
+    redirect_to @character
   end
 
   def update
@@ -74,5 +86,10 @@ class CharactersController < ApplicationController
       params.require(:character).permit(:name,
                                         :realm,
                                         :region)
+    end
+    def user_owns_character(character = nil)
+      require_login
+      return false unless current_user
+      return current_user.characters.include?(character || @character)
     end
 end

@@ -11,7 +11,8 @@ Vcp::Application.routes.draw do
   end
 
   resources :characters
-  match '/characters/:id', to: 'characters#claim', via: 'post'
+  match '/characters/:id',      to: 'characters#claim', via: 'post'
+  match '/characters/:id/sync', to: 'characters#sync',  via: 'get', as: 'sync_character'
 
   resources :sessions, only: [:new, :create, :destroy]
   resources :users
