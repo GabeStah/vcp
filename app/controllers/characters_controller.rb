@@ -1,7 +1,7 @@
 class CharactersController < ApplicationController
-  before_action :require_login, only: [:destroy]
-  before_action :user_owns_character, only: [:claim, :sync]
-  before_action :admin_user, only: [:destroy]
+  before_action :require_login,               only: [:claim, :create, :edit, :destroy, :new, :sync, :update]
+  before_action :require_user_owns_character, only: [:sync]
+  before_action :admin_user,                  only: [:destroy]
 
   def create
     @character = Character.new(character_params)
@@ -46,7 +46,7 @@ class CharactersController < ApplicationController
   def show
     @character = Character.find(params[:id])
     # Does user own character?
-    if user_owns_character(@character)
+    if user_owns_character?
       @owned_character = true
     else
       @owned_character = false
@@ -57,7 +57,7 @@ class CharactersController < ApplicationController
 
   def sync
     @character = Character.find(params[:id])
-    if user_owns_character(@character)
+    if user_owns_character?
       @owned_character = true
       BattleNetWorker.perform_async(id: @character.id,
                                     type: 'character')
@@ -87,9 +87,22 @@ class CharactersController < ApplicationController
                                         :realm,
                                         :region)
     end
-    def user_owns_character(character = nil)
-      require_login
-      return false unless current_user
-      return current_user.characters.include?(character || @character)
+    def require_user_owns_character
+      @character = Character.find(params[:id])
+      unless user_owns_character?
+        flash[:alert] = 'You cannot sync a character you do not own.'
+        redirect_to @character
+      end
+    end
+    def user_owns_character?
+      @character = Character.find(params[:id])
+      return current_user && current_user.character.includ?(@character)
+    end
+    def owns_or_admin(character = nil)
+      if admin_user
+
+      else
+
+      end
     end
 end

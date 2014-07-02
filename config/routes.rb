@@ -1,6 +1,7 @@
 Vcp::Application.routes.draw do
   # Added for Sidekiq frontend
   require 'sidekiq/web'
+  require 'sidetiq/web'
 
   scope '/admin' do
     resources :classes, only: [:create, :destroy, :index, :update], controller: :character_classes

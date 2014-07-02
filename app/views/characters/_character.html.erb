@@ -1,7 +1,12 @@
-<li>
-  <%= link_to character.name, character %>
+<tr>
+  <td><%= link_to character.name, character %></td>
+  <td><%= character.character_class.name if character.character_class %></td>
+  <td><%= character.race.name if character.race %></td>
+  <td><%= character.level %></td>
+  <td><%= character.achievement_points %></td>
+  <td><%= link_to character.guild.name, character.guild if character.guild %></td>
+  <td><%= "#{character.realm}-#{character.region.upcase}" %></td>
   <% if current_user && current_user.admin? %>
-    | <%= link_to "delete", character, method: :delete,
-                  data: { confirm: "You sure?" } %>
+    <td><%= link_to "delete", character, method: :delete, data: { confirm: "You sure?" } %></td>
   <% end %>
-</li>
+</tr>
