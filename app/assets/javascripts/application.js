@@ -16,4 +16,6 @@
 //= require turbolinks
 //= require best_in_place
 //= require best_in_place.purr
+//= require zeroclipboard
+//= require tipsy
 //= require_tree .

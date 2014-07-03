@@ -3,7 +3,7 @@
   <aside class="span4">
     <section>
       <h1>
-        <%= link_to @character.name, edit_character_path(@character) %>
+        <%= link_to @character.name, edit_character_path(@character), id: 'character-name' %>
       </h1>
       <p>Achievement Points: <%= @character.achievement_points %></p>
       <p>Verified: <%= @character.verified? ? 'Yes' : 'No' %></p>
@@ -19,9 +19,11 @@
   </aside>
   <% if !@owned_character && current_user %>
     <div class="span6 offset3">
-      <p>API Key: <%= current_user.secret_key %></p>
+      <%= label_tag :api_key, 'API Key:' %>
+      <%= text_field_tag :api_key, current_user.secret_key %>
+      <%= button_tag 'Copy', class: 'btn', id: 'api_key_copy_button', data: { clipboard_target: :api_key }, 'original-title' => 'Click to Copy' %>
       <%= form_tag do %>
-        <%= label_tag(:key, "Claim Key:") %>
+        <%= label_tag :key, "Claim Key:" %>
         <%= text_field_tag :key, @generated_key if Rails.env.development? %>
         <%= submit_tag('Claim') %>
       <% end %>

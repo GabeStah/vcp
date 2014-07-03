@@ -14,6 +14,10 @@ gem 'sidetiq'
 # Enabled for Sidekiq frontend
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'attribute_normalizer'
+# For copy capabilities
+gem 'zeroclipboard-rails'
+# For tooltip capabilities
+gem 'tipsy-rails'
 
 group :development, :test do
   gem 'rspec-rails'
