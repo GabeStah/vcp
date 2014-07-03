@@ -71,31 +71,6 @@ class Character < ActiveRecord::Base
     return processed
   end
 
-#   local function VCP_ProcessInput(input)
-#   if not input then return end
-#   local slug = VCP_GetSlug()
-#   local processed = input
-#   local loopCount = 150
-#   local moduloFactor = 4
-#   -- Loop through X times
-#   for count=1, loopCount do
-#     if (count % moduloFactor) == 0 then
-#       -- only input
-#       processed = sha256(string.format('%s%s', processed, input))
-#       elseif (count % moduloFactor) == 1 then
-#       -- only slug
-#       processed = sha256(string.format('%s%s', processed, slug))
-#       elseif (count % moduloFactor) == 2 then
-#       -- both, input first
-#       processed = sha256(string.format('%s%s%s', processed, input, slug))
-#       elseif (count % moduloFactor) == 3 then
-#       -- both, slug first
-#       processed = sha256(string.format('%s%s%s', processed, slug, input))
-#     end
-#   end
-#   return processed
-# end
-
   # Retrieve the full portrait path
   def portrait_url(full = false)
     if full
