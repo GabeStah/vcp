@@ -56,7 +56,7 @@ class CharactersController < ApplicationController
       @owned_character = false
     end
     # Add key for basic testing
-    @generated_key = Digest::SHA2.hexdigest("#{current_user.secret_key}#{@character.key}") if signed_in? && current_user
+    #@generated_key = Digest::SHA2.hexdigest("#{current_user.secret_key}#{@character.key}") if signed_in? && current_user
   end
 
   def sync

@@ -17,10 +17,11 @@
       </p>
     </section>
   </aside>
-  <% if !@owned_character %>
+  <% if !@owned_character && current_user %>
     <div class="span6 offset3">
+      <p>API Key: <%= current_user.secret_key %></p>
       <%= form_tag do %>
-        <%= label_tag(:key, "In-Game Key:") %>
+        <%= label_tag(:key, "Claim Key:") %>
         <%= text_field_tag :key, @generated_key if Rails.env.development? %>
         <%= submit_tag('Claim') %>
       <% end %>

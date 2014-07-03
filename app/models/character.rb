@@ -50,13 +50,51 @@ class Character < ActiveRecord::Base
   # determine if passed key (user_key + character_key) = combined
   def key_match?(passed_key, user)
     return false unless passed_key
-    return passed_key == Digest::SHA2.hexdigest("#{user.secret_key}#{self.key}")
+    return passed_key == process_key(user.secret_key)
   end
 
-  # generate basic key identifier
-  def key
-    Digest::SHA2.hexdigest(self.slug)
+  def process_key(user_key)
+    return nil unless user_key
+    processed = user_key
+    150.times do |count|
+      case (count % 4)
+        when 0
+          processed = Digest::SHA2.hexdigest("#{processed}#{user_key}")
+        when 1
+          processed = Digest::SHA2.hexdigest("#{processed}#{self.slug}")
+        when 2
+          processed = Digest::SHA2.hexdigest("#{processed}#{user_key}#{self.slug}")
+        when 3
+          processed = Digest::SHA2.hexdigest("#{processed}#{self.slug}#{user_key}")
+      end
+    end
+    return processed
   end
+
+#   local function VCP_ProcessInput(input)
+#   if not input then return end
+#   local slug = VCP_GetSlug()
+#   local processed = input
+#   local loopCount = 150
+#   local moduloFactor = 4
+#   -- Loop through X times
+#   for count=1, loopCount do
+#     if (count % moduloFactor) == 0 then
+#       -- only input
+#       processed = sha256(string.format('%s%s', processed, input))
+#       elseif (count % moduloFactor) == 1 then
+#       -- only slug
+#       processed = sha256(string.format('%s%s', processed, slug))
+#       elseif (count % moduloFactor) == 2 then
+#       -- both, input first
+#       processed = sha256(string.format('%s%s%s', processed, input, slug))
+#       elseif (count % moduloFactor) == 3 then
+#       -- both, slug first
+#       processed = sha256(string.format('%s%s%s', processed, slug, input))
+#     end
+#   end
+#   return processed
+# end
 
   # Retrieve the full portrait path
   def portrait_url(full = false)
