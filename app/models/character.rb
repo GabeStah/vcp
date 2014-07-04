@@ -8,6 +8,9 @@ class Character < ActiveRecord::Base
   before_validation :ensure_region_is_lowercase
   before_validation :generate_slug
 
+  scope :claimed, ->(user) { where(user: user) }
+  scope :unclaimed, ->(user) { where('user_id != ? OR user_id IS NULL', user).where(verified: true) }
+
   normalize_attributes :name, :portrait, :region
   normalize_attribute :realm, :with => :squish
 
@@ -53,6 +56,15 @@ class Character < ActiveRecord::Base
     return passed_key == process_key(user.secret_key)
   end
 
+  # Retrieve the full portrait path
+  def portrait_url(full = false)
+    if full
+      "http://#{self.region.downcase}.battle.net/static-render/#{self.region.downcase}/#{self.portrait.sub!('avatar', 'profilemain')}"
+    else
+      "http://#{self.region.downcase}.battle.net/static-render/#{self.region.downcase}/#{self.portrait}"
+    end
+  end
+
   def process_key(user_key)
     return nil unless user_key
     processed = user_key
@@ -69,15 +81,6 @@ class Character < ActiveRecord::Base
       end
     end
     return processed
-  end
-
-  # Retrieve the full portrait path
-  def portrait_url(full = false)
-    if full
-      "http://#{self.region.downcase}.battle.net/static-render/#{self.region.downcase}/#{self.portrait.sub!('avatar', 'profilemain')}"
-    else
-      "http://#{self.region.downcase}.battle.net/static-render/#{self.region.downcase}/#{self.portrait}"
-    end
   end
 
   # #Alter the primary parameter from :id

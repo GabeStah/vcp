@@ -18,6 +18,8 @@ gem 'attribute_normalizer'
 gem 'zeroclipboard-rails'
 # For tooltip capabilities
 gem 'tipsy-rails'
+# Used for chaining OR queries, see: https://github.com/oelmekki/activerecord_any_of
+gem 'activerecord_any_of'
 
 group :development, :test do
   gem 'rspec-rails'

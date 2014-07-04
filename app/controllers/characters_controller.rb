@@ -42,7 +42,8 @@ class CharactersController < ApplicationController
     @character = Character.find(params[:id])
   end
   def index
-    @characters = Character.paginate(page: params[:page]).order(:name)
+    @claimed_characters = Character.claimed(current_user).order(:name)
+    @characters = Character.unclaimed(current_user).paginate(page: params[:page]).order(:name)
   end
   def new
     @character = Character.new
@@ -56,7 +57,7 @@ class CharactersController < ApplicationController
       @owned_character = false
     end
     # Add key for basic testing
-    #@generated_key = Digest::SHA2.hexdigest("#{current_user.secret_key}#{@character.key}") if signed_in? && current_user
+    @generated_key = @character.process_key(current_user.secret_key) if signed_in? && current_user
   end
 
   def sync
