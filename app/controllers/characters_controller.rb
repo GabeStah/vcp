@@ -42,8 +42,12 @@ class CharactersController < ApplicationController
     @character = Character.find(params[:id])
   end
   def index
-    @claimed_characters = Character.claimed(current_user).order(:name)
-    @characters = Character.unclaimed(current_user).paginate(page: params[:page]).order(:name)
+    if current_user
+      @claimed_characters = Character.claimed(current_user).order(:name)
+      @characters = Character.unclaimed(current_user).paginate(page: params[:page]).order(:name)
+    else
+      @characters = Character.where(verified: true).paginate(page: params[:page]).order(:name)
+    end
   end
   def new
     @character = Character.new

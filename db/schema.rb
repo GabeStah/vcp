@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140702095330) do
+ActiveRecord::Schema.define(version: 20140704162334) do
 
   create_table "character_classes", force: true do |t|
     t.string   "name"
@@ -61,11 +61,13 @@ ActiveRecord::Schema.define(version: 20140702095330) do
     t.boolean  "verified"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "slug"
   end
 
   add_index "guilds", ["name", "realm", "region"], name: "index_guilds_on_name_and_realm_and_region", unique: true, using: :btree
   add_index "guilds", ["name", "realm"], name: "index_guilds_on_name_and_realm", using: :btree
   add_index "guilds", ["name"], name: "index_guilds_on_name", using: :btree
+  add_index "guilds", ["slug"], name: "index_guilds_on_slug", unique: true, using: :btree
 
   create_table "races", force: true do |t|
     t.string   "name"

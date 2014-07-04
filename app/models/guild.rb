@@ -4,6 +4,7 @@ class Guild < ActiveRecord::Base
 
   after_initialize :defaults
   before_validation :ensure_region_is_downcase
+  before_validation :generate_slug
   before_save :reset_primary_flags
   after_create :generate_battle_net_worker
 
@@ -38,9 +39,16 @@ class Guild < ActiveRecord::Base
             numericality: { only_integer: true, less_than_or_equal_to: 1}
   validates :verified,
             inclusion: [true, false]
+  validates :slug,
+            presence: true,
+            uniqueness: { case_sensitive: false }
 
   normalize_attributes :region
   normalize_attribute :battlegroup, :name, :realm, :with => :squish
+
+  def self.find(input)
+    input.to_i == 0 ? find_by(slug: input.downcase) : super
+  end
 
   # Ensure only one primary record at a time
   # Find all guilds where primary: true, excluding current, and set primary: false
@@ -89,6 +97,11 @@ class Guild < ActiveRecord::Base
     end
   end
 
+  # #Alter the primary parameter from :id
+  def to_param
+    slug
+  end
+
   private
     def defaults
       self.active = false if self.active.nil?
@@ -102,5 +115,8 @@ class Guild < ActiveRecord::Base
     end
     def generate_battle_net_worker
       BattleNetWorker.perform_async(id: self.id, type: 'guild')
+    end
+    def generate_slug
+      self.slug = [region, realm, name].join(' ').gsub(/\s+/, '-').downcase
     end
 end

@@ -47,7 +47,7 @@ class Character < ActiveRecord::Base
             uniqueness: { case_sensitive: false }
 
   def self.find(input)
-    input.to_i == 0 ? find_by(slug: input) : super
+    input.to_i == 0 ? find_by(slug: input.downcase) : super
   end
 
   # determine if passed key (user_key + character_key) = combined
