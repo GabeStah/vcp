@@ -7,6 +7,7 @@ class Character < ActiveRecord::Base
   belongs_to :user
   before_validation :ensure_region_is_lowercase
   before_validation :generate_slug
+  after_create :generate_battle_net_worker
 
   scope :claimed, ->(user) { where(user: user) }
   scope :unclaimed, ->(user) { where('user_id != ? OR user_id IS NULL', user).where(verified: true) }
@@ -92,7 +93,7 @@ class Character < ActiveRecord::Base
   def update_from_battle_net
     # Establish connection
     # Retrieve json
-    @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{self.region.downcase}.battle.net/api/wow/character/#{self.realm.downcase}/#{self.name}"))).body)
+    @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{self.region.downcase}.battle.net/api/wow/character/#{self.realm.downcase}/#{self.name}?fields=guild"))).body)
     # Process json
     if @json['status'] == 'nok'
       unless @json['reason'] == 'Character not found.'
@@ -102,11 +103,16 @@ class Character < ActiveRecord::Base
                                  region: self.region)
       end
     else
+      # Assign guild if it exists
+      guild = Guild.find_or_create_by(name:   @json['guild']['name'],
+                                      realm:  self.realm,
+                                      region: self.region.downcase) if @json['guild'] && @json['guild']['name']
       # Update record
       self.update_attributes(
           achievement_points: @json['achievementPoints'],
           character_class:    CharacterClass.find_by(blizzard_id: @json['class']),
           gender:             @json['gender'],
+          guild:              guild,
           level:              @json['level'],
           portrait:           @json['thumbnail'],
           race:               Race.find_by(blizzard_id: @json['race']),
@@ -121,6 +127,9 @@ class Character < ActiveRecord::Base
       unless self.region.nil?
         self.region = self.region.downcase
       end
+    end
+    def generate_battle_net_worker
+      BattleNetWorker.perform_async(id: self.id, type: 'character')
     end
     def generate_slug
       self.slug = [region, realm, name].join(' ').gsub(/\s+/, '-').downcase
