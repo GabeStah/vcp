@@ -5,6 +5,7 @@ class Character < ActiveRecord::Base
   belongs_to :guild
   belongs_to :race
   belongs_to :user
+  has_one :standing
   before_validation :ensure_region_is_lowercase
   before_validation :generate_slug
   after_create :generate_battle_net_worker
@@ -49,6 +50,10 @@ class Character < ActiveRecord::Base
 
   def self.find(input)
     input.to_i == 0 ? find_by(slug: input.downcase) : super
+  end
+
+  def has_standing?
+    self.standing.present?
   end
 
   # determine if passed key (user_key + character_key) = combined

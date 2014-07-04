@@ -13,8 +13,15 @@
       </p>
       <p>
         Claimed: <%= @owned_character ? 'Yes' : 'No' %>
-        <%= link_to "Unclaim", unclaim_character_path(@character), method: :post, data: { confirm: "You sure?" } if @owned_character %>
+        <%= link_to 'Unclaim', unclaim_character_path(@character), method: :post, data: { confirm: 'You sure?' } if @owned_character %>
       </p>
+      <% if @character.has_standing? %>
+        <p>VCP: <%= @character.standing.points || 0 %></p>
+      <% else %>
+        <% if admin_signed_in? %>
+          <%= button_to 'Add to VCP', standings_path(standing: {character: @character}), :method => :post %>
+        <% end %>
+      <% end %>
     </section>
   </aside>
   <% if !@owned_character && current_user %>
