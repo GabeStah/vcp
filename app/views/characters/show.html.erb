@@ -9,11 +9,11 @@
       <p>Verified: <%= @character.verified? ? 'Yes' : 'No' %></p>
       <p>
         Last Synced: <%= @character.synced_at ? "#{distance_of_time_in_words_to_now(@character.synced_at, include_sections: true).camelize} ago" : 'Never' %>
-        <%= link_to 'Sync', sync_character_path(@character) if @owned_character %>
+        <%= link_to 'Sync', sync_character_path(@character), method: :post if @owned_character %>
       </p>
       <p>
         Claimed: <%= @owned_character ? 'Yes' : 'No' %>
-        <%= link_to 'Unclaim', unclaim_character_path(@character), method: :post, data: { confirm: 'You sure?' } if @owned_character %>
+        <%= link_to 'Unclaim', unclaim_character_path(@character), method: :post, data: { confirm: "Relinquish claim on #{@character.full_title}?" } if @owned_character %>
       </p>
       <% if @character.has_standing? %>
         <p>VCP: <%= @character.standing.points || 0 %></p>

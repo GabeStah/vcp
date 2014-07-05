@@ -5,7 +5,7 @@ class Character < ActiveRecord::Base
   belongs_to :guild
   belongs_to :race
   belongs_to :user
-  has_one :standing
+  has_one :standing, dependent: :delete
   before_validation :ensure_region_is_lowercase
   before_validation :generate_slug
   after_create :generate_battle_net_worker
@@ -50,6 +50,10 @@ class Character < ActiveRecord::Base
 
   def self.find(input)
     input.to_i == 0 ? find_by(slug: input.downcase) : super
+  end
+
+  def full_title
+    return "#{self.name} of #{self.realm}-#{self.region.upcase}"
   end
 
   def has_standing?

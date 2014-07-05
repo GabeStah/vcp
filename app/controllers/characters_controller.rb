@@ -2,11 +2,12 @@ class CharactersController < ApplicationController
   before_action :require_login,               only: [:claim, :create, :edit, :destroy, :new, :sync, :update]
   before_action :require_user_owns_character, only: [:sync]
   before_action :admin_user,                  only: [:destroy]
+  before_action :user_owns_character?
 
   def create
     @character = Character.new(character_params)
     if @character.save
-      flash[:success] = 'Character Added!'
+      flash[:success] = "Character #{@character.full_title} Added!"
       redirect_to character_path(@character)
     else
       render :new
@@ -17,26 +18,21 @@ class CharactersController < ApplicationController
     @character = Character.find(params[:id])
     if @character.key_match?(params[:key], current_user)
       if @character.update_attributes(user: current_user)
-        flash[:success] = 'Character Claimed!'
-        redirect_to character_path(@character)
+        flash[:success] = "Character #{@character.full_title} claimed!"
       else
         flash[:error] = 'Key matched but claim failed.'
-        render :show
       end
     else
       flash[:error] = 'Claim Failed: Provided key does not match.'
-      render :show
     end
+    render :show
   end
 
   def destroy
-    Character.find(params[:id]).destroy
-    flash[:success] = "Character deleted."
-    if params[:source].present? && params[:source] == 'user-profile'
-      redirect_to current_user
-    else
-      redirect_to characters_url
-    end
+    @character = Character.find(params[:id])
+    flash[:success] = "Character #{@character.full_title} deleted."
+    @character.destroy
+    redirect_to :back
   end
   def edit
     @character = Character.find(params[:id])
@@ -54,47 +50,30 @@ class CharactersController < ApplicationController
   end
   def show
     @character = Character.find(params[:id])
-    # Does user own character?
-    if user_owns_character?
-      @owned_character = true
-    else
-      @owned_character = false
-    end
     # Add key for basic testing
     @generated_key = @character.process_key(current_user.secret_key) if signed_in? && current_user
   end
 
   def sync
     @character = Character.find(params[:id])
-    if user_owns_character?
-      @owned_character = true
+    if @owned_character
       BattleNetWorker.perform_async(id: @character.id,
                                     type: 'character')
-      flash[:success] = 'Sync requested, character will be updated shortly.'
+      flash[:success] = "Sync requested, #{@character.full_title} will be updated shortly."
     else
-      @owned_character = false
       flash[:alert] = 'You cannot sync a character you do not own.'
     end
-    redirect_to @character
+    redirect_to :back
   end
 
   def unclaim
     @character = Character.find(params[:id])
     if @character.update_attributes(user: nil)
-      flash[:success] = 'Claim relinquished!'
-      if params[:source].present? && params[:source] == 'user-profile'
-        redirect_to current_user
-      else
-        redirect_to character_path(@character)
-      end
+      flash[:success] = "Claim on #{@character.full_title} relinquished!"
     else
       flash[:error] = 'Unclaim failed.'
-      if params[:source].present? && params[:source] == 'user-profile'
-        redirect_to current_user
-      else
-        render :show
-      end
     end
+    redirect_to :back
   end
 
   def update
@@ -102,7 +81,7 @@ class CharactersController < ApplicationController
     if @character.update_attributes(character_params)
       @character.update_attributes(verified: false)
       BattleNetWorker.perform_async(id: @character.id, type: 'character')
-      flash[:success] = "Character updated & Battle.net sync added to queue."
+      flash[:success] = "#{@character.full_title} updated & Battle.net sync added to queue."
       redirect_to @character
     else
       render :edit
@@ -121,9 +100,5 @@ class CharactersController < ApplicationController
         flash[:alert] = 'You cannot sync a character you do not own.'
         redirect_to @character
       end
-    end
-    def user_owns_character?
-      @character = Character.find(params[:id])
-      return current_user && current_user.characters.include?(@character)
     end
 end

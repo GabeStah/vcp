@@ -1,0 +1,5 @@
+<% if admin_signed_in? %>
+  <%= link_to "Delete", character, method: :delete, data: { confirm: "Delete #{character.full_title}?" } %>
+<% end %>
+<%= link_to 'Unclaim', unclaim_character_path(character), method: :post, data: { confirm: "Relinquish claim on #{character.full_title}?" } if user_owns_character?(character) %>
+<%= link_to 'Sync', sync_character_path(character), method: :post if user_owns_character?(character) %>

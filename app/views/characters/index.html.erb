@@ -13,8 +13,8 @@
     <th>Achievement Points</th>
     <th>Guild</th>
     <th>Realm</th>
-    <% if current_user && current_user.admin? %>
-      <th>Delete</th>
+    <% if current_user.present? %>
+      <th>Edit</th>
     <% end %>
     </thead>
     <tbody>
@@ -33,8 +33,8 @@
     <th>Achievement Points</th>
     <th>Guild</th>
     <th>Realm</th>
-    <% if current_user && current_user.admin? %>
-      <th>Delete</th>
+    <% if current_user.present? %>
+      <th>Edit</th>
     <% end %>
   </thead>
   <tbody>

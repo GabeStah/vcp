@@ -6,7 +6,7 @@
   <td><%= character.achievement_points %></td>
   <td><%= link_to character.guild.name, character.guild if character.guild %></td>
   <td><%= "#{character.realm}-#{character.region.upcase}" %></td>
-  <% if current_user && current_user.admin? %>
-    <td><%= link_to "delete", character, method: :delete, data: { confirm: "You sure?" } %></td>
-  <% end %>
+  <td>
+    <%= render 'character_edit', character: character %>
+  </td>
 </tr>
