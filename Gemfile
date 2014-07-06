@@ -20,6 +20,8 @@ gem 'zeroclipboard-rails'
 gem 'tipsy-rails'
 # Used for chaining OR queries, see: https://github.com/oelmekki/activerecord_any_of
 gem 'activerecord_any_of'
+# Used to allow history and revert actions
+gem 'paper_trail'
 
 group :development, :test do
   gem 'rspec-rails'

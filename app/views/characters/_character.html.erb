@@ -6,7 +6,9 @@
   <td><%= character.achievement_points %></td>
   <td><%= link_to character.guild.name, character.guild if character.guild %></td>
   <td><%= "#{character.realm}-#{character.region.upcase}" %></td>
-  <td>
-    <%= render 'character_edit', character: character %>
-  </td>
+  <% if current_user.present? %>
+    <td>
+      <%= render 'character_edit', character: character %>
+    </td>
+  <% end %>
 </tr>

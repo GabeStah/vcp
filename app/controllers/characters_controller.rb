@@ -25,7 +25,7 @@ class CharactersController < ApplicationController
     else
       flash[:error] = 'Claim Failed: Provided key does not match.'
     end
-    render :show
+    redirect_to :back
   end
 
   def destroy
