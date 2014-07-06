@@ -5,6 +5,10 @@ class Character < ActiveRecord::Base
   belongs_to :guild
   belongs_to :race
   belongs_to :user
+  has_many :participations
+  # Destroy participations associated with Character
+  has_many :raids, through: :participations, dependent: :delete_all
+  # Destroy standing associated with Character
   has_one :standing, dependent: :delete
   before_validation :ensure_region_is_lowercase
   before_validation :generate_slug

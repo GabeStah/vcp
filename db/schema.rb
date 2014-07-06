@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140706021641) do
+ActiveRecord::Schema.define(version: 20140706082232) do
 
   create_table "character_classes", force: true do |t|
     t.string   "name"
@@ -78,6 +78,13 @@ ActiveRecord::Schema.define(version: 20140706021641) do
   add_index "guilds", ["name"], name: "index_guilds_on_name", using: :btree
   add_index "guilds", ["slug"], name: "index_guilds_on_slug", unique: true, using: :btree
 
+  create_table "participations", force: true do |t|
+    t.integer  "character_id"
+    t.integer  "raid_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "races", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -88,6 +95,14 @@ ActiveRecord::Schema.define(version: 20140706021641) do
 
   add_index "races", ["blizzard_id", "name"], name: "index_races_on_blizzard_id_and_name", unique: true, using: :btree
   add_index "races", ["blizzard_id"], name: "index_races_on_blizzard_id", using: :btree
+
+  create_table "raids", force: true do |t|
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.string   "zone"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "settings", force: true do |t|
     t.string   "guild"
