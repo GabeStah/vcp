@@ -1,0 +1,4 @@
+<% if admin_signed_in? %>
+  <%= link_to "Edit",   edit_zone_path(zone) %>
+  <%= link_to "Delete", zone, method: :delete, data: { confirm: "Delete #{zone.name} zone?" } %>
+<% end %>

@@ -1,0 +1,11 @@
+<tr>
+  <td><%= zone.name %></td>
+  <td><%= zone.zone_type.titleize %></td>
+  <td><%= zone.level %></td>
+  <td><%= zone.blizzard_id %></td>
+  <% if admin_signed_in? %>
+    <td>
+      <%= render 'zone_edit', zone: zone %>
+    </td>
+  <% end %>
+</tr>

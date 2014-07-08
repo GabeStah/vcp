@@ -1,4 +1,5 @@
 class CharactersController < ApplicationController
+  before_action :set_character,               only: [:claim, :destroy, :edit, :show, :sync, :unclaim, :update]
   before_action :require_login,               only: [:claim, :create, :edit, :destroy, :new, :sync, :update]
   before_action :require_user_owns_character, only: [:sync]
   before_action :admin_user,                  only: [:destroy]
@@ -15,7 +16,6 @@ class CharactersController < ApplicationController
   end
 
   def claim
-    @character = Character.find(params[:id])
     if @character.key_match?(params[:key], current_user)
       if @character.update_attributes(user: current_user)
         flash[:success] = "Character #{@character.full_title} claimed!"
@@ -29,13 +29,11 @@ class CharactersController < ApplicationController
   end
 
   def destroy
-    @character = Character.find(params[:id])
     flash[:success] = "Character #{@character.full_title} deleted."
     @character.destroy
     redirect_to :back
   end
   def edit
-    @character = Character.find(params[:id])
   end
   def index
     if current_user
@@ -49,13 +47,11 @@ class CharactersController < ApplicationController
     @character = Character.new
   end
   def show
-    @character = Character.find(params[:id])
     # Add key for basic testing
     @generated_key = @character.process_key(current_user.secret_key) if signed_in? && current_user
   end
 
   def sync
-    @character = Character.find(params[:id])
     if @owned_character
       BattleNetWorker.perform_async(id: @character.id,
                                     type: 'character')
@@ -67,7 +63,6 @@ class CharactersController < ApplicationController
   end
 
   def unclaim
-    @character = Character.find(params[:id])
     if @character.update_attributes(user: nil)
       flash[:success] = "Claim on #{@character.full_title} relinquished!"
     else
@@ -77,7 +72,6 @@ class CharactersController < ApplicationController
   end
 
   def update
-    @character = Character.find(params[:id])
     if @character.update_attributes(character_params)
       @character.update_attributes(verified: false)
       BattleNetWorker.perform_async(id: @character.id, type: 'character')
@@ -100,5 +94,8 @@ class CharactersController < ApplicationController
         flash[:alert] = 'You cannot sync a character you do not own.'
         redirect_to @character
       end
+    end
+    def set_character
+      @character = Character.find(params[:id])
     end
 end

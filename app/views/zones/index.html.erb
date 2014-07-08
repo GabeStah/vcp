@@ -1,0 +1,23 @@
+<% provide(:title, 'All zones') %>
+<h1>All zones</h1>
+
+<%= link_to "New Zone", new_zone_path, class: "btn btn-large btn-primary" %>
+
+<% if records?(@zones) %>
+  <table class="zones table table-striped table-bordered table-white">
+    <thead>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Level</th>
+      <th>Blizzard ID</th>
+      <% if admin_signed_in? %>
+        <th>Edit</th>
+      <% end %>
+    </thead>
+    <tbody>
+      <%= render @zones %>
+    </tbody>
+  </table>
+<% else %>
+  <%= render_no_records %>
+<% end %>

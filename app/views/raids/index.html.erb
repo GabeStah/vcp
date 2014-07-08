@@ -1,0 +1,21 @@
+<% provide(:title, 'All raids') %>
+<h1>All raids</h1>
+
+<%= link_to "New Raid", new_raid_path, class: "btn btn-large btn-primary" %>
+
+<% if records?(@raids) %>
+  <%= will_paginate %>
+  <table class="raids table table-striped table-bordered table-white">
+    <thead>
+      <th>Zone</th>
+      <th>Start</th>
+      <th>End</th>
+    </thead>
+    <tbody>
+      <%= render @raids %>
+    </tbody>
+  </table>
+  <%= will_paginate %>
+<% else %>
+  <%= render_no_records %>
+<% end %>

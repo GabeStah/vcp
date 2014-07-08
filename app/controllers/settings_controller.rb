@@ -1,4 +1,5 @@
 class SettingsController < ApplicationController
+  before_action :set_setting, only: [:update]
   before_action :require_login
   before_action :admin_user
 
@@ -7,7 +8,6 @@ class SettingsController < ApplicationController
   end
 
   def update
-    @setting = Setting.find(params[:id])
     # Repopulate character data
     @battle_net = BattleNet.new(guild:        setting_params[:guild],
                                 realm:        setting_params[:realm],
@@ -30,5 +30,8 @@ class SettingsController < ApplicationController
   private
     def setting_params
       params.require(:setting).permit(:guild, :realm, :region)
+    end
+    def set_setting
+      @setting = Setting.find(params[:id])
     end
 end

@@ -1,7 +1,7 @@
 <% provide(:title, 'Standings') %>
 <h1>Standings</h1>
 
-<% if @standings.any? %>
+<% if records?(@standings) %>
   <table class="standings table table-striped table-bordered table-white">
     <thead>
     <th>Name</th>
@@ -19,5 +19,5 @@
     </tbody>
   </table>
 <% else %>
-  <h2>No Records Found</h2>
+  <%= render_no_records %>
 <% end %>

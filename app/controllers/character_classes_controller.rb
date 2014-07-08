@@ -1,5 +1,5 @@
 class CharacterClassesController < ApplicationController
-  respond_to :html, :json
+  before_action :set_character_class, only: [:destroy, :update]
   before_action :require_login
   before_action :admin_user
 
@@ -15,7 +15,7 @@ class CharacterClassesController < ApplicationController
   end
 
   def destroy
-    CharacterClass.find(params[:id]).destroy
+    @character_class.destroy
     flash[:success] = "Class deleted."
     redirect_to classes_path
   end
@@ -26,13 +26,15 @@ class CharacterClassesController < ApplicationController
   end
 
   def update
-    @character_class = CharacterClass.find(params[:id])
     @character_class.update_attributes(character_class_params)
     respond_with_bip(@character_class)
   end
 
   private
-  def character_class_params
-    params.require(:character_class).permit(:name)
-  end
+    def set_character_class
+      @character_class = CharacterClass.find(params[:id])
+    end
+    def character_class_params
+      params.require(:character_class).permit(:name)
+    end
 end

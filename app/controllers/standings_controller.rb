@@ -1,4 +1,5 @@
 class StandingsController < ApplicationController
+  before_action :set_standing,                only: [:destroy, :edit, :show, :update]
   before_action :require_login,               only: [:create, :edit, :destroy, :new, :update]
   before_action :admin_user,                  only: [:create, :edit, :destroy, :new, :update]
 
@@ -14,7 +15,7 @@ class StandingsController < ApplicationController
   end
 
   def destroy
-    Standing.find(params[:id]).destroy
+    @standing.destroy
     flash[:success] = "Standing deleted."
     redirect_to standings_url
   end
@@ -31,7 +32,10 @@ class StandingsController < ApplicationController
 
   private
 
-  def standing_params
-    params.require(:standing).permit(:character)
-  end
+    def standing_params
+      params.require(:standing).permit(:character)
+    end
+    def set_standing
+      @standing = Standing.find(params[:id])
+    end
 end

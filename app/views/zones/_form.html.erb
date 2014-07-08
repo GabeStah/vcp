@@ -1,0 +1,16 @@
+<%= form_for(@zone) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.label :zone_type %>
+  <%= f.select :zone_type, WOW_ZONE_TYPE_HASH %>
+
+  <%= f.label :level %>
+  <%= f.text_field :level %>
+
+  <%= f.label :blizzard_id, 'Blizzard ID' %>
+  <%= f.text_field :blizzard_id %>
+
+  <%= f.submit class: "btn btn-large btn-primary" %>
+<% end %>

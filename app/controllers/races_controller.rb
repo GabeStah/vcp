@@ -1,5 +1,5 @@
 class RacesController < ApplicationController
-  respond_to :html, :json
+  before_action :set_race, only: [:destroy, :update]
   before_action :require_login
   before_action :admin_user
 
@@ -15,7 +15,7 @@ class RacesController < ApplicationController
   end
 
   def destroy
-    Race.find(params[:id]).destroy
+    @race.destroy
     flash[:success] = "Race deleted."
     redirect_to races_path
   end
@@ -26,7 +26,6 @@ class RacesController < ApplicationController
   end
 
   def update
-    @race = Race.find(params[:id])
     @race.update_attributes(race_params)
     respond_with_bip(@race)
   end
@@ -34,5 +33,8 @@ class RacesController < ApplicationController
   private
     def race_params
       params.require(:race).permit(:name)
+    end
+    def set_race
+      @race = Race.find(params[:id])
     end
 end

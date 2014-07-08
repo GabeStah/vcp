@@ -8,4 +8,15 @@ module ApplicationHelper
       "#{base_title} | #{page_title}"
     end
   end
+
+  # Check if records exist
+  def records?(collection)
+    return true if collection.any?
+    return false
+  end
+
+  # Display base no records found partial if empty collection
+  def render_no_records
+    render partial: 'utility/no_records_found'
+  end
 end

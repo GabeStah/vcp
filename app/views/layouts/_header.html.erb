@@ -5,6 +5,7 @@
       <nav>
         <ul class="nav pull-right">
           <li><%= link_to "Characters", characters_path %></li>
+          <li><%= link_to "Raids",      raids_path %></li>
           <li><%= link_to "Standings",  standings_path %></li>
           <li><%= link_to "Users",      users_path %></li>
           <% if admin_signed_in? %>
@@ -13,11 +14,12 @@
                 Admin <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                <li><%= link_to "Classes", classes_path %></li>
-                <li><%= link_to "Guilds", guilds_path %></li>
-                <li><%= link_to "Races", races_path %></li>
+                <li><%= link_to "Classes",  classes_path %></li>
+                <li><%= link_to "Guilds",   guilds_path %></li>
+                <li><%= link_to "Races",    races_path %></li>
                 <li><%= link_to "Settings", settings_path %></li>
-                <li><%= link_to "Sidekiq", sidekiq_path %></li>
+                <li><%= link_to "Sidekiq",  sidekiq_path %></li>
+                <li><%= link_to "Zones",    zones_path %></li>
               </ul>
             </li>
           <% end %>

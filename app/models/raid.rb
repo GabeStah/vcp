@@ -1,6 +1,7 @@
 class Raid < ActiveRecord::Base
-  # Destroy participations associated with Raid
+  belongs_to :zone
   has_many :participations
+  # Destroy participations associated with Raid
   has_many :characters, through: :participations, dependent: :delete_all
 
   # ended_at
@@ -9,10 +10,6 @@ class Raid < ActiveRecord::Base
   validates :started_at,
             presence: true
   validate :started_at_is_valid_datetime
-  # zone
-  validates :zone,
-            allow_blank: true,
-            length: { minimum: 1, maximum: 100 }
 
   private
 

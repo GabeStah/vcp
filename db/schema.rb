@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140706082232) do
+ActiveRecord::Schema.define(version: 20140708034157) do
 
   create_table "character_classes", force: true do |t|
     t.string   "name"
@@ -83,7 +83,12 @@ ActiveRecord::Schema.define(version: 20140706082232) do
     t.integer  "raid_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "in_raid",      default: false
+    t.boolean  "online",       default: false
+    t.datetime "timestamp"
   end
+
+  add_index "participations", ["character_id", "raid_id", "timestamp"], name: "index_participations_on_character_id_and_raid_id_and_timestamp", unique: true, using: :btree
 
   create_table "races", force: true do |t|
     t.string   "name"
@@ -99,10 +104,12 @@ ActiveRecord::Schema.define(version: 20140706082232) do
   create_table "raids", force: true do |t|
     t.datetime "started_at"
     t.datetime "ended_at"
-    t.string   "zone"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "zones_id"
   end
+
+  add_index "raids", ["zones_id"], name: "index_raids_on_zones_id", using: :btree
 
   create_table "settings", force: true do |t|
     t.string   "guild"
@@ -145,5 +152,14 @@ ActiveRecord::Schema.define(version: 20140706082232) do
   end
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
+
+  create_table "zones", force: true do |t|
+    t.integer  "blizzard_id"
+    t.integer  "level"
+    t.string   "name"
+    t.string   "zone_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

@@ -8,6 +8,7 @@ Vcp::Application.routes.draw do
     resources :guilds
     resources :races, only: [:create, :destroy, :index, :update]
     resources :settings, only: [:index, :update]
+    resources :zones, only: [:create, :destroy, :edit, :index, :new, :update]
     mount Sidekiq::Web => '/sidekiq', as: 'sidekiq'
   end
 
@@ -18,9 +19,8 @@ Vcp::Application.routes.draw do
   match '/characters/:id/sync',         to: 'characters#sync',          via: 'post',  as: 'sync_character'
 
   resources :standings
-
-
   resources :sessions, only: [:new, :create, :destroy]
+  resources :raids
   resources :users
 
   root 'static_pages#home'
