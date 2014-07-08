@@ -10,7 +10,6 @@ class Character < ActiveRecord::Base
   has_many :raids, through: :participations, dependent: :delete_all
   # Destroy standing associated with Character
   has_one :standing, dependent: :delete
-  after_initialize :defaults
   before_validation :ensure_region_is_lowercase
   before_validation :generate_slug
   after_create :generate_battle_net_worker
@@ -24,8 +23,6 @@ class Character < ActiveRecord::Base
   validates :achievement_points,
             allow_blank: true,
             numericality: { only_integer: true }
-  validates :active,
-            inclusion: [true, false]
   validates :gender,
             allow_blank: true,
             inclusion: [0, 1],
@@ -139,10 +136,6 @@ class Character < ActiveRecord::Base
   end
 
   private
-    def defaults
-      self.active = false if self.active.nil?
-      self.verified = false if self.verified.nil?
-    end
     def ensure_region_is_lowercase
       unless self.region.nil?
         self.region = self.region.downcase

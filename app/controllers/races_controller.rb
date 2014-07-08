@@ -32,7 +32,7 @@ class RacesController < ApplicationController
 
   private
     def race_params
-      params.require(:race).permit(:name)
+      params.require(:race).permit(:blizzard_id, :name)
     end
     def set_race
       @race = Race.find(params[:id])
