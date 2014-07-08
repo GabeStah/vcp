@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140708034157) do
+ActiveRecord::Schema.define(version: 20140708190835) do
 
   create_table "character_classes", force: true do |t|
     t.string   "name"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20140708034157) do
     t.datetime "synced_at"
     t.string   "slug"
     t.integer  "user_id"
+    t.boolean  "active",             default: false
   end
 
   add_index "characters", ["guild_id"], name: "index_characters_on_guild_id", using: :btree

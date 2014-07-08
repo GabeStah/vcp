@@ -35,6 +35,6 @@ class CharacterClassesController < ApplicationController
       @character_class = CharacterClass.find(params[:id])
     end
     def character_class_params
-      params.require(:character_class).permit(:name)
+      params.require(:character_class).permit(:blizzard_id, :name)
     end
 end
