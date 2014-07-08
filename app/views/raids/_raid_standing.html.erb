@@ -1,0 +1,12 @@
+<tr>
+  <td><%= link_to standing.character.name, standing.character %></td>
+  <td><%= standing.character.character_class.name if standing.character.character_class %></td>
+  <% if current_user && current_user.admin? %>
+    <td><%= link_to standing.character.guild.name, standing.character.guild if standing.character.guild %></td>
+  <% else %>
+    <td><%= standing.character.guild.name if standing.character.guild %></td>
+  <% end %>
+  <td><%= "#{standing.character.realm}-#{standing.character.region.upcase}" %></td>
+  <td><%= standing.points || 0 %></td>
+  <td><%= check_box_tag 'characters[]', standing.character.slug, false, id: "characters_#{standing.character.slug}" %></td>
+</tr>

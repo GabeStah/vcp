@@ -37,9 +37,8 @@ Race.delete_all
 # Race populate
 BattleNetWorker.perform_async(type: 'race-population')
 
-# Zones
 Zone.delete_all
-
+# Zones
 WOW_ZONE_DEFAULTS.each do |zone|
   Zone.create!(blizzard_id: zone[:blizzard_id],
                level:       zone[:level],
