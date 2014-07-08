@@ -6,15 +6,15 @@
     <%= form_for(@raid) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       <%= f.label :zone %>
-      <%= f.select :region, WOW_RAID_ZONES %>
+      <%= f.select :zone, Zone.where(zone_type: 'raid').order(:name).collect { |z| [z.name, z.id] } %>
 
-      <%= f.label :realm %>
-      <%= f.text_field :realm, placeholder: "Hyjal" %>
+      <%= f.label :started_at %>
+      <%= f.text_field :started_at, value: @defaultStart %>
 
-      <%= f.label :region %>
-      <%= f.select :region, WOW_REGION_HASH %>
+      <%= f.label :ended_at %>
+      <%= f.text_field :ended_at, value: @defaultEnd %>
 
-      <%= f.submit "Add Character", class: "btn btn-large btn-primary" %>
+      <%= f.submit "Add Raid", class: "btn btn-large btn-primary" %>
     <% end %>
   </div>
 </div>

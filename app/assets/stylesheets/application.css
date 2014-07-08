@@ -10,5 +10,7 @@
  *
  *= require_self
  *= require tipsy
+ *= require bootstrap
+ *= require bootstrap-datetimepicker
  *= require_tree .
  */

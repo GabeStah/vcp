@@ -24,6 +24,11 @@ User.create!(name: "Gabe Wyatt",
                password_confirmation: password)
 end
 
+Setting.delete_all
+# Create basic raid time settings
+Setting.create!(raid_start_time: '6:30 PM',
+                raid_end_time: '10:30 PM')
+
 CharacterClass.delete_all
 # Class populate
 BattleNetWorker.perform_async(type: 'class-population')

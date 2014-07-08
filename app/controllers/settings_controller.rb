@@ -8,20 +8,9 @@ class SettingsController < ApplicationController
   end
 
   def update
-    # Repopulate character data
-    @battle_net = BattleNet.new(guild:        setting_params[:guild],
-                                realm:        setting_params[:realm],
-                                region:       setting_params[:region],
-                                type:         "guild",
-                                auto_connect: true)
-    if @battle_net.connected?
-      @battle_net.update
-      if @setting.update_attributes(setting_params)
-        flash[:success] = "Settings updated & data refreshed."
-        redirect_to settings_path
-      else
-        render :index
-      end
+    if @setting.update_attributes(setting_params)
+      flash[:success] = "Settings updated & data refreshed."
+      redirect_to settings_path
     else
       render :index
     end
@@ -29,7 +18,7 @@ class SettingsController < ApplicationController
 
   private
     def setting_params
-      params.require(:setting).permit(:guild, :realm, :region)
+      params.require(:setting).permit(:raid_end_time, :raid_start_time)
     end
     def set_setting
       @setting = Setting.find(params[:id])

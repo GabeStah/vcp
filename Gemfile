@@ -22,6 +22,11 @@ gem 'tipsy-rails'
 gem 'activerecord_any_of'
 # Used to allow history and revert actions
 gem 'paper_trail'
+# Boostrap datetime picker
+gem 'momentjs-rails'
+gem 'bootstrap3-datetimepicker-rails'
+# Time validation
+gem 'validates_timeliness'
 
 group :development, :test do
   gem 'rspec-rails'

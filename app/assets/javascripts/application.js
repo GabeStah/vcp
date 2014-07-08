@@ -18,4 +18,6 @@
 //= require best_in_place.purr
 //= require zeroclipboard
 //= require tipsy
+//= require moment
+//= require bootstrap-datetimepicker
 //= require_tree .

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140708190835) do
+ActiveRecord::Schema.define(version: 20140708202254) do
 
   create_table "character_classes", force: true do |t|
     t.string   "name"
@@ -40,7 +40,6 @@ ActiveRecord::Schema.define(version: 20140708190835) do
     t.datetime "synced_at"
     t.string   "slug"
     t.integer  "user_id"
-    t.boolean  "active",             default: false
   end
 
   add_index "characters", ["guild_id"], name: "index_characters_on_guild_id", using: :btree
@@ -113,9 +112,8 @@ ActiveRecord::Schema.define(version: 20140708190835) do
   add_index "raids", ["zones_id"], name: "index_raids_on_zones_id", using: :btree
 
   create_table "settings", force: true do |t|
-    t.string   "guild"
-    t.string   "realm"
-    t.string   "region"
+    t.string   "raid_start_time"
+    t.string   "raid_end_time"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
