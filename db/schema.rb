@@ -106,10 +106,10 @@ ActiveRecord::Schema.define(version: 20140708202254) do
     t.datetime "ended_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "zones_id"
+    t.integer  "zone_id"
   end
 
-  add_index "raids", ["zones_id"], name: "index_raids_on_zones_id", using: :btree
+  add_index "raids", ["zone_id"], name: "index_raids_on_zone_id", using: :btree
 
   create_table "settings", force: true do |t|
     t.string   "raid_start_time"

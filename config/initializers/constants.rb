@@ -1,3 +1,4 @@
+DATETIME_FORMAT = '%m/%d/%Y %I:%M %p'
 DEFAULT_RAID_END_TIME = {
     hour: 22,
     min: 00,

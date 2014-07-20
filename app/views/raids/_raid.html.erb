@@ -1,5 +1,5 @@
 <tr>
-  <td><%= link_to raid.zone, raid %></td>
+  <td><%= link_to raid.zone.name, raid %></td>
   <td><%= raid.started_at %></td>
   <td><%= raid.ended_at if raid.ended_at %></td>
   <% if current_user.present? %>
