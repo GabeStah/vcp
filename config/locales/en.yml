@@ -26,3 +26,9 @@ en:
         blizzard_id: "Blizzard ID"
       race:
         blizzard_id: "Blizzard ID"
+  date:
+    formats:
+      default: '%m/%d/%Y'
+  time:
+    formats:
+      default: '%m/%d/%Y %I:%M %p'

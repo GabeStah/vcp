@@ -25,7 +25,9 @@ class RaidsController < ApplicationController
     end
   end
   def destroy
-
+    flash[:success] = "Raid #{@raid.zone.name} @ #{l @raid.started_at} deleted."
+    @raid.destroy
+    redirect_to :back
   end
   def edit
 

@@ -56,3 +56,6 @@ Guild.delete_all
                 realm: 'Hyjal',
                 region: 'us')
 #end
+
+# Populate standings
+PopulateStandingsWorker.perform_async()
