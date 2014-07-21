@@ -1,4 +1,4 @@
 <% if admin_signed_in? %>
   <%= link_to "Edit",   edit_raid_path(raid) %>
-  <%= link_to "Delete", raid, method: :delete, data: { confirm: "Delete #{raid.zone.name} @ #{l raid.started_at}?" } %>
+  <%= link_to "Delete", raid, method: :delete, data: { confirm: "Delete #{raid.full_title}?" } %>
 <% end %>

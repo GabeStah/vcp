@@ -15,6 +15,25 @@ class Raid < ActiveRecord::Base
             uniqueness: true
   validate :started_at_is_valid_datetime
 
+  def ended_at=(t)
+    t = DateTime.strptime(t, DATETIME_FORMAT) unless t.blank? || t.class == 'DateTime'
+    super(t)
+  end
+
+  def full_title
+    return "#{zone.name} @ #{I18n.l(started_at)}"
+  end
+
+  def started_at=(t)
+    t = DateTime.strptime(t, DATETIME_FORMAT) unless t.blank? || t.class == 'DateTime'
+    super(t)
+  end
+
+  def zone=(z)
+    z = Zone.find(z) unless z.class == 'Zone'
+    super(z)
+  end
+
 
   private
 

@@ -4,19 +4,7 @@ class RaidsController < ApplicationController
   def create
     # Find characters as marked by id
     characters = params[:characters].collect {|id| Character.find(id)} if params[:characters]
-    params = raid_params
-    params[:zone] = Zone.find(params[:zone])
-    unless params[:ended_at].blank?
-      # Parse into DateTime object
-      params[:ended_at] = DateTime.strptime(params[:ended_at], DATETIME_FORMAT)
-      @default_end = params[:ended_at].strftime(DATETIME_FORMAT)
-    end
-    unless params[:started_at].blank?
-      params[:started_at] = DateTime.strptime(params[:started_at], DATETIME_FORMAT)
-      @default_start = params[:started_at].strftime(DATETIME_FORMAT)
-    end
-
-    @raid = Raid.new(params)
+    @raid = Raid.new(raid_params)
     if @raid.save
       flash[:success] = "Raid for #{@raid.zone.name} Added!"
       redirect_to raid_path(@raid)
@@ -25,12 +13,11 @@ class RaidsController < ApplicationController
     end
   end
   def destroy
-    flash[:success] = "Raid #{@raid.zone.name} @ #{l @raid.started_at} deleted."
+    flash[:success] = "Raid #{@raid.full_title} deleted."
     @raid.destroy
     redirect_to :back
   end
   def edit
-
   end
   def index
     @raids = Raid.paginate(page: params[:page]).order(:started_at)
@@ -53,10 +40,14 @@ class RaidsController < ApplicationController
     @standings = Standing.all.order(:points)
   end
   def show
-
   end
   def update
-
+    if @raid.update_attributes(raid_params)
+      flash[:success] = "#{@raid.full_title} updated."
+      redirect_to @raid
+    else
+      render :edit
+    end
   end
 
   private
