@@ -2,17 +2,17 @@
 <h1>Add Raid</h1>
 
 <div class="row">
-  <div class="span6 offset3">
+  <div class="span10 offset1">
     <%= form_for(@raid) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       <%= f.label :zone %>
       <%= f.select :zone, Zone.where(zone_type: 'raid').order(:name).collect { |z| [z.name, z.id] } %>
 
       <%= f.label :started_at %>
-      <%= f.text_field :started_at, value: @default_start %>
+      <%= f.text_field :started_at, value: @default_start ? @default_start : l(@raid.started_at) %>
 
       <%= f.label :ended_at %>
-      <%= f.text_field :ended_at, value: @default_end %>
+      <%= f.text_field :ended_at, value: @default_end ? @default_end : l(@raid.ended_at) %>
 
       <%= f.submit "Add Raid", class: "btn btn-large btn-primary" %>
 
@@ -24,6 +24,7 @@
           <th>Guild</th>
           <th>Realm</th>
           <th>Points</th>
+          <th>Status</th>
           </thead>
           <tbody>
           <% @standings.each do |standing| %>

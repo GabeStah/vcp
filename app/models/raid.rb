@@ -14,6 +14,9 @@ class Raid < ActiveRecord::Base
             presence: true,
             uniqueness: true
   validate :started_at_is_valid_datetime
+  # Dates should be logical
+  validate :dates_are_consecutive
+
 
   def ended_at=(t)
     t = DateTime.strptime(t, DATETIME_FORMAT) unless t.blank? || t.class == 'DateTime'
@@ -36,6 +39,14 @@ class Raid < ActiveRecord::Base
 
 
   private
+
+  def dates_are_consecutive
+    unless ended_at.blank? || started_at.blank?
+      if started_at > ended_at
+        errors.add(:ended_at, 'cannot occur before Start Date.')
+      end
+    end
+  end
 
   def ended_at_is_valid_datetime
     unless ended_at.blank?

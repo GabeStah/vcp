@@ -8,5 +8,5 @@
   <% end %>
   <td><%= "#{standing.character.realm}-#{standing.character.region.upcase}" %></td>
   <td><%= standing.points || 0 %></td>
-  <td><%= check_box_tag 'characters[]', standing.character.slug, false, id: "characters_#{standing.character.slug}" %></td>
+  <td><%= select_tag "participation[#{standing.character.slug}]", options_for_select(PARTICIPATION_STATUS_HASH, params[:participation][standing.character.slug]) %></td>
 </tr>

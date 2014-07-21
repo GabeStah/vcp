@@ -1,11 +1,33 @@
 class RaidsController < ApplicationController
   before_action :set_raid, only: [:destroy, :edit, :show, :update]
+  before_action :set_standings, only: [:create, :new]
 
   def create
     # Find characters as marked by id
-    characters = params[:characters].collect {|id| Character.find(id)} if params[:characters]
     @raid = Raid.new(raid_params)
     if @raid.save
+      # Add participation records
+      if params[:participation]
+        params[:participation].each do |id, status|
+          in_raid = false
+          online = false
+          case status
+            when ParticipationStatus::Invited
+              in_raid = true
+              online = true
+            when ParticipationStatus::Online
+              in_raid = false
+              online = true
+            when ParticipationStatus::Excused
+              in_raid = false
+              online = false
+            when ParticipationStatus::Unexcused
+              in_raid = false
+              online = false
+          end
+          @raid.participations.create(character: Character.find(id), in_raid: in_raid, online: online, timestamp: @raid.started_at)
+        end
+      end
       flash[:success] = "Raid for #{@raid.zone.name} Added!"
       redirect_to raid_path(@raid)
     else
@@ -37,7 +59,6 @@ class RaidsController < ApplicationController
         hour: raid_end_time ? raid_end_time.hour : DEFAULT_RAID_END_TIME[:hour],
         min: raid_end_time ? raid_end_time.min : DEFAULT_RAID_END_TIME[:min],
     ).strftime(DATETIME_FORMAT)
-    @standings = Standing.all.order(:points)
   end
   def show
   end
@@ -58,5 +79,8 @@ class RaidsController < ApplicationController
     end
     def set_raid
       @raid = Raid.find(params[:id])
+    end
+    def set_standings
+      @standings = Standing.all.order(:points)
     end
 end

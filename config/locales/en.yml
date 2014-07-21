@@ -26,6 +26,9 @@ en:
         blizzard_id: "Blizzard ID"
       race:
         blizzard_id: "Blizzard ID"
+      raid:
+        ended_at: "End Date"
+        started_at: "Start Date"
   date:
     formats:
       default: '%m/%d/%Y'
