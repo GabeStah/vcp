@@ -8,5 +8,6 @@
   <% end %>
   <td><%= "#{standing.character.realm}-#{standing.character.region.upcase}" %></td>
   <td><%= standing.points || 0 %></td>
-  <td><%= select_tag "participation[#{standing.character.slug}]", options_for_select(PARTICIPATION_STATUS_HASH, params[:participation][standing.character.slug]) %></td>
+  <td><%= select_tag "participation[#{standing.character.slug}]", options_for_select(PARTICIPATION_STATUS_HASH,
+                                                                                     params[:participation] ? params[:participation][standing.character.slug] : nil) %></td>
 </tr>

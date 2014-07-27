@@ -7,8 +7,6 @@ gem 'bootstrap-sass', '2.3.2.0'
 gem 'sprockets', '2.11.0'
 gem 'bcrypt-ruby', '3.1.2'
 gem 'faker', '1.1.2'
-gem 'will_paginate', '3.0.4'
-gem 'bootstrap-will_paginate', '0.0.9'
 gem 'sidekiq'
 gem 'sidetiq'
 # Enabled for Sidekiq frontend
@@ -27,6 +25,12 @@ gem 'momentjs-rails'
 gem 'bootstrap3-datetimepicker-rails'
 # Time validation
 gem 'validates_timeliness'
+# Datagrid creation
+gem 'wice_grid'
+# Editing out paginate for wice_grid
+#gem 'will_paginate', '3.0.4'
+#gem 'bootstrap-will_paginate', '0.0.9'
+gem 'jquery-ui-rails'
 
 group :development, :test do
   gem 'rspec-rails'
@@ -40,6 +44,7 @@ group :development, :test do
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-sidekiq' , github: 'seuros/capistrano-sidekiq'
+  gem 'launchy'
 end
 
 group :test do

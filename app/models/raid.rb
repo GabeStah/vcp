@@ -17,9 +17,34 @@ class Raid < ActiveRecord::Base
   # Dates should be logical
   validate :dates_are_consecutive
 
+  def add_participations_from_params(data)
+    # Add participation records
+    if data
+      data.each do |id, status|
+        in_raid = false
+        online = false
+        case status
+          when PARTICIPATION_STATUS[:invited]
+            in_raid = true
+            online = true
+          when  PARTICIPATION_STATUS[:online]
+            in_raid = false
+            online = true
+          when  PARTICIPATION_STATUS[:excused]
+            in_raid = false
+            online = false
+          when  PARTICIPATION_STATUS[:unexcused]
+            in_raid = false
+            online = false
+        end
+        self.participations.create(character: Character.find(id), in_raid: in_raid, online: online, timestamp: self.started_at)
+      end
+    end
+  end
+
 
   def ended_at=(t)
-    t = DateTime.strptime(t, DATETIME_FORMAT) unless t.blank? || t.class == 'DateTime'
+    t = DateTime.strptime(t, DATETIME_FORMAT) unless t.blank? || t.class == DateTime || t.class == ActiveSupport::TimeWithZone
     super(t)
   end
 
@@ -28,12 +53,12 @@ class Raid < ActiveRecord::Base
   end
 
   def started_at=(t)
-    t = DateTime.strptime(t, DATETIME_FORMAT) unless t.blank? || t.class == 'DateTime'
+    t = DateTime.strptime(t, DATETIME_FORMAT) unless t.blank? || t.class == DateTime || t.class == ActiveSupport::TimeWithZone
     super(t)
   end
 
   def zone=(z)
-    z = Zone.find(z) unless z.class == 'Zone'
+    z = Zone.find(z) unless z.class == Zone
     super(z)
   end
 

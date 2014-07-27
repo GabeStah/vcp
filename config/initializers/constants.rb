@@ -8,6 +8,12 @@ DEFAULT_RAID_START_TIME = {
     min: 00,
 }
 PARTICIPATION_STATUS_HASH = [['Invited', 'invited'], ['Online', 'online'], ['Absent (Excused)', 'absent_excused'], ['Absent (Unexcused)', 'absent_unexecused']]
+PARTICIPATION_STATUS = {
+  excused: 'absent_excused',
+  invited: 'invited',
+  online: 'online',
+  unexcused: 'absent_unexcused'
+}
 WOW_FACTION_HASH = [["horde", "Horde"], ["alliance", "Alliance"], ["neutral", "Neutral"]]
 WOW_REGION_HASH = [["US", "us"], ["EU", "eu"], ["KR", "kr"], ["TW", "tw"]]
 WOW_REGION_LIST = ["us", "eu", "kr", "tw", "US", "EU", "KR", "TW"]

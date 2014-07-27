@@ -21,7 +21,7 @@ class GuildsController < ApplicationController
   def edit
   end
   def index
-    @guilds = Guild.paginate(page: params[:page]).order(:name)
+    @guilds = Guild.all.order(:name)
   end
   def new
     @guild = Guild.new

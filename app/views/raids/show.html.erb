@@ -4,5 +4,33 @@
     <h1>
       <%= "#{@raid.full_title}" %>
     </h1>
+
+    <%= grid(@participation_grid, show_filters: :no) do |g|
+
+      g.column name: 'Character', attribute: 'name', model: 'Character' do |p|
+        link_to p.character.name, p.character
+      end
+
+      g.column name: 'Realm' do |p|
+        "#{p.character.region.upcase}-#{p.character.realm}"
+      end
+
+      g.column name: 'Timestamp', attribute: 'timestamp' do |p|
+        l p.timestamp
+      end
+
+      g.column name: 'Event' do |p|
+
+        p.online? ? 'Yes' : 'No'
+      end
+
+      g.column name: 'Invited', attribute: 'in_raid' do |p|
+        p.in_raid? ? 'Yes' : 'No'
+      end
+
+      g.column name: 'Edit' do |p|
+        link_to "Delete", '#'
+      end
+    end -%>
   </section>
 </div>

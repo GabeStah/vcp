@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
 //= require bootstrap
 //= require turbolinks
 //= require best_in_place
@@ -20,4 +21,5 @@
 //= require tipsy
 //= require moment
 //= require bootstrap-datetimepicker
+//= require wice_grid
 //= require_tree .

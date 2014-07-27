@@ -41,12 +41,19 @@ FactoryGirl.define do
       rank 9
       region 'us'
       realm { Faker::Name.last_name } # Brackets required to force Faker to create unique entries
+      verified true
     end
 
     factory :setting do
-      region 'us'
-      guild 'Vox Immortalis'
-      realm 'Hyjal'
+      raid_start_time '6:30 PM'
+      raid_end_time '10:30 PM'
+    end
+
+    factory :zone do
+      blizzard_id 1
+      level       90
+      name        'Naxxramas'
+      zone_type   'raid'
     end
   end
 end

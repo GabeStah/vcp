@@ -47,7 +47,7 @@ class Guild < ActiveRecord::Base
   normalize_attribute :battlegroup, :name, :realm, :with => :squish
 
   def self.find(input)
-    input.to_i == 0 ? find_by(slug: input.downcase) : super
+    input.class != self && input.to_i == 0 ? find_by(slug: input.downcase) : super
   end
 
   # Ensure only one primary record at a time

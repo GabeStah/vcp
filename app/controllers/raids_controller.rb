@@ -6,28 +6,7 @@ class RaidsController < ApplicationController
     # Find characters as marked by id
     @raid = Raid.new(raid_params)
     if @raid.save
-      # Add participation records
-      if params[:participation]
-        params[:participation].each do |id, status|
-          in_raid = false
-          online = false
-          case status
-            when ParticipationStatus::Invited
-              in_raid = true
-              online = true
-            when ParticipationStatus::Online
-              in_raid = false
-              online = true
-            when ParticipationStatus::Excused
-              in_raid = false
-              online = false
-            when ParticipationStatus::Unexcused
-              in_raid = false
-              online = false
-          end
-          @raid.participations.create(character: Character.find(id), in_raid: in_raid, online: online, timestamp: @raid.started_at)
-        end
-      end
+      @raid.add_participations_from_params(params[:participation])
       flash[:success] = "Raid for #{@raid.zone.name} Added!"
       redirect_to raid_path(@raid)
     else
@@ -42,7 +21,7 @@ class RaidsController < ApplicationController
   def edit
   end
   def index
-    @raids = Raid.paginate(page: params[:page]).order(:started_at)
+    @raids = Raid.all.order(:started_at)
   end
   def new
     @raid = Raid.new
@@ -61,6 +40,9 @@ class RaidsController < ApplicationController
     ).strftime(DATETIME_FORMAT)
   end
   def show
+    @participation_grid = initialize_grid(@raid.participations.all,
+        joins: :character,
+        order: 'characters.name')
   end
   def update
     if @raid.update_attributes(raid_params)

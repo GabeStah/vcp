@@ -22,7 +22,7 @@ describe 'Guild pages', type: :feature do
       end
 
       it 'should list each character' do
-        Guild.paginate(page: 1).each do |guild|
+        Guild.all.each do |guild|
           expect(page).to have_selector('li', text: guild.name)
         end
       end

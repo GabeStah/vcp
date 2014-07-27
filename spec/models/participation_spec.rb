@@ -15,7 +15,7 @@ RSpec.describe Participation, :type => :model do
                                realm: 'Hyjal',
                                user: FactoryGirl.create(:user))
     @character.save!
-    @raid = Raid.new(zone: 'Naxxramas', started_at: DateTime.now, ended_at: 4.hours.from_now)
+    @raid = Raid.new(zone: FactoryGirl.create(:zone), started_at: DateTime.now, ended_at: 4.hours.from_now)
     @raid.save!
     @participation = Participation.new(
         character: @character,

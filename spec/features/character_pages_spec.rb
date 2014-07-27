@@ -13,7 +13,9 @@ describe 'Character pages', type: :feature do
     it { should have_content('All characters') }
 
     describe 'pagination' do
-      before(:all) { 10.times { FactoryGirl.create(:character) } }
+      before(:all)  do
+        10.times { FactoryGirl.create(:character) }
+      end
       after(:all) do
         # Ensure all data is removed
         CharacterClass.delete_all
@@ -22,12 +24,12 @@ describe 'Character pages', type: :feature do
       end
 
       it 'should list each character' do
-        Character.paginate(page: 1).each do |character|
-          expect(page).to have_selector('td', text: character.name)
+        Character.all.each do |character|
+          page.has_selector?('td', text: character.name)
         end
       end
 
-      it { should_not have_link('delete', href: character_path(Character.first)) }
+      it { should_not have_link('delete', href: character_path(Character.order(:name).first)) }
 
       describe 'as admin user' do
         let(:admin) { FactoryGirl.create(:admin) }
@@ -37,10 +39,13 @@ describe 'Character pages', type: :feature do
         end
 
         describe 'delete links' do
-          it { should have_link('delete', href: character_path(Character.first)) }
+          it 'should have delete character link' do
+            page.has_link?('Delete', href: character_path(Character.order(:name).first))
+          end
           it 'should be able to delete a character' do
+            #save_and_open_page
             expect do
-              click_link('delete', match: :first)
+              click_link('Delete', match: :first)
             end.to change(Character, :count).by(-1)
           end
         end

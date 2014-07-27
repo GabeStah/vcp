@@ -58,4 +58,10 @@ Guild.delete_all
 #end
 
 # Populate standings
-PopulateStandingsWorker.perform_async()
+PopulateStandingsWorker.perform_async
+
+# Create a new raid
+PopulateRaidsWorker.perform_async
+
+# Create some participations
+PopulateParticipationsWorker.perform_async

@@ -20,8 +20,8 @@ describe "Settings pages", type: :feature do
 
     describe "with invalid information" do
       before do
-        fill_in "Guild", with: ''
-        fill_in "Realm", with: 'Hyyyyjal'
+        fill_in "Raid start time", with: 'foo'
+        fill_in "Raid end time", with: 'bar'
         click_button "Save changes"
       end
 
@@ -30,9 +30,8 @@ describe "Settings pages", type: :feature do
 
     describe "with valid information" do
       before do
-        fill_in 'Guild',  with: 'Vox Immortalis'
-        fill_in 'Realm',  with: 'Hyjal'
-        select  'US',     from: 'Region'
+        fill_in "Raid start time", with: '7:45 PM'
+        fill_in "Raid end time", with: '11:00 PM'
         click_button "Save changes"
       end
 
