@@ -19,13 +19,16 @@
         l p.timestamp
       end
 
-      g.column name: 'Event' do |p|
-
+      g.column name: 'Online', attribute: 'online' do |p|
         p.online? ? 'Yes' : 'No'
       end
 
-      g.column name: 'Invited', attribute: 'in_raid' do |p|
+      g.column name: 'In Raid', attribute: 'in_raid' do |p|
         p.in_raid? ? 'Yes' : 'No'
+      end
+
+      g.column name: 'Event' do |p|
+        p.event(p.previous(@participation_grid.resultset))
       end
 
       g.column name: 'Edit' do |p|
