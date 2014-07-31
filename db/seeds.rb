@@ -57,11 +57,11 @@ Guild.delete_all
                 region: 'us')
 #end
 
-# Populate standings
-PopulateStandingsWorker.perform_async
-
 # Create a new raid
-PopulateRaidsWorker.perform_async
+PopulateRaidsWorker.perform_in(5.seconds)
+
+# Populate standings
+PopulateStandingsWorker.perform_in(90.seconds)
 
 # Create some participations
-PopulateParticipationsWorker.perform_async
+PopulateParticipationsWorker.perform_in(120.seconds)

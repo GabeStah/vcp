@@ -13,7 +13,8 @@ RSpec.describe Participation, :type => :model do
                                race: FactoryGirl.create(:race),
                                rank: 9,
                                realm: 'Hyjal',
-                               user: FactoryGirl.create(:user))
+                               user: FactoryGirl.create(:user),
+                               verified: true)
     @character.save!
     @raid = Raid.new(zone: FactoryGirl.create(:zone), started_at: DateTime.now, ended_at: 4.hours.from_now)
     @raid.save!
@@ -61,6 +62,22 @@ RSpec.describe Participation, :type => :model do
       duplicated_participation.save
     end
     it { should_not be_valid }
+  end
+
+  describe 'Should be deleted if Raid is destroyed' do
+    before do
+      @participation.save!
+      @raid.destroy
+    end
+    it { expect(Participation.exists?(@participation.id)).not_to be_truthy }
+  end
+
+  describe 'Should be deleted if Character is destroyed' do
+    before do
+      @participation.save!
+      @character.destroy
+    end
+    it { expect(Participation.exists?(@participation.id)).not_to be_truthy }
   end
 
 

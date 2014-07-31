@@ -1,10 +1,8 @@
 class StandingEvent < Event
   belongs_to :standing, foreign_key: 'actor_id'
+  belongs_to :raid
 
-  attr_accessor :change,
-                :previous_points,
-                :standing,
-                :type # attendance, deliquent, retirement, initial
+  # TODO: Integrate with participation model
 
   validates :standing,
             presence: true

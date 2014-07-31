@@ -22,6 +22,7 @@ describe "Settings pages", type: :feature do
       before do
         fill_in "Raid start time", with: 'foo'
         fill_in "Raid end time", with: 'bar'
+        fill_in "Tardiness cutoff time", with: 'foo'
         click_button "Save changes"
       end
 
@@ -32,6 +33,7 @@ describe "Settings pages", type: :feature do
       before do
         fill_in "Raid start time", with: '7:45 PM'
         fill_in "Raid end time", with: '11:00 PM'
+        fill_in "Tardiness cutoff time", with: '75'
         click_button "Save changes"
       end
 

@@ -18,7 +18,7 @@ class SettingsController < ApplicationController
 
   private
     def setting_params
-      params.require(:setting).permit(:raid_end_time, :raid_start_time)
+      params.require(:setting).permit(:raid_end_time, :raid_start_time, :tardiness_cutoff_time)
     end
     def set_setting
       @setting = Setting.find(params[:id])

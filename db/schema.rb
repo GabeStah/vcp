@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140708202254) do
+ActiveRecord::Schema.define(version: 20140731002312) do
 
   create_table "character_classes", force: true do |t|
     t.string   "name"
@@ -53,9 +53,13 @@ ActiveRecord::Schema.define(version: 20140708202254) do
     t.integer  "actor_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "raid_id"
+    t.decimal  "change",     precision: 10, scale: 6
+    t.string   "type"
   end
 
   add_index "events", ["actor_id"], name: "index_events_on_actor_id", using: :btree
+  add_index "events", ["raid_id"], name: "index_events_on_raid_id", using: :btree
 
   create_table "guilds", force: true do |t|
     t.integer  "achievement_points"
@@ -116,6 +120,7 @@ ActiveRecord::Schema.define(version: 20140708202254) do
     t.string   "raid_end_time"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "tardiness_cutoff_time", default: 60
   end
 
   create_table "standings", force: true do |t|

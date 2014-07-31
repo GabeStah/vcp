@@ -3,6 +3,7 @@ class Raid < ActiveRecord::Base
   has_many :participations
   # Destroy participations associated with Raid
   has_many :characters, through: :participations, dependent: :delete_all
+  has_many :standing_events
 
   # ended_at
   validate :ended_at_is_valid_datetime
