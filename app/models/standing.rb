@@ -16,4 +16,6 @@ class Standing < ActiveRecord::Base
   validates :character,
             presence: true,
             uniqueness: true
+  validates :points,
+            numericality: true
 end

@@ -125,7 +125,7 @@ ActiveRecord::Schema.define(version: 20140731002312) do
 
   create_table "standings", force: true do |t|
     t.boolean  "active",                                default: false
-    t.decimal  "points",       precision: 10, scale: 0
+    t.decimal  "points",       precision: 10, scale: 6, default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "character_id"

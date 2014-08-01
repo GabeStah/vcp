@@ -8,6 +8,7 @@ gem 'sprockets', '2.11.0'
 gem 'bcrypt-ruby', '3.1.2'
 gem 'faker', '1.1.2'
 gem 'sidekiq', github: 'mperham/sidekiq'
+gem 'sidekiq-failures'
 gem 'sidetiq'
 # Enabled for Sidekiq frontend
 gem 'sinatra', '>= 1.3.0', :require => nil
