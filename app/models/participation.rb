@@ -19,6 +19,9 @@ class Participation < ActiveRecord::Base
   validates :raid,
             presence: true
   # timestamp
+  validates :timestamp,
+            presence: true,
+            uniqueness: true
   validate :timestamp_is_valid_datetime
 
   # Get appropriate event(s) tags based on current and previous participation flags
@@ -62,6 +65,11 @@ class Participation < ActiveRecord::Base
         return dataset[i-1]
       end
     end
+  end
+
+  def timestamp=(t)
+    t = DateTime.strptime(t, DATETIME_FORMAT) unless t.blank? || t.class == DateTime || t.class == ActiveSupport::TimeWithZone
+    super(t)
   end
 
   private

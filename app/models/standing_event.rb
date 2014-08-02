@@ -7,8 +7,6 @@ class StandingEvent < Event
   after_update :apply_change
   after_destroy :revert_change
 
-  # TODO: Integrate with participation model
-
   validates :change,
             numericality: true
   validates :raid,

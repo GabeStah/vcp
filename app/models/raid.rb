@@ -53,6 +53,31 @@ class Raid < ActiveRecord::Base
     return "#{zone.name} @ #{I18n.l(started_at)}"
   end
 
+  def process_standing_events
+    settings = Setting.first
+    # Loop characters to process
+    # TODO: Character set is not accurate, instead is retrieving all participation records.
+    self.characters.each do |character|
+      # Find character participation set
+      participations = self.participations.where(character: character).order(:timestamp)
+      # IF: Character was online and in_raid between start settings.tardiness_cutoff_time
+     if participations.detect do |participation|
+          participation.online == true &&
+          participation.in_raid == true &&
+          participation.timestamp >= self.started_at &&
+          participation.timestamp <= (self.started_at.to_time +
+            (Rails.env.production? ? settings.tardiness_cutoff_time.minutes : DEFAULT_SITE_SETTINGS[:tardiness_cutoff_time])).to_datetime
+     end
+       # THEN: Attendance_loss
+       @standing_event = StandingEvent.create(raid: self,
+                                              change: -DEFAULT_SITE_SETTINGS[:attendance_cost],
+                                              standing: Standing.find_by(character: character),
+                                              type: :attendance)
+       blah = true
+     end
+    end
+  end
+
   def started_at=(t)
     t = DateTime.strptime(t, DATETIME_FORMAT) unless t.blank? || t.class == DateTime || t.class == ActiveSupport::TimeWithZone
     super(t)

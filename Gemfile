@@ -36,9 +36,9 @@ gem 'jquery-ui-rails'
 group :development, :test do
   gem 'rspec-rails'
   # The following optional lines are part of the advanced setup.
-  gem 'guard-rspec'
+  # gem 'guard-rspec'
   gem 'spork-rails'
-  gem 'guard-spork'
+  # gem 'guard-spork'
   gem 'childprocess'
   gem 'capistrano'
   gem 'capistrano-bundler'

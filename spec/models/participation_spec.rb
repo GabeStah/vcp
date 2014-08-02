@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Participation, :type => :model do
   before do
-    @character = Character.new(achievement_points: 1500,
+    @character = Character.create!(achievement_points: 1500,
                                character_class: FactoryGirl.create(:character_class),
                                gender: 0,
                                guild: FactoryGirl.create(:guild),
@@ -15,9 +15,7 @@ RSpec.describe Participation, :type => :model do
                                realm: 'Hyjal',
                                user: FactoryGirl.create(:user),
                                verified: true)
-    @character.save!
-    @raid = Raid.new(zone: FactoryGirl.create(:zone), started_at: DateTime.now, ended_at: 4.hours.from_now)
-    @raid.save!
+    @raid = Raid.create!(zone: FactoryGirl.create(:zone), started_at: DateTime.now, ended_at: 4.hours.from_now)
     @participation = Participation.new(
         character: @character,
         in_raid: true,

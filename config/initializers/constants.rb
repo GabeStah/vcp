@@ -1,3 +1,7 @@
+DEFAULT_SITE_SETTINGS = {
+  attendance_cost: 0.1,
+  tardiness_cutoff_time: 60,
+}
 DATETIME_FORMAT = '%m/%d/%Y %I:%M %p'
 DEFAULT_RAID_END_TIME = {
   hour: 22,
