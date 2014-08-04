@@ -2,7 +2,7 @@ class Raid < ActiveRecord::Base
   belongs_to :zone
   has_many :participations
   # Destroy participations associated with Raid
-  has_many :characters, through: :participations, dependent: :delete_all
+  has_many :characters, -> { uniq }, through: :participations, dependent: :delete_all
   has_many :standing_events
 
   # ended_at
@@ -56,7 +56,6 @@ class Raid < ActiveRecord::Base
   def process_standing_events
     settings = Setting.first
     # Loop characters to process
-    # TODO: Character set is not accurate, instead is retrieving all participation records.
     self.characters.each do |character|
       # Find character participation set
       participations = self.participations.where(character: character).order(:timestamp)
@@ -73,7 +72,6 @@ class Raid < ActiveRecord::Base
                                               change: -DEFAULT_SITE_SETTINGS[:attendance_cost],
                                               standing: Standing.find_by(character: character),
                                               type: :attendance)
-       blah = true
      end
     end
   end

@@ -41,7 +41,7 @@ RSpec.describe StandingEvent, :type => :model do
       @standing_events = @raid.standing_events
       expect(@standing_events.size).to eq 1
       @standing_event = @standing_events.first
-      expect(@standing_event.type).to eq :attendance
+      expect(@standing_event.type).to eq :attendance.to_s
       expect(@standing_event.change).to eq -DEFAULT_SITE_SETTINGS[:attendance_cost]
     end
   end
