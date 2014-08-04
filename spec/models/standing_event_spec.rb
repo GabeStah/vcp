@@ -85,10 +85,11 @@ RSpec.describe StandingEvent, :type => :model do
 
   describe 'destroy' do
     before do
+      @standing_event.save
       @standing_event.destroy
     end
     it 'change value should be reverted on Standing points' do
-      expect(Standing.find(@standing_event.standing).points).to eq (0 - @standing_event.change)
+      expect(Standing.find(@standing_event.standing).points).to eq 0
     end
   end
 

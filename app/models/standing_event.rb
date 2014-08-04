@@ -22,6 +22,8 @@ class StandingEvent < Event
     end
     def revert_change
       # Subtract what change was prior to current instance; useful for update
-      self.standing.update_attributes(points: self.standing.points - self.change_was)
+      self.change_was ?
+        self.standing.update_attributes(points: self.standing.points - self.change_was) :
+        self.standing.update_attributes(points: self.standing.points)
     end
 end

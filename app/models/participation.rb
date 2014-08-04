@@ -47,9 +47,43 @@ class Participation < ActiveRecord::Base
     end
   end
 
+  def matches_filter?(args = {})
+    after = args[:after]
+    before = args[:before]
+    in_raid = args[:in_raid]
+    online = args[:online]
+
+    if after.present?
+      if self.timestamp.to_datetime < after.to_datetime
+        return false
+      end
+    end
+    if before.present?
+      if self.timestamp.to_datetime > before.to_datetime
+        return false
+      end
+    end
+    if in_raid.present?
+      if !(self.in_raid == in_raid)
+        return false
+      end
+    end
+    if online.present?
+      if !(self.online == online)
+        return false
+      end
+    end
+    true #matches
+  end
+
   # Retrieve the previous Participation record from ActiveRecord dataset
   def previous(dataset)
-    return nil unless dataset.class == Participation::ActiveRecord_AssociationRelation
+    if dataset.nil?
+      dataset = self.raid.participations
+    else
+      return nil unless dataset.class == Participation::ActiveRecord_AssociationRelation
+    end
+    return nil if dataset.nil?
     # Find all by character_id
     dataset = dataset.reject { |p| p.character_id != self.character_id }
     # If count == 1, return nil

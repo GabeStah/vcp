@@ -54,25 +54,25 @@ class Raid < ActiveRecord::Base
   end
 
   def process_standing_events
-    settings = Setting.first
+    #settings = Setting.first
     # Loop characters to process
     self.characters.each do |character|
       # Find character participation set
       participations = self.participations.where(character: character).order(:timestamp)
-      # IF: Character was online and in_raid between start settings.tardiness_cutoff_time
-     if participations.detect do |participation|
-          participation.online == true &&
-          participation.in_raid == true &&
-          participation.timestamp >= self.started_at &&
-          participation.timestamp <= (self.started_at.to_time +
-            (Rails.env.production? ? settings.tardiness_cutoff_time.minutes : DEFAULT_SITE_SETTINGS[:tardiness_cutoff_time])).to_datetime
-     end
-       # THEN: Attendance_loss
-       @standing_event = StandingEvent.create(raid: self,
-                                              change: -DEFAULT_SITE_SETTINGS[:attendance_cost],
-                                              standing: Standing.find_by(character: character),
-                                              type: :attendance)
-     end
+      # Create StandingCalculation instance
+      standing_calculation = StandingCalculation.new(character: character, participations: participations, raid: self)
+      if standing_calculation.calculate(type: :attendance_loss)
+        @standing_event = StandingEvent.create(raid: self,
+                                               change: -DEFAULT_SITE_SETTINGS[:attendance_cost],
+                                               standing: Standing.find_by(character: character),
+                                               type: :attendance)
+      end
+      if standing_calculation.calculate(type: :attendance_gain)
+        @standing_event = StandingEvent.create(raid: self,
+                                               change: DEFAULT_SITE_SETTINGS[:attendance_gain],
+                                               standing: Standing.find_by(character: character),
+                                               type: :attendance)
+      end
     end
   end
 
