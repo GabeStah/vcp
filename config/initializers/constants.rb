@@ -1,6 +1,7 @@
 DEFAULT_SITE_SETTINGS = {
-  attendance_cost: 0.1,
+  attendance_loss: -0.1,
   attendance_gain: 1.0,
+  delinquent_loss: -1.0,
   tardiness_cutoff_time: 60,
 }
 DATETIME_FORMAT = '%m/%d/%Y %I:%M %p'

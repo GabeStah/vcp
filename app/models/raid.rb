@@ -61,18 +61,6 @@ class Raid < ActiveRecord::Base
       participations = self.participations.where(character: character).order(:timestamp)
       # Create StandingCalculation instance
       standing_calculation = StandingCalculation.new(character: character, participations: participations, raid: self)
-      if standing_calculation.calculate(type: :attendance_loss)
-        @standing_event = StandingEvent.create(raid: self,
-                                               change: -DEFAULT_SITE_SETTINGS[:attendance_cost],
-                                               standing: Standing.find_by(character: character),
-                                               type: :attendance)
-      end
-      if standing_calculation.calculate(type: :attendance_gain)
-        @standing_event = StandingEvent.create(raid: self,
-                                               change: DEFAULT_SITE_SETTINGS[:attendance_gain],
-                                               standing: Standing.find_by(character: character),
-                                               type: :attendance)
-      end
     end
   end
 
