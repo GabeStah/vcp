@@ -76,6 +76,31 @@ class Participation < ActiveRecord::Base
     true #matches
   end
 
+  # Retrieve the next Participation record from ActiveRecord dataset
+  def next(dataset)
+    if dataset.nil?
+      dataset = self.raid.participations
+    else
+      return nil unless dataset.class == Participation::ActiveRecord_AssociationRelation
+    end
+    return nil if dataset.nil?
+    # Find all by character_id
+    dataset = dataset.reject { |p| p.character_id != self.character_id }
+    # If count == 1, return nil
+    return nil if dataset.size == 1
+    # Sort by timestamp
+    dataset = dataset.sort_by { |a| a[:timestamp] }
+    # Loop with index
+    dataset.each_with_index do |p, i|
+      if p.id == self.id
+        # nil if no next
+        return nil if i == dataset.size
+        # Return next in array
+        return dataset[i+1]
+      end
+    end
+  end
+
   # Retrieve the previous Participation record from ActiveRecord dataset
   def previous(dataset)
     if dataset.nil?

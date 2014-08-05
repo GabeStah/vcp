@@ -15,15 +15,31 @@ class StandingCalculation
 
   attr_accessor :character, :participations, :raid, :settings
 
+  def qualified_for_attendance?
+    attendance_cutoff_time = Rails.env.production? ? settings.tardiness_cutoff_time : DEFAULT_SITE_SETTINGS[:attendance_cutoff_time]
+    raid_time = time_in_raid
+    # Time in raid (min) meets/exceeds attendance_cutoff_time
+    # OR
+    # Time in raid longer greater than or equal to total raid time
+    if raid_time.nil?
+      return false
+    elsif (raid_time / 60) >= attendance_cutoff_time || raid_time >= (raid.ended_at.to_i - raid.started_at.to_i)
+      return true
+    end
+    return false
+  end
+
   def calculate(args = {})
-    tardiness_cutoff_time = Rails.env.production? ? settings.tardiness_cutoff_time : DEFAULT_SITE_SETTINGS[:tardiness_cutoff_time]
+    tardiness_cutoff_time  = Rails.env.production? ? settings.tardiness_cutoff_time : DEFAULT_SITE_SETTINGS[:tardiness_cutoff_time]
     case args[:type]
       when :attendance_loss
         # Character was online and in_raid between start and start+settings.tardiness_cutoff_time
         in_raid = first_time(event: :in_raid, during_raid: true, within_cutoff: true)
         online = first_time(event: :online, during_raid: true, within_cutoff: true)
+        # AND
+        # Character qualified for attendance
         # VALUE: attendance_loss
-        return DEFAULT_SITE_SETTINGS[:attendance_loss] if (in_raid.present? && online.present?)
+        return DEFAULT_SITE_SETTINGS[:attendance_loss] if (in_raid.present? && online.present? && qualified_for_attendance?)
       when :attendance_gain
         # Character was online between start and start+settings.tardiness_cutoff_time
         online = first_time(event: :online, during_raid: true, within_cutoff: true)
@@ -42,7 +58,21 @@ class StandingCalculation
         # OR
         # Character was online after raid_start
         if online.present? && (online.to_datetime > raid.started_at.to_datetime)
-          return DEFAULT_SITE_SETTINGS[:delinquent_loss]
+          if online.to_datetime <= (raid.started_at.to_time + tardiness_cutoff_time.minutes).to_datetime
+            tardiness_percent = (online.to_f - raid.started_at.to_f) / (tardiness_cutoff_time * 60)
+            # VALUE: delinquent_loss * percent_of_cutoff_missed
+            return (DEFAULT_SITE_SETTINGS[:delinquent_loss] * tardiness_percent)
+          else
+            # Character missed entire tardiness cutoff period
+            # VALUE: delinquent_loss
+            return DEFAULT_SITE_SETTINGS[:delinquent_loss]
+          end
+        end
+        # OR
+        # Character qualified for attendance but was offline sometime during cutoff period
+        if qualified_for_attendance?
+          # TODO: Calculate portion of cutoff period was offline
+          # If more than X minutes, qualify for absence and penalize cutoff period % of delinquency
         end
     end
   end
@@ -112,5 +142,42 @@ class StandingCalculation
 
   def read_attribute_for_validation(key)
     @attributes[key]
+  end
+
+  def time_in_raid
+    in_raid = first_time(event: :in_raid, during_raid: true)
+    total_time = 0
+    previous_timestamp = nil
+    unless in_raid.nil?
+      # Loop participations, record if online + in raid time until next event
+      participations.each do |participation|
+        # if previous timestamp, check if current one changes status
+        if previous_timestamp
+          # Not in raid
+          if participation.matches_filter?(in_raid: false) || participation.matches_filter?(online: false)
+            # Add difference to total time and nil previous
+            total_time += (participation.timestamp.to_i - previous_timestamp.to_i)
+            previous_timestamp = nil
+          else # still online and in_raid
+            # Check if occurs after raid_end
+            if participation.matches_filter?(after: raid.ended_at)
+              # Add previous timestamp to raid_end to total time then nil out
+              total_time += (raid.ended_at.to_i - previous_timestamp.to_i)
+              previous_timestamp = nil
+            end
+          end
+        else
+          # If not previous timestamp, check if current matches online/in_raid filter
+          if participation.matches_filter?(online: true, in_raid: true, after: raid.started_at, before: raid.ended_at)
+            # Match, assign previous_timestamp
+            previous_timestamp = participation.timestamp
+          end
+        end
+      end
+    end
+    # If previous_timestamp still exists, add time to end of raid to total
+    total_time += (raid.ended_at.to_i - previous_timestamp.to_i) if previous_timestamp
+    # If total_time is 0, then nil
+    total_time == 0 ? nil : total_time
   end
 end
