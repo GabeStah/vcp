@@ -73,8 +73,8 @@ class StandingCalculation
         if qualified_for_attendance?
           cutoff_time_online = time_online(within_cutoff: true)
           cutoff_time_offline = (tardiness_cutoff_time * 60) - cutoff_time_online
-          # If more than X minutes, qualify for absence and penalize cutoff period % of delinquency
-          if (cutoff_time_offline * 60) >= DEFAULT_SITE_SETTINGS[:delinquent_cutoff_time]
+          # If more than delinquent_cutoff_time minutes, qualify for absence and penalize cutoff period % of delinquency
+          if (cutoff_time_offline / 60) >= DEFAULT_SITE_SETTINGS[:delinquent_cutoff_time]
             tardiness_percent = cutoff_time_offline.to_f / (DEFAULT_SITE_SETTINGS[:tardiness_cutoff_time] * 60)
             return (DEFAULT_SITE_SETTINGS[:delinquent_loss] * tardiness_percent)
           end

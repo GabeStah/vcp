@@ -206,6 +206,28 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events[1].type).to eq :delinquent.to_s
       expect(@standing_events[1].change).to eq BigDecimal.new(DEFAULT_SITE_SETTINGS[:delinquent_loss] * 35/60, 6)
     end
+
+    # SCENARIO:
+    # Online and invited at raid_start
+    # Offline in raid after attendance cutoff, but after deliquent_cutoff_time (30+ min)
+    # EXPECT:
+    # attendance_loss
+    it 'multi-event: online at raid start, invited at raid start, offline and in raid during cutoff' do
+      Participation.create!(character: @character, raid: @raid,
+                            timestamp: @raid.started_at,
+                            online: true,
+                            in_raid: true)
+      Participation.create!(character: @character, raid: @raid,
+                            timestamp: (@raid.started_at.to_time + 35.minutes).to_datetime,
+                            online: false,
+                            in_raid: true)
+      @raid.process_standing_events
+
+      @standing_events = @raid.standing_events
+      expect(@standing_events.size).to eq 1
+      expect(@standing_events[0].type).to eq :attendance.to_s
+      expect(@standing_events[0].change).to eq DEFAULT_SITE_SETTINGS[:attendance_loss]
+    end
   end
 
 end
