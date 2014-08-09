@@ -13,6 +13,10 @@ class Standing < ActiveRecord::Base
     end
   end
 
+  def self.created_before(time)
+    where("#{table_name}.created_at <= ?", time)
+  end
+
   validates :character,
             presence: true,
             uniqueness: true

@@ -16,6 +16,14 @@ class StandingEvent < Event
   validates :type,
             inclusion: [:attendance, :delinquent, :initial, :retirement]
 
+  def self.gains
+    where("#{table_name}.change > ?", 0)
+  end
+
+  def self.losses
+    where("#{table_name}.change < ?", 0)
+  end
+
   private
     def apply_change
       self.standing.update_attributes(points: self.standing.points + self.change)

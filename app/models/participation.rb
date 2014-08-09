@@ -41,9 +41,9 @@ class Participation < ActiveRecord::Base
     event = PARTICIPATION_POSSIBILITIES[previous_symbol][current_symbol]
     # Return single string or joined if array
     if event.is_a?(Array)
-      return event.join(" & ")
+      event.join(" & ")
     else
-      return event
+      event
     end
   end
 

@@ -2,9 +2,7 @@ require 'spec_helper'
 
 RSpec.describe StandingEvent, :type => :model do
 
-  describe 'joined raid and online at raid.start_at' do
-    # 1. timestamp: @raid.started_at - 5.minutes, online: true, in_raid: false
-    # 2. timestamp: @raid.started_at, online: true, in_raid: true
+  describe 'phase 1 events' do
     before do
       @character = Character.create!(achievement_points: 1500,
                                      character_class: FactoryGirl.create(:character_class),
@@ -21,7 +19,7 @@ RSpec.describe StandingEvent, :type => :model do
                                      verified: true)
       @raid = Raid.create!(zone: FactoryGirl.create(:zone), started_at: DateTime.now, ended_at: 4.hours.from_now)
       # Create participation data
-      @standing = Standing.create!(character: @character)
+      @standing = Standing.create!(active: true, character: @character)
       @raid = Raid.find(@raid)
     end
 
@@ -230,5 +228,91 @@ RSpec.describe StandingEvent, :type => :model do
     end
   end
 
+  describe 'phase 2 events' do
+    before do
+      @character_one = Character.create!(achievement_points: 1500,
+                                       character_class: FactoryGirl.create(:character_class),
+                                       gender: 0,
+                                       guild: FactoryGirl.create(:guild),
+                                       level: 90,
+                                       region: 'us',
+                                       portrait: 'internal-record-3661/66/115044674-avatar.jpg',
+                                       name: "Kulldar1",
+                                       race: FactoryGirl.create(:race),
+                                       rank: 9,
+                                       realm: 'Hyjal',
+                                       user: FactoryGirl.create(:user),
+                                       verified: true)
+      @character_two = Character.create!(achievement_points: 1500,
+                                         character_class: FactoryGirl.create(:character_class),
+                                         gender: 0,
+                                         guild: FactoryGirl.create(:guild),
+                                         level: 90,
+                                         region: 'us',
+                                         portrait: 'internal-record-3661/66/115044674-avatar.jpg',
+                                         name: "Kulldar2",
+                                         race: FactoryGirl.create(:race),
+                                         rank: 9,
+                                         realm: 'Hyjal',
+                                         user: FactoryGirl.create(:user),
+                                         verified: true)
+      @character_three = Character.create!(achievement_points: 1500,
+                                         character_class: FactoryGirl.create(:character_class),
+                                         gender: 0,
+                                         guild: FactoryGirl.create(:guild),
+                                         level: 90,
+                                         region: 'us',
+                                         portrait: 'internal-record-3661/66/115044674-avatar.jpg',
+                                         name: "Kulldar3",
+                                         race: FactoryGirl.create(:race),
+                                         rank: 9,
+                                         realm: 'Hyjal',
+                                         user: FactoryGirl.create(:user),
+                                         verified: true)
+      @raid = Raid.create!(zone: FactoryGirl.create(:zone), started_at: DateTime.now, ended_at: 4.hours.from_now)
+      # Create participation data
+      @standing_one = Standing.create!(active: true, character: @character_one)
+      @standing_two = Standing.create!(active: true, character: @character_two)
+      @standing_three = Standing.create!(active: true, character: @character_three)
+      @standing_count = Standing.all.size
+      @raid = Raid.find(@raid)
+    end
+
+    # SCENARIO:
+    # #1 offline at raid_start
+    # #1 Online before cutoff
+    # EXPECT:
+    # #1 attendance_gain (Standard)
+    # #1 delinquent_loss (% of Standard from cutoff)
+    # #2 deliquent_gain (% of Standard from cutoff / num_other_players)
+    it 'multi-event: offline at raid start, online during cutoff' do
+      Participation.create!(character: @character_one, raid: @raid,
+                            timestamp: @raid.started_at,
+                            online: false,
+                            in_raid: false)
+      Participation.create!(character: @character_one, raid: @raid,
+                            timestamp: (@raid.started_at.to_time + 45.minutes).to_datetime,
+                            online: true,
+                            in_raid: false)
+      @raid.process_standing_events
+
+      @standing_events_one = @raid.standing_events.where(standing: @standing_one)
+      expect(@standing_events_one.size).to eq 2
+      expect(@standing_events_one[0].type).to eq :attendance.to_s
+      expect(@standing_events_one[0].change).to eq DEFAULT_SITE_SETTINGS[:attendance_gain]
+      expect(@standing_events_one[1].type).to eq :delinquent.to_s
+      expect(@standing_events_one[1].change).to eq DEFAULT_SITE_SETTINGS[:delinquent_loss] * 0.75
+
+      @standing_events_two = @raid.standing_events.where(standing: @standing_two)
+      expect(@standing_events_two.size).to eq 1
+      expect(@standing_events_two[0].type).to eq :delinquent.to_s
+      expect(@standing_events_two[0].change).to eq BigDecimal.new((DEFAULT_SITE_SETTINGS[:delinquent_loss].to_f * 0.75 * -1) / (@standing_count - 1), 6)
+
+      @standing_events_three = @raid.standing_events.where(standing: @standing_three)
+      expect(@standing_events_three.size).to eq 1
+      expect(@standing_events_three[0].type).to eq :delinquent.to_s
+      expect(@standing_events_three[0].change).to eq BigDecimal.new((DEFAULT_SITE_SETTINGS[:delinquent_loss].to_f * 0.75 * -1) / (@standing_count - 1), 6)
+    end
+  end
 end
 
