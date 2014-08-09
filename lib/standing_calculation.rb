@@ -71,8 +71,13 @@ class StandingCalculation
         # OR
         # Character qualified for attendance but was offline sometime during cutoff period
         if qualified_for_attendance?
-          # TODO: Calculate portion of cutoff period was offline
+          cutoff_time_online = time_online(within_cutoff: true)
+          cutoff_time_offline = (tardiness_cutoff_time * 60) - cutoff_time_online
           # If more than X minutes, qualify for absence and penalize cutoff period % of delinquency
+          if (cutoff_time_offline * 60) >= DEFAULT_SITE_SETTINGS[:delinquent_cutoff_time]
+            tardiness_percent = cutoff_time_offline.to_f / (DEFAULT_SITE_SETTINGS[:tardiness_cutoff_time] * 60)
+            return (DEFAULT_SITE_SETTINGS[:delinquent_loss] * tardiness_percent)
+          end
         end
     end
   end
@@ -177,6 +182,74 @@ class StandingCalculation
     end
     # If previous_timestamp still exists, add time to end of raid to total
     total_time += (raid.ended_at.to_i - previous_timestamp.to_i) if previous_timestamp
+    # If total_time is 0, then nil
+    total_time == 0 ? nil : total_time
+  end
+
+  def time_online(args={})
+    tardiness_cutoff_time = Rails.env.production? ? settings.tardiness_cutoff_time : DEFAULT_SITE_SETTINGS[:tardiness_cutoff_time]
+    within_cutoff = args[:within_cutoff].present? ? args[:within_cutoff] : true
+    online = first_time(event: :online, during_raid: true, within_cutoff: within_cutoff)
+    total_time = 0
+    previous_timestamp = nil
+    unless online.nil?
+      # Loop participations, record if online + in raid time until next event
+      participations.each do |participation|
+        # if previous timestamp, check if current one changes status
+        if previous_timestamp
+          # If cutoff set, limit range
+          if within_cutoff
+            # Within cutoff
+            if participation.matches_filter?(after: raid.started_at, before: (raid.started_at.to_time + tardiness_cutoff_time.minutes).to_datetime)
+              # If offline, new timestamp
+              # If online, do nothing
+              if participation.matches_filter?(online: false)
+                total_time += (participation.timestamp.to_i - previous_timestamp.to_i)
+                previous_timestamp = nil
+              end
+            else # After cutoff
+              # Add up to cutoff time
+              total_time += (participation.timestamp.to_i - previous_timestamp.to_i)
+              previous_timestamp = nil
+            end
+          else
+            if participation.matches_filter?(online: false)
+              # Add difference to total time and nil previous
+              total_time += ((raid.started_at.to_time + tardiness_cutoff_time.minutes).to_datetime.to_i - previous_timestamp.to_i)
+              previous_timestamp = nil
+            else # still online
+              # Check if occurs after raid_end
+              if participation.matches_filter?(after: raid.ended_at)
+                # Add previous timestamp to raid_end to total time then nil out
+                total_time += (raid.ended_at.to_i - previous_timestamp.to_i)
+                previous_timestamp = nil
+              end
+            end
+          end
+        else
+          # Check for cutoff flag
+          if within_cutoff
+            if participation.matches_filter?(online: true, after: raid.started_at, before: (raid.started_at.to_time + tardiness_cutoff_time.minutes).to_datetime)
+              # Match, assign previous_timestamp
+              previous_timestamp = participation.timestamp
+            end
+          else
+            if participation.matches_filter?(online: true, after: raid.started_at, before: raid.ended_at)
+              # Match, assign previous_timestamp
+              previous_timestamp = participation.timestamp
+            end
+          end
+        end
+      end
+    end
+    # Cutoff flag
+    if within_cutoff
+      # If previous_timestamp still exists, add time to end of cutoff time
+      total_time += ((raid.started_at.to_time + tardiness_cutoff_time.minutes).to_datetime.to_i - previous_timestamp.to_i) if previous_timestamp
+    else # Check entire raid
+      # If previous_timestamp still exists, add time to end of raid to total
+      total_time += (raid.ended_at.to_i - previous_timestamp.to_i) if previous_timestamp
+    end
     # If total_time is 0, then nil
     total_time == 0 ? nil : total_time
   end

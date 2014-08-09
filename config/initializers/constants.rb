@@ -2,6 +2,7 @@ DEFAULT_SITE_SETTINGS = {
   attendance_cutoff_time: 15,
   attendance_loss: -0.1,
   attendance_gain: 1.0,
+  delinquent_cutoff_time: 30,
   delinquent_loss: -1.0,
   tardiness_cutoff_time: 60,
 }

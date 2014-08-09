@@ -194,7 +194,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: true,
                             in_raid: true)
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 20.minutes).to_datetime,
+                            timestamp: (@raid.started_at.to_time + 25.minutes).to_datetime,
                             online: false,
                             in_raid: true)
       @raid.process_standing_events
@@ -204,7 +204,7 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events[0].type).to eq :attendance.to_s
       expect(@standing_events[0].change).to eq DEFAULT_SITE_SETTINGS[:attendance_loss]
       expect(@standing_events[1].type).to eq :delinquent.to_s
-      expect(@standing_events[1].change).to eq DEFAULT_SITE_SETTINGS[:delinquent_loss] * 2/3
+      expect(@standing_events[1].change).to eq BigDecimal.new(DEFAULT_SITE_SETTINGS[:delinquent_loss] * 35/60, 6)
     end
   end
 

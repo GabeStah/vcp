@@ -53,22 +53,22 @@ class Participation < ActiveRecord::Base
     in_raid = args[:in_raid]
     online = args[:online]
 
-    if after.present?
+    if after.nil? == false
       if self.timestamp.to_datetime < after.to_datetime
         return false
       end
     end
-    if before.present?
+    if before.nil? == false
       if self.timestamp.to_datetime > before.to_datetime
         return false
       end
     end
-    if in_raid.present?
+    if in_raid.nil? == false
       if !(self.in_raid == in_raid)
         return false
       end
     end
-    if online.present?
+    if online.nil? == false
       if !(self.online == online)
         return false
       end
