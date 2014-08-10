@@ -12,7 +12,7 @@ class StandingEvent < Event
   validates :standing,
             presence: true
   validates :type,
-            inclusion: [:attendance, :delinquent, :initial, :retirement]
+            inclusion: [:attendance, :delinquent, :initial, :resume, :retirement]
 
   def self.gains
     where("#{table_name}.change > ?", 0)

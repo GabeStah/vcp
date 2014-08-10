@@ -365,13 +365,19 @@ RSpec.describe StandingEvent, :type => :model do
 
     # SCENARIO:
     # #1 retirement
+    # #2 resume
     # EXPECT:
     # #1 active = false
     # #1 retirement (zero points change)
     # #2 retirement_loss (#1.points / 2)
     # #3 retirement_loss (#1.points / 2)
     # total_points = 0
-    it 'retirement with negative points' do
+    # resume
+    # #1 active = true
+    # #1 resume (zero points change)
+    # #2 resume_gain (#1.points * -1 / 2)
+    # #3 resume_gain (#1.points * -1 / 2)
+    it 'retirement with negative points then resume' do
       @standing_one.retire
 
       expect(@standing_one.active).to eq false
@@ -392,17 +398,44 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events_three[0].change).to eq BigDecimal.new((-0.5) / (@standing_count - 1), 6)
 
       expect(Standing.total_points).to eq 0
+
+      @standing_one.resume
+
+      expect(@standing_one.active).to eq true
+
+      @standing_events_one = StandingEvent.where(standing: @standing_one)
+      expect(@standing_events_one.size).to eq 2
+      expect(@standing_events_one[1].type).to eq :resume.to_s
+      expect(@standing_events_one[1].change).to eq 0
+
+      @standing_events_two = StandingEvent.where(standing: @standing_two)
+      expect(@standing_events_two.size).to eq 2
+      expect(@standing_events_two[1].type).to eq :resume.to_s
+      expect(@standing_events_two[1].change).to eq BigDecimal.new((-0.5) * -1 / (@standing_count - 1), 6)
+
+      @standing_events_three = StandingEvent.where(standing: @standing_three)
+      expect(@standing_events_three.size).to eq 2
+      expect(@standing_events_three[1].type).to eq :resume.to_s
+      expect(@standing_events_three[1].change).to eq BigDecimal.new((-0.5) * -1 / (@standing_count - 1), 6)
+
+      expect(Standing.total_points).to eq 0
     end
 
     # SCENARIO:
     # #1 retirement
+    # #2 resume
     # EXPECT:
     # #1 active = false
     # #1 retirement (zero points change)
-    # #2 retirement_loss (#1.points / 2)
-    # #3 retirement_loss (#1.points / 2)
+    # #2 retirement_gain (#1.points / 2)
+    # #3 retirement_gain (#1.points / 2)
     # total_points = 0
-    it 'retirement with positive points' do
+    # resume
+    # #1 active = true
+    # #1 resume (zero points change)
+    # #2 resume_loss (#1.points * -1 / 2)
+    # #3 resume_loss (#1.points * -1 / 2)
+    it 'retirement with positive points then resume' do
       @standing_one.update_attributes(points: 0.5)
       @standing_two.update_attributes(points: 0)
       @standing_three.update_attributes(points: -0.5)
@@ -426,7 +459,29 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events_three[0].change).to eq BigDecimal.new((0.5) / (@standing_count - 1), 6)
 
       expect(Standing.total_points).to eq 0
+
+      @standing_one.resume
+
+      expect(@standing_one.active).to eq true
+
+      @standing_events_one = StandingEvent.where(standing: @standing_one)
+      expect(@standing_events_one.size).to eq 2
+      expect(@standing_events_one[1].type).to eq :resume.to_s
+      expect(@standing_events_one[1].change).to eq 0
+
+      @standing_events_two = StandingEvent.where(standing: @standing_two)
+      expect(@standing_events_two.size).to eq 2
+      expect(@standing_events_two[1].type).to eq :resume.to_s
+      expect(@standing_events_two[1].change).to eq BigDecimal.new((0.5) * -1 / (@standing_count - 1), 6)
+
+      @standing_events_three = StandingEvent.where(standing: @standing_three)
+      expect(@standing_events_three.size).to eq 2
+      expect(@standing_events_three[1].type).to eq :resume.to_s
+      expect(@standing_events_three[1].change).to eq BigDecimal.new((0.5) * -1 / (@standing_count - 1), 6)
+
+      expect(Standing.total_points).to eq 0
     end
   end
+
 end
 
