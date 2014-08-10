@@ -1,4 +1,6 @@
 class StandingEvent < Event
+  has_many :children, class_name: "StandingEvent", foreign_key: "parent_id"
+  belongs_to :parent, class_name: "StandingEvent"
   belongs_to :standing, foreign_key: 'actor_id'
   belongs_to :raid
 
@@ -12,7 +14,7 @@ class StandingEvent < Event
   validates :standing,
             presence: true
   validates :type,
-            inclusion: [:attendance, :delinquent, :initial, :resume, :retirement]
+            inclusion: [:attendance, :delinquent, :infraction, :initial, :resume, :retirement]
 
   def self.gains
     where("#{table_name}.change > ?", 0)

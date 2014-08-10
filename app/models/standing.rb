@@ -32,10 +32,9 @@ class Standing < ActiveRecord::Base
       current_points = self.points
       # 2. StandingEvent for resume
       # No point change, just create resume record
-      standing_event = StandingEvent.create(change: 0,
-                                            standing: self,
-                                            type: :resume)
-
+      parent_event = StandingEvent.create(change: 0,
+                                          standing: self,
+                                          type: :resume)
       if self.points != 0
         # 3. Reverse points distribution among remaining Standings
         # Assign standings set
@@ -52,6 +51,7 @@ class Standing < ActiveRecord::Base
               value *= -1
               # Create a StandingEvent with distributed value
               StandingEvent.create(change: value,
+                                   parent: parent_event,
                                    standing: standing,
                                    type: :resume)
             end
@@ -68,10 +68,9 @@ class Standing < ActiveRecord::Base
     current_points = self.points
     # 2. StandingEvent for retirement reverse
     # No point change, just create retirement record
-    standing_event = StandingEvent.create(change: 0,
-                                          standing: self,
-                                          type: :retirement)
-
+    parent_event = StandingEvent.create(change: 0,
+                                        standing: self,
+                                        type: :retirement)
     if self.points != 0
       # 3. Distribute points among remaining Standing
       standings = Standing.where(active: true)
@@ -81,9 +80,10 @@ class Standing < ActiveRecord::Base
         # Get divided value
         value = current_points.to_f / standings.size
         # Create a StandingEvent with distributed value
-        StandingEvent.create(change: value,
-                             standing: standing,
-                             type: :retirement)
+        standing_event = StandingEvent.create(change: value,
+                                              parent: parent_event,
+                                              standing: standing,
+                                              type: :retirement)
       end
     end
   end

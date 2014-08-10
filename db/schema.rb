@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140731002312) do
+ActiveRecord::Schema.define(version: 20140810074652) do
 
   create_table "character_classes", force: true do |t|
     t.string   "name"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20140731002312) do
     t.integer  "raid_id"
     t.decimal  "change",     precision: 10, scale: 6
     t.string   "type"
+    t.integer  "parent_id"
   end
 
   add_index "events", ["actor_id"], name: "index_events_on_actor_id", using: :btree
