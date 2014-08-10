@@ -1,9 +1,12 @@
 class Raid < ActiveRecord::Base
   belongs_to :zone
-  has_many :participations
+  has_many :participations, dependent: :destroy
   # Destroy participations associated with Raid
   has_many :characters, -> { uniq }, through: :participations, dependent: :delete_all
-  has_many :standing_events
+  has_many :standing_events, dependent: :destroy
+
+  before_update :destroy_standing_events
+  after_update :process_standing_events
 
   # ended_at
   validate :ended_at_is_valid_datetime
@@ -92,5 +95,13 @@ class Raid < ActiveRecord::Base
   end
   def started_at_is_valid_datetime
     errors.add(:started_at, 'must be a valid datetime') if ((DateTime.parse(started_at.to_s) rescue ArgumentError) == ArgumentError)
+  end
+
+  def destroy_standing_events
+    self.standing_events.each do |standing_event|
+      # Verify that each event exists
+      standing_event = StandingEvent.find_by(id: standing_event.id)
+      standing_event.destroy unless standing_event.nil?
+    end
   end
 end

@@ -20,8 +20,7 @@ class Participation < ActiveRecord::Base
             presence: true
   # timestamp
   validates :timestamp,
-            presence: true,
-            uniqueness: true
+            presence: true
   validate :timestamp_is_valid_datetime
 
   # Get appropriate event(s) tags based on current and previous participation flags
