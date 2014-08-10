@@ -9,8 +9,6 @@ class StandingEvent < Event
 
   validates :change,
             numericality: true
-  validates :raid,
-            presence: true
   validates :standing,
             presence: true
   validates :type,

@@ -2,6 +2,12 @@ class Standing < ActiveRecord::Base
   belongs_to :character
   has_many :standing_events
 
+  validates :character,
+            presence: true,
+            uniqueness: true
+  validates :points,
+            numericality: true
+
   def self.calculate_starting_points(args = {})
     seed = args[:seed] || 1
     players = args[:players] || 10
@@ -17,9 +23,35 @@ class Standing < ActiveRecord::Base
     where("#{table_name}.created_at <= ?", time)
   end
 
-  validates :character,
-            presence: true,
-            uniqueness: true
-  validates :points,
-            numericality: true
+  # Retire standing record
+  def retire
+    # 1. Set active = false
+    update_attributes(active: false)
+    current_points = self.points
+    # 2. StandingEvent for retirement reverse
+    # No point change, just create retirement record
+    standing_event = StandingEvent.create(change: 0,
+                                          standing: self,
+                                          type: :retirement)
+
+    if self.points != 0
+      # 3. Distribute points among remaining Standing
+      standings = Standing.where(active: true)
+
+      # Loop through active standings
+      standings.each do |standing|
+        # Get divided value
+        value = current_points.to_f / standings.size
+        # Create a StandingEvent with distributed value
+        StandingEvent.create(change: value,
+                             standing: standing,
+                             type: :retirement)
+      end
+    end
+  end
+
+  def self.total_points
+    Standing.where(active: true).sum(:points)
+  end
+
 end

@@ -68,12 +68,12 @@ class Raid < ActiveRecord::Base
 
   def secondary_stage(args={})
     stage_type = args[:type] || :delinquent_gain
+    # Find all standing where active = true and created_at was prior to raid.started_at
+    standings = Standing.created_before(self.started_at).where(active: true)
     case stage_type
       when :delinquent_gain
         # Find all delinquent_loss events for raid
         standing_events = StandingEvent.losses.where(raid: self, type: :delinquent)
-        # Find all standing where active = true and created_at was prior to raid.started_at
-        standings = Standing.created_before(self.started_at).where(active: true)
 
         # If only one standing, originator is only target so no change
         if standings.size > 1

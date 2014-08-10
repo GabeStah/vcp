@@ -314,5 +314,119 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events_three[0].change).to eq BigDecimal.new((DEFAULT_SITE_SETTINGS[:delinquent_loss].to_f * 0.75 * -1) / (@standing_count - 1), 6)
     end
   end
+
+  describe 'retirement calculations' do
+    before do
+      @character_one = Character.create!(achievement_points: 1500,
+                                         character_class: FactoryGirl.create(:character_class),
+                                         gender: 0,
+                                         guild: FactoryGirl.create(:guild),
+                                         level: 90,
+                                         region: 'us',
+                                         portrait: 'internal-record-3661/66/115044674-avatar.jpg',
+                                         name: "Kulldar1",
+                                         race: FactoryGirl.create(:race),
+                                         rank: 9,
+                                         realm: 'Hyjal',
+                                         user: FactoryGirl.create(:user),
+                                         verified: true)
+      @character_two = Character.create!(achievement_points: 1500,
+                                         character_class: FactoryGirl.create(:character_class),
+                                         gender: 0,
+                                         guild: FactoryGirl.create(:guild),
+                                         level: 90,
+                                         region: 'us',
+                                         portrait: 'internal-record-3661/66/115044674-avatar.jpg',
+                                         name: "Kulldar2",
+                                         race: FactoryGirl.create(:race),
+                                         rank: 9,
+                                         realm: 'Hyjal',
+                                         user: FactoryGirl.create(:user),
+                                         verified: true)
+      @character_three = Character.create!(achievement_points: 1500,
+                                           character_class: FactoryGirl.create(:character_class),
+                                           gender: 0,
+                                           guild: FactoryGirl.create(:guild),
+                                           level: 90,
+                                           region: 'us',
+                                           portrait: 'internal-record-3661/66/115044674-avatar.jpg',
+                                           name: "Kulldar3",
+                                           race: FactoryGirl.create(:race),
+                                           rank: 9,
+                                           realm: 'Hyjal',
+                                           user: FactoryGirl.create(:user),
+                                           verified: true)
+      # Create participation data
+      @standing_one = Standing.create!(active: true, character: @character_one, points: -0.5)
+      @standing_two = Standing.create!(active: true, character: @character_two, points: 0)
+      @standing_three = Standing.create!(active: true, character: @character_three, points: 0.5)
+      @standing_count = Standing.all.size
+    end
+
+    # SCENARIO:
+    # #1 retirement
+    # EXPECT:
+    # #1 active = false
+    # #1 retirement (zero points change)
+    # #2 retirement_loss (#1.points / 2)
+    # #3 retirement_loss (#1.points / 2)
+    # total_points = 0
+    it 'retirement with negative points' do
+      @standing_one.retire
+
+      expect(@standing_one.active).to eq false
+
+      @standing_events_one = StandingEvent.where(standing: @standing_one)
+      expect(@standing_events_one.size).to eq 1
+      expect(@standing_events_one[0].type).to eq :retirement.to_s
+      expect(@standing_events_one[0].change).to eq 0
+
+      @standing_events_two = StandingEvent.where(standing: @standing_two)
+      expect(@standing_events_two.size).to eq 1
+      expect(@standing_events_two[0].type).to eq :retirement.to_s
+      expect(@standing_events_two[0].change).to eq BigDecimal.new((-0.5) / (@standing_count - 1), 6)
+
+      @standing_events_three = StandingEvent.where(standing: @standing_three)
+      expect(@standing_events_three.size).to eq 1
+      expect(@standing_events_three[0].type).to eq :retirement.to_s
+      expect(@standing_events_three[0].change).to eq BigDecimal.new((-0.5) / (@standing_count - 1), 6)
+
+      expect(Standing.total_points).to eq 0
+    end
+
+    # SCENARIO:
+    # #1 retirement
+    # EXPECT:
+    # #1 active = false
+    # #1 retirement (zero points change)
+    # #2 retirement_loss (#1.points / 2)
+    # #3 retirement_loss (#1.points / 2)
+    # total_points = 0
+    it 'retirement with positive points' do
+      @standing_one.update_attributes(points: 0.5)
+      @standing_two.update_attributes(points: 0)
+      @standing_three.update_attributes(points: -0.5)
+      @standing_one.retire
+
+      expect(@standing_one.active).to eq false
+
+      @standing_events_one = StandingEvent.where(standing: @standing_one)
+      expect(@standing_events_one.size).to eq 1
+      expect(@standing_events_one[0].type).to eq :retirement.to_s
+      expect(@standing_events_one[0].change).to eq 0
+
+      @standing_events_two = StandingEvent.where(standing: @standing_two)
+      expect(@standing_events_two.size).to eq 1
+      expect(@standing_events_two[0].type).to eq :retirement.to_s
+      expect(@standing_events_two[0].change).to eq BigDecimal.new((0.5) / (@standing_count - 1), 6)
+
+      @standing_events_three = StandingEvent.where(standing: @standing_three)
+      expect(@standing_events_three.size).to eq 1
+      expect(@standing_events_three[0].type).to eq :retirement.to_s
+      expect(@standing_events_three[0].change).to eq BigDecimal.new((0.5) / (@standing_count - 1), 6)
+
+      expect(Standing.total_points).to eq 0
+    end
+  end
 end
 
