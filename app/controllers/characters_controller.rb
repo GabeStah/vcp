@@ -17,7 +17,7 @@ class CharactersController < ApplicationController
 
   def claim
     if @character.key_match?(params[:key], current_user)
-      if @character.update_attributes(user: current_user)
+      if @character.update(user: current_user)
         flash[:success] = "Character #{@character.full_title} claimed!"
       else
         flash[:error] = 'Key matched but claim failed.'
@@ -63,7 +63,7 @@ class CharactersController < ApplicationController
   end
 
   def unclaim
-    if @character.update_attributes(user: nil)
+    if @character.update(user: nil)
       flash[:success] = "Claim on #{@character.full_title} relinquished!"
     else
       flash[:error] = 'Unclaim failed.'
@@ -72,8 +72,8 @@ class CharactersController < ApplicationController
   end
 
   def update
-    if @character.update_attributes(character_params)
-      @character.update_attributes(verified: false)
+    if @character.update(character_params)
+      @character.update(verified: false)
       BattleNetWorker.perform_async(id: @character.id, type: 'character')
       flash[:success] = "#{@character.full_title} updated & Battle.net sync added to queue."
       redirect_to @character

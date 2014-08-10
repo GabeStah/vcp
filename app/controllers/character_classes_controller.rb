@@ -26,7 +26,7 @@ class CharacterClassesController < ApplicationController
   end
 
   def update
-    @character_class.update_attributes(character_class_params)
+    @character_class.update(character_class_params)
     respond_with_bip(@character_class)
   end
 

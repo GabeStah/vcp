@@ -121,7 +121,7 @@ class Character < ActiveRecord::Base
                                       realm:  self.realm,
                                       region: self.region.downcase) if @json['guild'] && @json['guild']['name']
       # Update record
-      self.update_attributes(
+      self.update(
           achievement_points: @json['achievementPoints'],
           character_class:    CharacterClass.find_by(blizzard_id: @json['class']),
           gender:             @json['gender'],

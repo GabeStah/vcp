@@ -75,7 +75,7 @@ RSpec.describe StandingEvent, :type => :model do
   describe 'update' do
     before do
       @standing_event.save
-      @standing_event.update_attributes(change: 0.75)
+      @standing_event.update(change: 0.75)
     end
 
     it ':change value should be reverted then updated on Standing points' do

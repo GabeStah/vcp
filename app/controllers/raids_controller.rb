@@ -45,7 +45,7 @@ class RaidsController < ApplicationController
         order: 'characters.name')
   end
   def update
-    if @raid.update_attributes(raid_params)
+    if @raid.update(raid_params)
       flash[:success] = "#{@raid.full_title} updated."
       redirect_to @raid
     else

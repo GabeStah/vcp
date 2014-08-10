@@ -8,7 +8,7 @@ class SettingsController < ApplicationController
   end
 
   def update
-    if @setting.update_attributes(setting_params)
+    if @setting.update(setting_params)
       flash[:success] = "Settings updated & data refreshed."
       redirect_to settings_path
     else

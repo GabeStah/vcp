@@ -1,12 +1,14 @@
 class StandingEvent < Event
-  has_many :children, class_name: "StandingEvent", foreign_key: "parent_id"
+  has_many :children, class_name: "StandingEvent", foreign_key: "parent_id", dependent: :destroy
   belongs_to :parent, class_name: "StandingEvent"
   belongs_to :standing, foreign_key: 'actor_id'
   belongs_to :raid
 
   after_create :apply_change
+  after_create :process_children
   before_update :revert_change
   after_update :apply_change
+  after_update :process_children_updates
   after_destroy :revert_change
 
   validates :change,
@@ -14,7 +16,7 @@ class StandingEvent < Event
   validates :standing,
             presence: true
   validates :type,
-            inclusion: [:attendance, :delinquent, :infraction, :initial, :resume, :retirement]
+            inclusion: %w(attendance delinquent infraction initial resume retirement)
 
   def self.gains
     where("#{table_name}.change > ?", 0)
@@ -24,14 +26,104 @@ class StandingEvent < Event
     where("#{table_name}.change < ?", 0)
   end
 
+  def type=(new_type)
+    super new_type.to_s
+  end
+
   private
-    def apply_change
-      self.standing.update_attributes(points: self.standing.points + self.change)
+  def apply_change
+    self.standing.update(points: self.standing.points + self.change)
+  end
+
+  def process_children
+    case self.type.to_sym
+      when :delinquent
+        # ensure loss
+        if self.change < 0
+          # Find all standing where active = true and created_at was prior to raid.started_at
+          standings = Standing.created_before(self.raid.started_at).where(active: true)
+          # If only one standing, originator is only target so no change
+          if standings.size > 1
+            # Loop through standings
+            standings.each do |standing|
+              # Make sure standing_event originator does not equal current updated standing character
+              unless self.standing.id == standing.id
+                # Get divided value
+                value = self.change.to_f / (standings.size - 1)
+                # Reverse polarization
+                value *= -1
+                # Create a StandingEvent with distributed value
+                StandingEvent.create(change: value,
+                                     parent: self,
+                                     raid: self.raid,
+                                     standing: standing,
+                                     type: :delinquent)
+              end
+            end
+          end
+        end
+      when :resume
+        if self.change == 0 && self.standing.points != 0
+          # Reverse points distribution among remaining Standings
+          # Assign standings set
+          standings = Standing.where(active: true)
+          if standings.size > 1
+            # Loop through active standings
+            standings.each do |standing|
+              # Ensure standing not equal to self.standing
+              unless standing.id == self.standing.id
+                # Get divided value
+                # Remove one record to account for self
+                value = self.standing.points.to_f / (standings.size - 1)
+                # Reverse polarization
+                value *= -1
+                # Create a StandingEvent with distributed value
+                StandingEvent.create(change: value,
+                                     parent: self,
+                                     standing: standing,
+                                     type: :resume)
+              end
+            end
+          end
+        end
+      when :retirement
+        if self.change == 0 && self.standing.points != 0
+          # Distribute points among remaining Standing
+          standings = Standing.where(active: true)
+
+          # Loop through active standings
+          standings.each do |standing|
+            # Get divided value
+            value = self.standing.points.to_f / standings.size
+            # Create a StandingEvent with distributed value
+            standing_event = StandingEvent.create(change: value,
+                                                  parent: self,
+                                                  standing: standing,
+                                                  type: :retirement)
+          end
+        end
     end
-    def revert_change
-      # Subtract what change was prior to current instance; useful for update
-      self.change_was ?
-        self.standing.update_attributes(points: self.standing.points - self.change_was) :
-        self.standing.update_attributes(points: self.standing.points)
+  end
+
+  def process_children_updates
+    if self.children.size > 0
+      case self.type.to_sym
+        when :delinquent
+          # Get divided value
+          value = self.change.to_f / self.children.size
+          # Reverse polarization
+          value *= -1
+          self.children.each do |standing_event|
+            standing_event.update(change: value)
+          end
+      end
     end
+  end
+
+  def revert_change
+    # Subtract what change was prior to current instance; useful for update
+    self.change_was ?
+      self.standing.update(points: self.standing.points - self.change_was) :
+      self.standing.update(points: self.standing.points)
+  end
 end

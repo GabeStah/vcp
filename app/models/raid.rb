@@ -60,42 +60,7 @@ class Raid < ActiveRecord::Base
       # Find character participation set
       participations = self.participations.where(character: character).order(:timestamp)
       # Create StandingCalculation instance
-      standing_calculation = StandingCalculation.new(character: character, participations: participations, raid: self, stage: :primary)
-    end
-    # Secondary stage
-    secondary_stage(type: :delinquent_gain)
-  end
-
-  def secondary_stage(args={})
-    stage_type = args[:type] || :delinquent_gain
-    # Find all standing where active = true and created_at was prior to raid.started_at
-    standings = Standing.created_before(self.started_at).where(active: true)
-    case stage_type
-      when :delinquent_gain
-        # Find all delinquent_loss events for raid
-        standing_events = StandingEvent.losses.where(raid: self, type: :delinquent)
-
-        # If only one standing, originator is only target so no change
-        if standings.size > 1
-          # Loop through each event
-          standing_events.each do |standing_event|
-            # Loop through standings
-            standings.each do |standing|
-              # Make sure standing_event originator does not equal current updated standing character
-              unless standing_event.standing.id == standing.id
-                # Get divided value
-                delinquent_gain = standing_event.change.to_f / (standings.size - 1)
-                # Reverse polarization
-                delinquent_gain *= -1
-                # Create a StandingEvent with distributed value
-                StandingEvent.create(raid: self,
-                                     change: delinquent_gain,
-                                     standing: standing,
-                                     type: :delinquent)
-              end
-            end
-          end
-        end
+      standing_calculation = StandingCalculation.new(character: character, participations: participations, raid: self)
     end
   end
 

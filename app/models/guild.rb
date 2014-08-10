@@ -73,7 +73,7 @@ class Guild < ActiveRecord::Base
       # Update record
       case type
         when 'guild'
-          self.update_attributes(achievement_points: @json['achievementPoints'],
+          self.update(achievement_points: @json['achievementPoints'],
                                  battlegroup: @json['battlegroup'],
                                  level: @json['level'],
                                  side: @json['side'],
@@ -88,7 +88,7 @@ class Guild < ActiveRecord::Base
                                                     region: self.region)
 
             # Add guild record
-            character.update_attributes(guild: self,
+            character.update(guild: self,
                                         rank: entry['rank'])
             # Create a character worker
             BattleNetWorker.perform_async(id: character.id, type: 'character')

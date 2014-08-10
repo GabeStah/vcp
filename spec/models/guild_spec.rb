@@ -157,7 +157,7 @@ describe Guild, type: :model do
     end
     describe 'setting primary of secondary guild' do
       before do
-        @secondary_guild.update_attributes(primary: true)
+        @secondary_guild.update(primary: true)
       end
       specify 'primary guild count should be one' do
         expect(Guild.where(primary: true).all.count).to eq 1
