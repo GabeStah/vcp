@@ -2,6 +2,10 @@ class Standing < ActiveRecord::Base
   belongs_to :character
   has_many :standing_events
 
+  attr_accessor :distribute
+
+  after_create :initial_standing_event
+
   validates :character,
             presence: true,
             uniqueness: true
@@ -50,4 +54,13 @@ class Standing < ActiveRecord::Base
     Standing.where(active: true).sum(:points)
   end
 
+  private
+
+  def initial_standing_event
+    StandingEvent.create(change: points,
+                         created: true,
+                         distribute: distribute,
+                         standing: self,
+                         type: :initial)
+  end
 end

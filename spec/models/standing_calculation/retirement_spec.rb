@@ -69,21 +69,21 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_one.active).to eq false
 
       @standing_events_one = StandingEvent.where(standing: @standing_one)
-      expect(@standing_events_one.size).to eq 1
-      expect(@standing_events_one[0].type).to eq :retirement.to_s
-      expect(@standing_events_one[0].change).to eq 0
+      expect(@standing_events_one.size).to eq 2
+      expect(@standing_events_one[1].type).to eq :retirement.to_s
+      expect(@standing_events_one[1].change).to eq 0
       expect(Standing.find(@standing_one).points).to eq @standing_one.points
 
       @standing_events_two = StandingEvent.where(standing: @standing_two)
-      expect(@standing_events_two.size).to eq 1
-      expect(@standing_events_two[0].type).to eq :retirement.to_s
-      expect(@standing_events_two[0].change).to eq BigDecimal.new((@standing_one.points) / (@standing_count - 1), 6)
+      expect(@standing_events_two.size).to eq 2
+      expect(@standing_events_two[1].type).to eq :retirement.to_s
+      expect(@standing_events_two[1].change).to eq BigDecimal.new((@standing_one.points) / (@standing_count - 1), 6)
       expect(Standing.find(@standing_two).points).to eq @standing_two.points + BigDecimal.new((@standing_one.points) / (@standing_count - 1), 6)
 
       @standing_events_three = StandingEvent.where(standing: @standing_three)
-      expect(@standing_events_three.size).to eq 1
-      expect(@standing_events_three[0].type).to eq :retirement.to_s
-      expect(@standing_events_three[0].change).to eq BigDecimal.new((@standing_one.points) / (@standing_count - 1), 6)
+      expect(@standing_events_three.size).to eq 2
+      expect(@standing_events_three[1].type).to eq :retirement.to_s
+      expect(@standing_events_three[1].change).to eq BigDecimal.new((@standing_one.points) / (@standing_count - 1), 6)
       expect(Standing.find(@standing_three).points).to eq @standing_three.points + BigDecimal.new((@standing_one.points) / (@standing_count - 1), 6)
 
       expect(Standing.total_points).to eq 0
@@ -93,21 +93,21 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_one.active).to eq true
 
       @standing_events_one = StandingEvent.where(standing: @standing_one)
-      expect(@standing_events_one.size).to eq 2
-      expect(@standing_events_one[1].type).to eq :resume.to_s
-      expect(@standing_events_one[1].change).to eq 0
+      expect(@standing_events_one.size).to eq 3
+      expect(@standing_events_one[2].type).to eq :resume.to_s
+      expect(@standing_events_one[2].change).to eq 0
       expect(Standing.find(@standing_one).points).to eq @standing_one.points
 
       @standing_events_two = StandingEvent.where(standing: @standing_two)
-      expect(@standing_events_two.size).to eq 2
-      expect(@standing_events_two[1].type).to eq :resume.to_s
-      expect(@standing_events_two[1].change).to eq BigDecimal.new((@standing_one.points) * -1 / (@standing_count - 1), 6)
+      expect(@standing_events_two.size).to eq 3
+      expect(@standing_events_two[2].type).to eq :resume.to_s
+      expect(@standing_events_two[2].change).to eq BigDecimal.new((@standing_one.points) * -1 / (@standing_count - 1), 6)
       expect(Standing.find(@standing_two).points).to eq @standing_two.points
 
       @standing_events_three = StandingEvent.where(standing: @standing_three)
-      expect(@standing_events_three.size).to eq 2
-      expect(@standing_events_three[1].type).to eq :resume.to_s
-      expect(@standing_events_three[1].change).to eq BigDecimal.new((@standing_one.points) * -1 / (@standing_count - 1), 6)
+      expect(@standing_events_three.size).to eq 3
+      expect(@standing_events_three[2].type).to eq :resume.to_s
+      expect(@standing_events_three[2].change).to eq BigDecimal.new((@standing_one.points) * -1 / (@standing_count - 1), 6)
       expect(Standing.find(@standing_three).points).to eq @standing_three.points
 
       expect(Standing.total_points).to eq 0
@@ -136,19 +136,19 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_one.active).to eq false
 
       @standing_events_one = StandingEvent.where(standing: @standing_one)
-      expect(@standing_events_one.size).to eq 1
-      expect(@standing_events_one[0].type).to eq :retirement.to_s
-      expect(@standing_events_one[0].change).to eq 0
+      expect(@standing_events_one.size).to eq 2
+      expect(@standing_events_one[1].type).to eq :retirement.to_s
+      expect(@standing_events_one[1].change).to eq 0
 
       @standing_events_two = StandingEvent.where(standing: @standing_two)
-      expect(@standing_events_two.size).to eq 1
-      expect(@standing_events_two[0].type).to eq :retirement.to_s
-      expect(@standing_events_two[0].change).to eq BigDecimal.new((@standing_one.points) / (@standing_count - 1), 6)
+      expect(@standing_events_two.size).to eq 2
+      expect(@standing_events_two[1].type).to eq :retirement.to_s
+      expect(@standing_events_two[1].change).to eq BigDecimal.new((@standing_one.points) / (@standing_count - 1), 6)
 
       @standing_events_three = StandingEvent.where(standing: @standing_three)
-      expect(@standing_events_three.size).to eq 1
-      expect(@standing_events_three[0].type).to eq :retirement.to_s
-      expect(@standing_events_three[0].change).to eq BigDecimal.new((@standing_one.points) / (@standing_count - 1), 6)
+      expect(@standing_events_three.size).to eq 2
+      expect(@standing_events_three[1].type).to eq :retirement.to_s
+      expect(@standing_events_three[1].change).to eq BigDecimal.new((@standing_one.points) / (@standing_count - 1), 6)
 
       expect(Standing.total_points).to eq 0
 
@@ -157,19 +157,19 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_one.active).to eq true
 
       @standing_events_one = StandingEvent.where(standing: @standing_one)
-      expect(@standing_events_one.size).to eq 2
-      expect(@standing_events_one[1].type).to eq :resume.to_s
-      expect(@standing_events_one[1].change).to eq 0
+      expect(@standing_events_one.size).to eq 3
+      expect(@standing_events_one[2].type).to eq :resume.to_s
+      expect(@standing_events_one[2].change).to eq 0
 
       @standing_events_two = StandingEvent.where(standing: @standing_two)
-      expect(@standing_events_two.size).to eq 2
-      expect(@standing_events_two[1].type).to eq :resume.to_s
-      expect(@standing_events_two[1].change).to eq BigDecimal.new((@standing_one.points) * -1 / (@standing_count - 1), 6)
+      expect(@standing_events_two.size).to eq 3
+      expect(@standing_events_two[2].type).to eq :resume.to_s
+      expect(@standing_events_two[2].change).to eq BigDecimal.new((@standing_one.points) * -1 / (@standing_count - 1), 6)
 
       @standing_events_three = StandingEvent.where(standing: @standing_three)
-      expect(@standing_events_three.size).to eq 2
-      expect(@standing_events_three[1].type).to eq :resume.to_s
-      expect(@standing_events_three[1].change).to eq BigDecimal.new((@standing_one.points) * -1 / (@standing_count - 1), 6)
+      expect(@standing_events_three.size).to eq 3
+      expect(@standing_events_three[2].type).to eq :resume.to_s
+      expect(@standing_events_three[2].change).to eq BigDecimal.new((@standing_one.points) * -1 / (@standing_count - 1), 6)
 
       expect(Standing.total_points).to eq 0
     end
@@ -190,36 +190,36 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_one.active).to eq false
 
       @standing_events_one = StandingEvent.where(standing: @standing_one)
-      expect(@standing_events_one.size).to eq 1
-      expect(@standing_events_one[0].type).to eq :retirement.to_s
-      expect(@standing_events_one[0].change).to eq 0
+      expect(@standing_events_one.size).to eq 2
+      expect(@standing_events_one[1].type).to eq :retirement.to_s
+      expect(@standing_events_one[1].change).to eq 0
       expect(Standing.find(@standing_one).points).to eq @standing_one.points
 
       @standing_events_two = StandingEvent.where(standing: @standing_two)
-      expect(@standing_events_two.size).to eq 1
-      expect(@standing_events_two[0].type).to eq :retirement.to_s
-      expect(@standing_events_two[0].change).to eq BigDecimal.new((@standing_one.points) / (@standing_count - 1), 6)
+      expect(@standing_events_two.size).to eq 2
+      expect(@standing_events_two[1].type).to eq :retirement.to_s
+      expect(@standing_events_two[1].change).to eq BigDecimal.new((@standing_one.points) / (@standing_count - 1), 6)
       expect(Standing.find(@standing_two).points).to eq @standing_two.points + BigDecimal.new((@standing_one.points) / (@standing_count - 1), 6)
 
       @standing_events_three = StandingEvent.where(standing: @standing_three)
-      expect(@standing_events_three.size).to eq 1
-      expect(@standing_events_three[0].type).to eq :retirement.to_s
-      expect(@standing_events_three[0].change).to eq BigDecimal.new((@standing_one.points) / (@standing_count - 1), 6)
+      expect(@standing_events_three.size).to eq 2
+      expect(@standing_events_three[1].type).to eq :retirement.to_s
+      expect(@standing_events_three[1].change).to eq BigDecimal.new((@standing_one.points) / (@standing_count - 1), 6)
       expect(Standing.find(@standing_three).points).to eq @standing_three.points + BigDecimal.new((@standing_one.points) / (@standing_count - 1), 6)
 
       expect(Standing.total_points).to eq 0
 
-      @standing_events_one[0].destroy
+      @standing_events_one[1].destroy
 
       @standing_events_one = StandingEvent.where(standing: @standing_one)
-      expect(@standing_events_one.size).to eq 0
+      expect(@standing_events_one.size).to eq 1
 
       @standing_events_two = StandingEvent.where(standing: @standing_two)
-      expect(@standing_events_two.size).to eq 0
+      expect(@standing_events_two.size).to eq 1
       expect(Standing.find(@standing_two).points).to eq @standing_two.points
 
       @standing_events_three = StandingEvent.where(standing: @standing_three)
-      expect(@standing_events_three.size).to eq 0
+      expect(@standing_events_three.size).to eq 1
       expect(Standing.find(@standing_three).points).to eq @standing_three.points
 
       expect(Standing.total_points).to eq @standing_two.points + @standing_three.points

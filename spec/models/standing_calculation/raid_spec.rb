@@ -37,6 +37,7 @@ RSpec.describe StandingEvent, :type => :model do
       @raid = Raid.find(@raid)
     end
 
+
     # SCENARIO:
     # Raid update
     # EXPECT:
@@ -45,6 +46,8 @@ RSpec.describe StandingEvent, :type => :model do
     # #1 StandingEvents should be reverted
     # #1 attendance_loss (Standard)
     # #1 delinquent_loss (25% of Standard)
+    # PURPOSE
+    # Ensure raid.update causes recreation of appropriate StandingEvent records
     it 'update raid' do
       Participation.create!(character: @kulldar, raid: @raid,
                             timestamp: @raid.started_at,
@@ -82,7 +85,7 @@ RSpec.describe StandingEvent, :type => :model do
       @participations = Participation.where(character: @kulldar, raid: @raid)
       expect(@participations.size).to eq 1
 
-      @standing_events_kulldar = StandingEvent.where(standing: @standing_kulldar)
+      @standing_events_kulldar = StandingEvent.where(raid: @raid, standing: @standing_kulldar)
       expect(@standing_events_kulldar.size).to eq 3
       # Normal attendance
       expect(@standing_events_kulldar[0].type).to eq :attendance.to_s
@@ -129,7 +132,7 @@ RSpec.describe StandingEvent, :type => :model do
                                              in_raid: true)
       @raid.process_standing_events
 
-      @standing_events_kulldar = StandingEvent.where(standing: @standing_kulldar)
+      @standing_events_kulldar = StandingEvent.where(raid: @raid, standing: @standing_kulldar)
       expect(@standing_events_kulldar.size).to eq 1
       expect(@standing_events_kulldar[0].type).to eq :attendance.to_s
       expect(@standing_events_kulldar[0].change).to eq DEFAULT_SITE_SETTINGS[:attendance_loss]
@@ -138,7 +141,7 @@ RSpec.describe StandingEvent, :type => :model do
       # delete raid
       @raid.destroy
 
-      @standing_events_kulldar = StandingEvent.where(standing: @standing_kulldar)
+      @standing_events_kulldar = StandingEvent.where(raid: @raid, standing: @standing_kulldar)
       expect(@standing_events_kulldar.size).to eq 0
       expect(Standing.find(@standing_kulldar).points).to eq @standing_kulldar.points
 

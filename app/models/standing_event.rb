@@ -11,6 +11,8 @@ class StandingEvent < Event
   after_update :process_children_updates
   after_destroy :revert_change
 
+  attr_accessor :created, :distribute
+
   validates :change,
             numericality: true
   validates :standing,
@@ -21,22 +23,25 @@ class StandingEvent < Event
   def self.dominant
     where.any_of(no_parent.merge(no_children), has_children)
   end
-  def self.has_children
-    includes(:children).where.not(children_events: { id: nil })
-  end
-  def self.no_children
-    includes(:children).where(children_events: { id: nil })
-  end
-  def self.no_parent
-    where(parent: nil)
-  end
 
   def self.gains
     where("#{table_name}.change > ?", 0)
   end
 
+  def self.has_children
+    includes(:children).where.not(children_events: { id: nil })
+  end
+
   def self.losses
     where("#{table_name}.change < ?", 0)
+  end
+
+  def self.no_children
+    includes(:children).where(children_events: { id: nil })
+  end
+
+  def self.no_parent
+    where(parent: nil)
   end
 
   def type=(new_type)
@@ -44,8 +49,12 @@ class StandingEvent < Event
   end
 
   private
+
   def apply_change
-    self.standing.update(points: self.standing.points + self.change)
+    # If newly created record and :initial, don't change
+    unless created && type.to_sym == :initial
+      self.standing.update(points: self.standing.points + self.change)
+    end
   end
 
   def process_children
@@ -71,6 +80,30 @@ class StandingEvent < Event
                                      raid: self.raid,
                                      standing: standing,
                                      type: :delinquent)
+              end
+            end
+          end
+        end
+      when :initial
+        # If distribute flag is true and change not zero, then distribute appropriately
+        if self.distribute && self.change != 0
+          # Find all standing where active = true
+          standings = Standing.where(active: true)
+          # If only one standing, originator is only target so no change
+          if standings.size > 1
+            # Loop through standings
+            standings.each do |standing|
+              # Make sure standing_event originator does not equal current updated standing character
+              unless self.standing.id == standing.id
+                # Get divided value
+                value = self.change.to_f / (standings.size - 1)
+                # Reverse polarization
+                value *= -1
+                # Create a StandingEvent with distributed value
+                StandingEvent.create(change: value,
+                                     parent: self,
+                                     standing: standing,
+                                     type: :initial)
               end
             end
           end
@@ -120,15 +153,14 @@ class StandingEvent < Event
 
   def process_children_updates
     if self.children.size > 0
-      case self.type.to_sym
-        when :delinquent
-          # Get divided value
-          value = self.change.to_f / self.children.size
-          # Reverse polarization
-          value *= -1
-          self.children.each do |standing_event|
-            standing_event.update(change: value)
-          end
+      if [:delinquent, :initial].include? self.type.to_sym
+        # Get divided value
+        value = self.change.to_f / self.children.size
+        # Reverse polarization
+        value *= -1
+        self.children.each do |standing_event|
+          standing_event.update(change: value)
+        end
       end
     end
   end

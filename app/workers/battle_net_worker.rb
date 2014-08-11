@@ -30,6 +30,8 @@ class BattleNetWorker
         end
       when 'guild'
         guild = Guild.find_by(id: id)
+        # possible:
+        # Guild.exists?(id)
         if guild
           guild.update_from_battle_net(type: type)
           logger.info "Type: #{type.upcase}, DBID: #{id}, Status: #{guild.name} of #{guild.realm}-#{guild.region.upcase} updated."

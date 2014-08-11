@@ -88,6 +88,10 @@ class Raid < ActiveRecord::Base
     end
   end
 
+  def destroy_standing_events
+    self.standing_events.dominant.destroy_all
+  end
+
   def ended_at_is_valid_datetime
     unless ended_at.blank?
       errors.add(:ended_at, 'must be a valid datetime') if ((DateTime.parse(ended_at.to_s) rescue ArgumentError) == ArgumentError)
@@ -95,9 +99,5 @@ class Raid < ActiveRecord::Base
   end
   def started_at_is_valid_datetime
     errors.add(:started_at, 'must be a valid datetime') if ((DateTime.parse(started_at.to_s) rescue ArgumentError) == ArgumentError)
-  end
-
-  def destroy_standing_events
-    self.standing_events.dominant.destroy_all
   end
 end
