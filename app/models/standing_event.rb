@@ -18,6 +18,19 @@ class StandingEvent < Event
   validates :type,
             inclusion: %w(attendance delinquent infraction initial resume retirement)
 
+  def self.dominant
+    where.any_of(no_parent.merge(no_children), has_children)
+  end
+  def self.has_children
+    includes(:children).where.not(children_events: { id: nil })
+  end
+  def self.no_children
+    includes(:children).where(children_events: { id: nil })
+  end
+  def self.no_parent
+    where(parent: nil)
+  end
+
   def self.gains
     where("#{table_name}.change > ?", 0)
   end

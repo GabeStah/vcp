@@ -98,10 +98,6 @@ class Raid < ActiveRecord::Base
   end
 
   def destroy_standing_events
-    self.standing_events.each do |standing_event|
-      # Verify that each event exists
-      standing_event = StandingEvent.find_by(id: standing_event.id)
-      standing_event.destroy unless standing_event.nil?
-    end
+    self.standing_events.dominant.destroy_all
   end
 end
