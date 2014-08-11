@@ -20,7 +20,7 @@ class BattleNetWorker
           logger.info "Type: #{type.upcase}, Status: Updated Character Classes."
         end
       when 'character'
-        character = Character.find(id)
+        character = Character.find_by(id: id)
         if character
           character.update_from_battle_net
           logger.info "Type: #{type.upcase}, DBID: #{id}, Status: #{character.name} of #{character.realm}-#{character.region.upcase} updated."
@@ -29,7 +29,7 @@ class BattleNetWorker
           raise CharacterError.new(message: "#{type.camelize} not found ID: #{id}")
         end
       when 'guild'
-        guild = Guild.find(id)
+        guild = Guild.find_by(id: id)
         if guild
           guild.update_from_battle_net(type: type)
           logger.info "Type: #{type.upcase}, DBID: #{id}, Status: #{guild.name} of #{guild.realm}-#{guild.region.upcase} updated."
@@ -38,7 +38,7 @@ class BattleNetWorker
           raise GuildError.new(message: "#{type.camelize} not found ID: #{id}")
         end
       when 'guild-members'
-        guild = Guild.find(id)
+        guild = Guild.find_by(id: id)
         if guild
           guild.update_from_battle_net(type: type)
           logger.info "Type: #{type.upcase}, DBID: #{id}, Status: #{guild.name} of #{guild.realm}-#{guild.region.upcase} members updated."

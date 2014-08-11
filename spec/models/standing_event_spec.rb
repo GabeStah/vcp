@@ -49,7 +49,7 @@ RSpec.describe StandingEvent, :type => :model do
 
   describe 'no Raid' do
     before { @standing_event.raid = nil }
-    it { should_not be_valid }
+    it { should be_valid }
   end
 
   describe 'no Standing' do
