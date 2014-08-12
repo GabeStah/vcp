@@ -51,14 +51,19 @@ RSpec.describe StandingEvent, :type => :model do
       @raid = Raid.find(@raid)
     end
 
+    before :each do
+      @raid.update_column(:processed, false)
+    end
+
     # SCENARIO:
     # #1 offline at raid_start
     # #1 Online before cutoff
+    # #1 destroy delinquency
     # EXPECT:
     # #1 attendance_gain (Standard)
     # #1 delinquent_loss (% of Standard from cutoff)
     # #2 deliquent_gain (% of Standard from cutoff / num_other_players)
-    it 'multi-event: offline at raid start, online during cutoff' do
+    it 'offline at raid start, online during cutoff, destroy event' do
       Participation.create!(character: @character_one, raid: @raid,
                             timestamp: @raid.started_at,
                             online: false,
@@ -117,7 +122,7 @@ RSpec.describe StandingEvent, :type => :model do
     # delinquent_loss.update
     # #1 delinquent_loss (% of Standard from cutoff)
     # #2/#3 deliquent_gain (% of Standard from cutoff / num_other_players)
-    it 'multi-event: offline at raid start, online during cutoff' do
+    it 'offline at raid start, online during cutoff, update event' do
       Participation.create!(character: @character_one, raid: @raid,
                             timestamp: @raid.started_at,
                             online: false,

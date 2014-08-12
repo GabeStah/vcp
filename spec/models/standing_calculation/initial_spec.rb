@@ -185,7 +185,7 @@ RSpec.describe StandingEvent, :type => :model do
     # #3 updated standing event value
     # EXPECTED
     # #1/#2 get second standing event with 2 / 2 * -1 change (inverse)
-    it 'distribute then update' do
+    it 'distribute then destroy' do
       @standing_one = Standing.create!(active: true, character: @character_one, points: -2)
       @standing_two = Standing.create!(active: true, character: @character_two, points: 0)
       @standing_three = Standing.create!(active: true, character: @character_three, distribute: true, points: 2)

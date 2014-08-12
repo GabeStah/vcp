@@ -36,6 +36,9 @@ RSpec.describe StandingEvent, :type => :model do
       @standing_mohx = Standing.create!(active: true, character: @mohx,  created_at: DateTime.now - 30.minutes, points: 0.5)
       @raid = Raid.find(@raid)
     end
+    before :each do
+      @raid.update_column(:processed, false)
+    end
 
 
     # SCENARIO:

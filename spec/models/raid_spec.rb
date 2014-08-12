@@ -9,6 +9,7 @@ RSpec.describe Raid, :type => :model do
 
   it { should respond_to(:characters) }
   it { should respond_to(:ended_at) }
+  it { should respond_to(:processed) }
   it { should respond_to(:started_at) }
   it { should respond_to(:zone) }
 

@@ -22,6 +22,9 @@ RSpec.describe StandingEvent, :type => :model do
       @standing = Standing.create!(active: true, character: @character)
       @raid = Raid.find(@raid)
     end
+    before :each do
+      @raid.update_column(:processed, false)
+    end
 
     # SCENARIO: Online and in_raid at raid_start
     # EXPECT:

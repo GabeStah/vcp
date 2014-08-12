@@ -6,6 +6,7 @@ class Raid < ActiveRecord::Base
   has_many :standing_events, dependent: :destroy
 
   before_update :destroy_standing_events
+  before_update :reset_processed
   after_update :process_standing_events
 
   # ended_at
@@ -13,6 +14,8 @@ class Raid < ActiveRecord::Base
   validates :ended_at,
             allow_blank: true,
             uniqueness: true
+  validates :processed,
+            inclusion: [true, false]
   # started_at
   validates :started_at,
             presence: true,
@@ -53,17 +56,21 @@ class Raid < ActiveRecord::Base
   end
 
   def full_title
-    return "#{zone.name} @ #{I18n.l(started_at)}"
+    "#{zone.name} @ #{I18n.l(started_at)}"
   end
 
   def process_standing_events
     #settings = Setting.first
-    # Primary stage first
-    self.characters.each do |character|
-      # Find character participation set
-      participations = self.participations.where(character: character).order(:timestamp)
-      # Create StandingCalculation instance
-      standing_calculation = StandingCalculation.new(character: character, participations: participations, raid: self)
+    unless processed
+      # Primary stage first
+      self.characters.each do |character|
+        # Find character participation set
+        participations = self.participations.where(character: character).order(:timestamp)
+        # Create StandingCalculation instance
+        standing_calculation = StandingCalculation.new(character: character, participations: participations, raid: self)
+      end
+      # After processing, set processed flag
+      update_column(:processed, true)
     end
   end
 
@@ -97,6 +104,11 @@ class Raid < ActiveRecord::Base
       errors.add(:ended_at, 'must be a valid datetime') if ((DateTime.parse(ended_at.to_s) rescue ArgumentError) == ArgumentError)
     end
   end
+
+  def reset_processed
+    update_column(:processed, false)
+  end
+
   def started_at_is_valid_datetime
     errors.add(:started_at, 'must be a valid datetime') if ((DateTime.parse(started_at.to_s) rescue ArgumentError) == ArgumentError)
   end
