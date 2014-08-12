@@ -49,7 +49,6 @@ class Raid < ActiveRecord::Base
     end
   end
 
-
   def ended_at=(t)
     t = DateTime.strptime(t, DATETIME_FORMAT) unless t.blank? || t.class == DateTime || t.class == ActiveSupport::TimeWithZone
     super(t)
@@ -72,6 +71,15 @@ class Raid < ActiveRecord::Base
       # After processing, set processed flag
       update_column(:processed, true)
     end
+  end
+
+  # Used to fully reset standing_events associated with raid
+  # Called when Participation is changed
+  def reset_standing_events
+    destroy_standing_events
+    # Reset processed flag
+    reset_processed
+    process_standing_events
   end
 
   def started_at=(t)

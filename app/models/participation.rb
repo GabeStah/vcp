@@ -2,6 +2,9 @@ class Participation < ActiveRecord::Base
   belongs_to :character
   belongs_to :raid
 
+  after_update :reset_raid_events
+  after_destroy :reset_raid_events
+
   # character
   validates :character,
             uniqueness: {
@@ -131,6 +134,10 @@ class Participation < ActiveRecord::Base
   end
 
   private
+
+  def reset_raid_events
+    raid.reset_standing_events
+  end
 
   def timestamp_is_valid_datetime
     errors.add(:timestamp, 'must be a valid datetime') if ((DateTime.parse(timestamp.to_s) rescue ArgumentError) == ArgumentError)
