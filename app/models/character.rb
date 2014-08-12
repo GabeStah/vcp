@@ -6,10 +6,10 @@ class Character < ActiveRecord::Base
   belongs_to :race
   belongs_to :user
   has_many :participations
-  # Destroy participations associated with Character
+  # Delete participations associated with Character
   has_many :raids, through: :participations, dependent: :delete_all
-  # Destroy standing associated with Character
-  has_one :standing, dependent: :delete
+  # Delete standing associated with Character
+  has_one :standing, dependent: :restrict_with_error
   before_validation :ensure_region_is_lowercase
   before_validation :generate_slug
   after_create :generate_battle_net_worker
@@ -136,15 +136,16 @@ class Character < ActiveRecord::Base
   end
 
   private
-    def ensure_region_is_lowercase
-      unless self.region.nil?
-        self.region = self.region.downcase
-      end
+
+  def ensure_region_is_lowercase
+    unless self.region.nil?
+      self.region = self.region.downcase
     end
-    def generate_battle_net_worker
-      BattleNetWorker.perform_async(id: self.id, type: 'character')
-    end
-    def generate_slug
-      self.slug = [region, realm, name].join(' ').gsub(/\s+/, '-').downcase
-    end
+  end
+  def generate_battle_net_worker
+    BattleNetWorker.perform_async(id: self.id, type: 'character')
+  end
+  def generate_slug
+    self.slug = [region, realm, name].join(' ').gsub(/\s+/, '-').downcase
+  end
 end
