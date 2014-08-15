@@ -3,12 +3,16 @@ class PopulateStandingsWorker
   include Errors
 
   def perform
-    # Get 3 random characters with data
-    characters = Character.where(verified: true).limit(5)
-    if characters.size == 5
+    # Get random characters with data
+    character_limit = 10
+    characters = Character.where(verified: true).limit(character_limit)
+    if characters.size == character_limit
+      seed = 1
       characters.each do |character|
-        standing = Standing.new(character: character)
-        standing.save
+        Standing.create!(active: true,
+                         character: character,
+                         points: Standing.calculate_starting_points(seed: seed, players: characters.size, increment: 0.2))
+        seed += 1
       end
     else
       raise StandardError.new('Verified character set not found.')

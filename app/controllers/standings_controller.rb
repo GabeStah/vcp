@@ -4,7 +4,7 @@ class StandingsController < ApplicationController
   before_action :admin_user,                  only: [:create, :edit, :destroy, :new, :update]
 
   def create
-    @standing = Standing.new(character: Character.find(standing_params[:character]))
+    @standing = Standing.new(active: true, character: Character.find(standing_params[:character]))
     if @standing.save
       flash[:success] = 'Standing Added!'
       redirect_to :back
@@ -23,7 +23,7 @@ class StandingsController < ApplicationController
 
   end
   def index
-    @standings = Standing.all.order(:points)
+    @standings = Standing.where(active: true).order(:points)
   end
 
   def update

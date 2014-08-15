@@ -35,5 +35,6 @@ class PopulateParticipationsWorker
         )
       end
     end
+    raid.process_standing_events
   end
 end

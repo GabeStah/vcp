@@ -35,9 +35,9 @@ class BattleNetWorker
         if guild
           guild.update_from_battle_net(type: type)
           logger.info "Type: #{type.upcase}, DBID: #{id}, Status: #{guild.name} of #{guild.realm}-#{guild.region.upcase} updated."
-        else
-          logger.info "Type: #{type.upcase}, DBID: #{id}, Status: Error - #{type.camelize} not found in database."
-          raise GuildError.new(message: "#{type.camelize} not found ID: #{id}")
+        # else
+        #   logger.info "Type: #{type.upcase}, DBID: #{id}, Status: Error - #{type.camelize} not found in database."
+        #   raise GuildError.new(message: "#{type.camelize} not found ID: #{id}")
         end
       when 'guild-members'
         guild = Guild.find_by(id: id)
