@@ -46,6 +46,7 @@ group :development, :test do
   gem 'capistrano-rvm'
   gem 'capistrano-sidekiq' , github: 'seuros/capistrano-sidekiq'
   gem 'launchy'
+  gem 'quiet_assets'
 end
 
 group :test do

@@ -64,6 +64,14 @@ class Character < ActiveRecord::Base
     self.standing.present?
   end
 
+  def joined_guild_at
+    created_at
+  end
+
+  # def joined_guild_at_ago
+  #   time_ago_in_words(created_at)
+  # end
+
   # determine if passed key (user_key + character_key) = combined
   def key_match?(passed_key, user)
     return false unless passed_key

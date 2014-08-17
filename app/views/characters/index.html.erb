@@ -13,7 +13,9 @@
     <th>Achievement Points</th>
     <th>Guild</th>
     <th>Realm</th>
-    <% if current_user.present? %>
+    <th>Joined</th>
+    <th>Raids</th>
+    <% if @current_user %>
       <th>Edit</th>
     <% end %>
     </thead>
@@ -32,9 +34,8 @@
     <th>Achievement Points</th>
     <th>Guild</th>
     <th>Realm</th>
-    <% if current_user.present? %>
-      <th>Edit</th>
-    <% end %>
+    <th>Joined</th>
+    <th>Raids</th>
   </thead>
   <tbody>
     <%= render @characters %>

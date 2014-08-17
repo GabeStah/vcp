@@ -37,10 +37,16 @@ class CharactersController < ApplicationController
   end
   def index
     if current_user
-      @claimed_characters = Character.claimed(current_user).order(:name)
-      @characters = Character.unclaimed(current_user).order(:name)
+      @claimed_characters = Character.claimed(current_user).
+        includes(:character_class, :race, :guild, :raids, :user).
+        order(:name)
+      @characters = Character.unclaimed(current_user).
+        includes(:character_class, :race, :guild, :raids, :user).
+        order(:name)
     else
-      @characters = Character.where(verified: true).order(:name)
+      @characters = Character.where(verified: true).
+        includes(:character_class, :race, :guild, :raids).
+        order(:name)
     end
   end
   def new

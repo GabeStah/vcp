@@ -224,5 +224,25 @@ RSpec.describe StandingEvent, :type => :model do
 
       expect(Standing.total_points).to eq @standing_two.points + @standing_three.points
     end
+
+    # SCENARIO:
+    # EXPECT:
+    it 'recent Character.joined_standing' do
+      @character_one = Character.find(@character_one.id)
+
+      @standing_one = @character_one.standing
+
+      expect(@standing_one.active).to eq true
+    end
+
+    # SCENARIO:
+    # EXPECT:
+    it 'multiple retirement/resume' do
+      # @character_one = Character.find(@character_one.id)
+      #
+      # @standing_one = @character_one.standing
+      #
+      # expect(@standing_one.active).to eq true
+    end
   end
 end
