@@ -27,11 +27,13 @@ gem 'bootstrap3-datetimepicker-rails'
 # Time validation
 gem 'validates_timeliness'
 # Datagrid creation
-gem 'wice_grid'
+#gem 'wice_grid', '3.4.9'
 # Editing out paginate for wice_grid
-#gem 'will_paginate', '3.0.4'
-#gem 'bootstrap-will_paginate', '0.0.9'
+gem 'will_paginate', '3.0.4'
+gem 'bootstrap-will_paginate', '0.0.9'
 gem 'jquery-ui-rails'
+# DataTables
+gem 'jquery-datatables-rails', '~> 2.2.1'
 
 group :development, :test do
   gem 'rspec-rails'

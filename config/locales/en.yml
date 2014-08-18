@@ -32,6 +32,8 @@ en:
   date:
     formats:
       default: '%m/%d/%Y'
+      short: '%m/%d/%Y'
   time:
     formats:
       default: '%m/%d/%Y %I:%M %p'
+      short: '%m/%d/%Y'

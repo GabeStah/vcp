@@ -5,7 +5,7 @@
       <%= "#{@raid.full_title}" %>
     </h1>
 
-    <%= grid(@participation_grid, show_filters: :no) do |g|
+    <%= grid(@participation_grid) do |g|
 
       g.column name: 'Character', attribute: 'name', model: 'Character' do |p|
         link_to p.character.name, p.character
@@ -34,6 +34,6 @@
       g.column name: 'Edit' do |p|
         link_to "Delete", '#'
       end
-    end -%>
+    end %>
   </section>
 </div>

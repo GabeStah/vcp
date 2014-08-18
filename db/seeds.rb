@@ -55,6 +55,15 @@ Guild.delete_all
   Guild.create!(name: 'Vox Immortalis',
                 realm: 'Hyjal',
                 region: 'us')
+#   Guild.create!(name: 'Method',
+#                 realm: 'Twisting Nether',
+#                 region: 'eu')
+#   Guild.create(name: 'Экзорсус',
+#                realm: 'Ревущий фьорд',
+#                region: 'eu')
+#   Guild.create(name: 'Midwinter',
+#                realm: 'Sargeras',
+#                region: 'eu')
 #end
 
 # Create a new raid

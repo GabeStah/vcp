@@ -68,6 +68,8 @@ GEM
     bcrypt-ruby (3.1.2-x86-mingw32)
     bootstrap-sass (2.3.2.0)
       sass (~> 3.2)
+    bootstrap-will_paginate (0.0.9)
+      will_paginate
     bootstrap3-datetimepicker-rails (3.0.0.2)
       momentjs-rails (~> 2.5.0)
     builder (3.2.2)
@@ -135,15 +137,15 @@ GEM
     ice_cube (0.12.0)
     jbuilder (1.0.2)
       activesupport (>= 3.0.0)
+    jquery-datatables-rails (2.2.2)
+      jquery-rails
+      sass-rails
     jquery-rails (3.0.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.0)
       railties (>= 3.2.16)
     json (1.8.1)
-    kaminari (0.16.1)
-      actionpack (>= 3.0.0)
-      activesupport (>= 3.0.0)
     launchy (2.4.2)
       addressable (~> 2.3)
     mail (2.5.4)
@@ -285,8 +287,7 @@ GEM
     validates_timeliness (3.0.14)
       timeliness (~> 0.3.6)
     websocket (1.0.7)
-    wice_grid (3.4.4)
-      kaminari (>= 0.13.0)
+    will_paginate (3.0.4)
     win32-process (0.7.4)
       ffi (>= 1.0.0)
     xpath (2.0.0)
@@ -304,6 +305,7 @@ DEPENDENCIES
   bcrypt-ruby (= 3.1.2)
   best_in_place!
   bootstrap-sass (= 2.3.2.0)
+  bootstrap-will_paginate (= 0.0.9)
   bootstrap3-datetimepicker-rails
   capistrano
   capistrano-bundler
@@ -318,6 +320,7 @@ DEPENDENCIES
   factory_girl_rails
   faker (= 1.1.2)
   jbuilder (= 1.0.2)
+  jquery-datatables-rails (~> 2.2.1)
   jquery-rails (= 3.0.4)
   jquery-ui-rails
   launchy
@@ -342,5 +345,5 @@ DEPENDENCIES
   turbolinks (= 1.1.1)
   uglifier (= 2.1.1)
   validates_timeliness
-  wice_grid
+  will_paginate (= 3.0.4)
   zeroclipboard-rails

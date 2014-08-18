@@ -29,3 +29,19 @@ jQuery ->
   api_text = $('#api_key')
   api_text.click ->
     $(this).select()
+
+# Datatables
+jQuery ->
+  $('.characters').dataTable({
+    #ajax: ...,
+    autoWidth: true,
+    pagingType: 'full_numbers',
+#
+#    processing: true,
+#    serverSide: true,
+#    ajax: $('#characters').data('source')
+
+    # Optional, if you want full pagination controls.
+    # Check dataTables documentation to learn more about available options.
+    # http://datatables.net/reference/option/pagingType
+  })
