@@ -1,13 +1,15 @@
-<tr>
+<tr id="<%= "participation[#{standing.character.slug}][1]" %>"
+    data-id="1"
+    data-slug="<%= standing.character.slug %>">
+  <td><%= check_box_tag "selected[#{standing.character.slug}][1]" %></td>
   <td><%= link_to standing.character.name, standing.character %></td>
-  <td><%= standing.character.character_class.name if standing.character.character_class %></td>
-  <% if current_user && current_user.admin? %>
-    <td><%= link_to standing.character.guild.name, standing.character.guild if standing.character.guild %></td>
-  <% else %>
-    <td><%= standing.character.guild.name if standing.character.guild %></td>
-  <% end %>
   <td><%= "#{standing.character.realm}-#{standing.character.region.upcase}" %></td>
   <td><%= standing.points || 0 %></td>
-  <td><%= select_tag "participation[#{standing.character.slug}]", options_for_select(PARTICIPATION_STATUS_HASH,
-                                                                                     params[:participation] ? params[:participation][standing.character.slug] : nil) %></td>
+  <td><%= check_box_tag "online[#{standing.character.slug}][1]" %></td>
+  <td><%= check_box_tag "in_raid[#{standing.character.slug}][1]" %></td>
+  <td><%= text_field_tag "timestamp[#{standing.character.slug}][1]", @default_start ? @default_start : l(@raid.started_at) %></td>
+  <td>
+    <a id="<%= "add_participation[#{standing.character.slug}][1]" %>" href="javascript:;">Add</a>
+    <a id="<%= "delete_participation[#{standing.character.slug}][1]" %>" href="javascript:;">Del</a>
+  </td>
 </tr>
