@@ -29,3 +29,16 @@ jQuery ->
   $(this).on('click', "[id^='delete_participation']", ->
     $(this).parent().parent().remove()
   )
+
+jQuery ->
+  $('.standings').dataTable
+    pagingType: 'full_numbers'
+
+# INDEX
+jQuery ->
+  $('#raids-table').dataTable
+    ajax: $('#raids-table').data('source')
+    lengthMenu: [ [10, 25, 50, 9223372036854775807], [10, 25, 50, "All"] ]
+    pagingType: 'full_numbers'
+    processing: true
+    serverSide: true

@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/antillas21/ajax-datatables-rails.git
+  revision: c9d040a9b5d59cae93c62a059b7fa61f308686c1
+  specs:
+    ajax-datatables-rails (0.2.0)
+      railties (>= 3.1)
+
+GIT
   remote: git://github.com/bernat/best_in_place.git
   revision: 11805c95f7cdc32c69db8e1e110d647a79abe56d
   specs:
@@ -301,6 +308,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord_any_of
+  ajax-datatables-rails!
   attribute_normalizer
   bcrypt-ruby (= 3.1.2)
   best_in_place!

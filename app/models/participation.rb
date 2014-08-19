@@ -129,7 +129,13 @@ class Participation < ActiveRecord::Base
   end
 
   def timestamp=(t)
-    t = DateTime.strptime(t, DATETIME_FORMAT) unless t.blank? || t.class == DateTime || t.class == ActiveSupport::TimeWithZone
+    unless t.blank? || t.class == DateTime || t.class == ActiveSupport::TimeWithZone
+      if t.include? 'UTC'
+        t = DateTime.strptime(t, DATETIME_FORMAT_UTC)
+      else
+        t = DateTime.strptime(t, DATETIME_FORMAT)
+      end
+    end
     super(t)
   end
 

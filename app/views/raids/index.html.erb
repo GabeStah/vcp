@@ -1,19 +1,14 @@
-<% provide(:title, 'All raids') %>
-<h1>All raids</h1>
+<% provide(:title, 'Raids') %>
+<h1>Raids</h1>
 
 <%= link_to "New Raid", new_raid_path, class: "btn btn-large btn-primary" %>
 
-<% if records?(@raids) %>
-  <table class="raids table table-striped table-bordered table-white">
-    <thead>
-      <th>Zone</th>
-      <th>Start</th>
-      <th>End</th>
-    </thead>
-    <tbody>
-      <%= render @raids %>
-    </tbody>
-  </table>
-<% else %>
-  <%= render_no_records %>
-<% end %>
+<table class="raids table table-striped table-bordered table-white" id="raids-table" data-source="<%= raids_path(format: :json) %>">
+  <thead>
+    <th>Zone</th>
+    <th>Start</th>
+    <th>End</th>
+  </thead>
+  <tbody>
+  </tbody>
+</table>

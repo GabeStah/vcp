@@ -7,6 +7,7 @@ DEFAULT_SITE_SETTINGS = {
   tardiness_cutoff_time: 60,
 }
 DATETIME_FORMAT = '%m/%d/%Y %I:%M %p'
+DATETIME_FORMAT_UTC = '%Y-%m-%d %H:%M:%S UTC'
 DEFAULT_RAID_END_TIME = {
   hour: 22,
   min: 00,

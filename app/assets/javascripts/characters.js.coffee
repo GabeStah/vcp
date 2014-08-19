@@ -1,6 +1,22 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
+
+# INDEX
+jQuery ->
+  $('#characters-claimed-table').dataTable
+    ajax: $('#characters-claimed-table').data('source')
+    lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
+    pagingType: 'full_numbers'
+    processing: true
+    serverSide: true
+  $('#characters-unclaimed-table').dataTable
+    ajax: $('#characters-unclaimed-table').data('source')
+    lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
+    pagingType: 'full_numbers'
+    processing: true
+    serverSide: true
+
 jQuery ->
   api_copy = $("#api_key_copy_button")
   _defaults = {
@@ -29,19 +45,3 @@ jQuery ->
   api_text = $('#api_key')
   api_text.click ->
     $(this).select()
-
-# Datatables
-jQuery ->
-  $('.characters').dataTable({
-    #ajax: ...,
-    autoWidth: true,
-    pagingType: 'full_numbers',
-#
-#    processing: true,
-#    serverSide: true,
-#    ajax: $('#characters').data('source')
-
-    # Optional, if you want full pagination controls.
-    # Check dataTables documentation to learn more about available options.
-    # http://datatables.net/reference/option/pagingType
-  })

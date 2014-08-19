@@ -36,17 +36,11 @@ class CharactersController < ApplicationController
   def edit
   end
   def index
-    if current_user
-      @claimed_characters = Character.claimed(current_user).
-        includes(:character_class, :guild, :raids, :user).
-        order(:name)
-      @characters = Character.unclaimed(current_user).
-        includes(:character_class, :guild, :raids, :user).
-        order(:name)
-    else
-      @characters = Character.where(verified: true).
-        includes(:character_class, :guild, :raids).
-        order(:name)
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: CharacterDatatable.new(view_context, type: params[:type])
+      end
     end
   end
   def new

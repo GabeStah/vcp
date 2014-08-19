@@ -34,6 +34,8 @@ gem 'bootstrap-will_paginate', '0.0.9'
 gem 'jquery-ui-rails'
 # DataTables
 gem 'jquery-datatables-rails', '~> 2.2.1'
+# Ajax DataTables integration
+gem 'ajax-datatables-rails', github: 'antillas21/ajax-datatables-rails'
 
 group :development, :test do
   gem 'rspec-rails'

@@ -24,27 +24,24 @@ class Raid < ActiveRecord::Base
   # Dates should be logical
   validate :dates_are_consecutive
 
-  def add_participations_from_params(data)
+  def add_participations_from_params(params)
     # Add participation records
-    if data
-      data.each do |id, status|
-        in_raid = false
-        online = false
-        case status
-          when PARTICIPATION_STATUS[:invited]
-            in_raid = true
-            online = true
-          when  PARTICIPATION_STATUS[:online]
-            in_raid = false
-            online = true
-          when  PARTICIPATION_STATUS[:excused]
-            in_raid = false
-            online = false
-          when  PARTICIPATION_STATUS[:unexcused]
-            in_raid = false
-            online = false
+    if params
+      # Loop timestamps
+      params['timestamp'].each do |id, data|
+        data.each do |count, timestamp|
+          in_raid = false
+          online = false
+          # Check online
+          unless params['online'].nil? || params['online'][id].nil?
+            online = true if params['online'][id][count] && params['online'][id][count] == '1'
+          end
+          # Check in_raid
+          unless params['in_raid'].nil? || params['in_raid'][id].nil?
+            in_raid = true if params['in_raid'][id][count] && params['in_raid'][id][count] == '1'
+          end
+          self.participations.create(character: Character.find(id), in_raid: in_raid, online: online, timestamp: timestamp)
         end
-        self.participations.create(character: Character.find(id), in_raid: in_raid, online: online, timestamp: self.started_at)
       end
     end
   end

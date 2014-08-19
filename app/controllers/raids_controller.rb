@@ -6,7 +6,7 @@ class RaidsController < ApplicationController
     # Find characters as marked by id
     @raid = Raid.new(raid_params)
     if @raid.save
-      @raid.add_participations_from_params(params[:participation])
+      @raid.add_participations_from_params(params)
       flash[:success] = "Raid for #{@raid.zone.name} Added!"
       redirect_to raid_path(@raid)
     else
@@ -21,7 +21,10 @@ class RaidsController < ApplicationController
   def edit
   end
   def index
-    @raids = Raid.all.order(:started_at)
+    respond_to do |format|
+      format.html
+      format.json { render json: RaidDatatable.new(view_context) }
+    end
   end
   def new
     @raid = Raid.new
@@ -40,9 +43,7 @@ class RaidsController < ApplicationController
     ).strftime(DATETIME_FORMAT)
   end
   def show
-    @participation_grid = initialize_grid(@raid.participations.all,
-        joins: :character,
-        order: 'characters.name')
+    @participations = @raid.participations.includes(:character)
   end
   def update
     if @raid.update(raid_params)
@@ -63,6 +64,6 @@ class RaidsController < ApplicationController
       @raid = Raid.find(params[:id])
     end
     def set_standings
-      @standings = Standing.all.order(:points)
+      @standings = Standing.includes(:character).order(:points)
     end
 end

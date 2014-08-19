@@ -1,0 +1,15 @@
+<tr id="<%= "participation[#{participation.character.slug}]" %>" data-slug="<%= participation.character.slug %>">
+  <td><%= check_box_tag "selected[#{participation.character.slug}][1]" %></td>
+  <td><%= link_to participation.character.name, participation.character %></td>
+  <td><%= "#{participation.character.realm}-#{participation.character.region.upcase}" %></td>
+  <td><%= best_in_place_if @current_user && @current_user.admin?, participation, :online, type: :checkbox, path: participation_path(participation) %></td>
+  <td><%= best_in_place_if @current_user && @current_user.admin?, participation, :in_raid, type: :checkbox, path: participation_path(participation) %></td>
+  <td><%= best_in_place_if @current_user && @current_user.admin?, participation, :timestamp, type: :date, path: participation_path(participation),
+                           display_with: lambda { |p| l(p) } %></td>
+  <td><%= participation.event(participation.previous(@raid.participations)) %></td>
+  <% if @current_user && @current_user.admin? %>
+    <td>
+      <%= link_to 'Delete', participation, method: :delete, data: { confirm: "You sure?" } %>
+    </td>
+  <% end %>
+</tr>

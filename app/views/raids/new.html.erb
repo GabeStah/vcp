@@ -29,9 +29,9 @@
             <th>Actions</th>
           </thead>
           <tbody>
-          <% @standings.each do |standing| %>
-            <%= render partial: 'raid_standing', object: standing, as: 'standing' %>
-          <% end %>
+            <% @standings.each do |standing| %>
+              <%= render partial: 'raid_standing', object: standing, as: 'standing' %>
+            <% end %>
           </tbody>
         </table>
       <% else %>

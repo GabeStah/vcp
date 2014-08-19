@@ -3,12 +3,13 @@
 
 <%= link_to "New Character", new_character_path, class: "btn btn-large btn-primary" %>
 
-<% if @claimed_characters.present? %>
-  <table class="characters table table-striped table-bordered table-white">
+<% if @current_user.present? && @current_user.characters.size > 0 %>
+  <table class="characters table table-striped table-bordered table-white" id="characters-claimed-table" data-source="<%= characters_path(format: :json, type: :claimed) %>">
     <thead>
       <th>Name</th>
       <th>Class</th>
       <th>Guild</th>
+      <th>Realm</th>
       <th>Raids</th>
       <th>Achievement Points</th>
       <th>Joined</th>
@@ -17,21 +18,20 @@
       <% end %>
     </thead>
     <tbody>
-    <%= render @claimed_characters %>
     </tbody>
   </table>
 <% end %>
 
-<table class="characters table table-striped table-bordered table-white">
+<table class="characters table table-striped table-bordered table-white" id="characters-unclaimed-table" data-source="<%= characters_path(format: :json, type: @current_user ? :unclaimed : :all) %>">
   <thead>
-    <th>Name</th>
-    <th>Class</th>
-    <th>Guild</th>
-    <th>Raids</th>
-    <th>Achievement Points</th>
-    <th>Joined</th>
+  <th>Name</th>
+  <th>Class</th>
+  <th>Guild</th>
+  <th>Realm</th>
+  <th>Raids</th>
+  <th>Achievement Points</th>
+  <th>Joined</th>
   </thead>
   <tbody>
-    <%= render @characters %>
   </tbody>
 </table>
