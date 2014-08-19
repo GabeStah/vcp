@@ -23,7 +23,13 @@ class StandingsController < ApplicationController
 
   end
   def index
-    @standings = Standing.where(active: true).order(:points)
+    #@standings = Standing.includes(character: [:character_class, :guild]).where(active: true).order(:points)
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: StandingDatatable.new(view_context, type: params[:type])
+      end
+    end
   end
 
   def update

@@ -51,6 +51,8 @@ group :development, :test do
   gem 'capistrano-sidekiq' , github: 'seuros/capistrano-sidekiq'
   gem 'launchy'
   gem 'quiet_assets'
+  # Help with n+1
+  gem 'bullet'
 end
 
 group :test do

@@ -1,7 +1,7 @@
 class RaidDatatable < AjaxDatatablesRails::Base
   include AjaxDatatablesRails::Extensions::WillPaginate
 
-  def_delegators :@view, :l
+  def_delegators :@view, :l, :link_to
 
   def sortable_columns
     @sortable_columns ||= ['zones.name', 'raids.started_at', 'raids.ended_at']
@@ -14,16 +14,16 @@ class RaidDatatable < AjaxDatatablesRails::Base
   private
 
   def data
-    records.map do |record|
+    records.map do |raid|
       [
-        record.zone.name,
-        l(record.started_at),
-        l(record.ended_at)
+        link_to(raid.zone.name, raid),
+        l(raid.started_at),
+        l(raid.ended_at)
       ]
     end
   end
 
   def get_raw_records
-    Raid.includes(:zone)
+    Raid.eager_load(:zone)
   end
 end
