@@ -102,7 +102,7 @@ namespace :deploy do
 
   after :publishing, :restart
   #after :publishing, :seed_db
-  after :restart, :restart_sidekiq
+  #after :restart, :restart_sidekiq
   after :restart, :seed_db
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
