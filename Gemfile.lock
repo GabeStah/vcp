@@ -247,6 +247,7 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0.4)
+    settingslogic (2.0.9)
     sidekiq-failures (0.4.3)
       sidekiq (>= 2.16.0)
     sidetiq (0.6.1)
@@ -348,6 +349,7 @@ DEPENDENCIES
   sass-rails (~> 4.0.0)
   sdoc (= 0.3.20)
   selenium-webdriver
+  settingslogic
   sidekiq!
   sidekiq-failures
   sidetiq

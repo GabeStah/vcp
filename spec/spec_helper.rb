@@ -95,4 +95,5 @@ RSpec.configure do |config|
 
   config.include AttributeNormalizer::RSpecMatcher, :type => :model
   config.include Capybara::DSL
+  config.include FactoryGirl::Syntax::Methods
 end

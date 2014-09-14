@@ -36,24 +36,6 @@ class StandingDatatable < AjaxDatatablesRails::Base
 
   private
 
-#   <td><%= link_to standing.character.name, standing.character %></td>
-#   <td><%= standing.character.character_class.name if standing.character.character_class %></td>
-#   <% if current_user && current_user.admin? %>
-#     <td><%= link_to standing.character.guild.name, standing.character.guild if standing.character.guild %></td>
-#   <% else %>
-#     <td><%= standing.character.guild.name if standing.character.guild %></td>
-#   <% end %>
-#   <td><%= "#{standing.character.realm}-#{standing.character.region.upcase}" %></td>
-#   <td><%= standing.points || 0 %></td>
-#   <% if current_user && current_user.admin? %>
-#     <td><%= link_to "Delete", standing, method: :delete, data: { confirm: "Delete standing for #{standing.character.name}?" } %></td>
-#   <% end %>
-# <% if user_owns_character?(standing.character) || admin_signed_in? %>
-#     <td>
-# <%= render 'characters/character_edit', character: standing.character %>
-#     </td>
-#   <% end %>
-
   def data
     records.map do |standing|
       name = link_to(standing.character.name, standing.character)

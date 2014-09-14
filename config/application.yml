@@ -1,0 +1,22 @@
+defaults: &defaults
+  guild:
+    name: 'Vox Immortalis'
+    realm: 'Hyjal'
+    region: 'us'
+  raid:
+    start_time: '6:30 PM'
+    end_time:   '10:30 PM'
+    size: 20
+  roster:
+    size: 25
+  standing:
+    tardiness_loss: -1
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

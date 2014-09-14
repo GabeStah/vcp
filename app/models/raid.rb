@@ -5,6 +5,8 @@ class Raid < ActiveRecord::Base
   has_many :characters, -> { uniq }, through: :participations, dependent: :delete_all
   has_many :standing_events, dependent: :destroy
 
+  attr_accessor :attendance_loss
+
   before_update :destroy_standing_events
   before_update :reset_processed
   after_update :process_standing_events
@@ -43,7 +45,27 @@ class Raid < ActiveRecord::Base
           self.participations.create(character: Character.find(id), in_raid: in_raid, online: online, timestamp: timestamp)
         end
       end
+      # Calculate standing_events
+      process_standing_events
     end
+  end
+
+  def attendees
+    all_attendees = Array.new
+    # Primary stage firstself.participations
+    characters.each do |character|
+      # Find character participation set
+      participations = self.participations.where(character: character).order(:timestamp)
+      # Create StandingCalculation instance WUTHOUT processing
+      standing_calculation = StandingCalculation.new(character: character, participations: participations, raid: self, skip_process: true)
+      in_raid = standing_calculation.first_time(event: :in_raid, during_raid: true, within_cutoff: true)
+      online = standing_calculation.first_time(event: :online, during_raid: true, within_cutoff: true)
+      # Verify that character qualified for attendence_loss
+      if in_raid.present? && online.present? && standing_calculation.qualified_for_attendance?
+        all_attendees << character unless all_attendees.include? character
+      end
+    end
+    all_attendees
   end
 
   def ended_at=(t)
@@ -58,7 +80,9 @@ class Raid < ActiveRecord::Base
   def process_standing_events
     #settings = Setting.first
     unless processed
-      # Primary stage first
+      # Set attendance_loss
+      calculate_attendance_loss
+      # Primary stage firstself.participations
       self.characters.each do |character|
         # Find character participation set
         participations = self.participations.where(character: character).order(:timestamp)
@@ -91,6 +115,13 @@ class Raid < ActiveRecord::Base
 
 
   private
+
+  def calculate_attendance_loss
+    all_attendees = self.attendees
+    if all_attendees.size > 0
+      @attendance_loss = (Standing.where(active: true).size - all_attendees.size) * Settings.standing.tardiness_loss / all_attendees.size
+    end
+  end
 
   def dates_are_consecutive
     unless ended_at.blank? || started_at.blank?

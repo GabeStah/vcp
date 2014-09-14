@@ -4,7 +4,7 @@ class StandingCalculation
 
   define_model_callbacks :initialize, only: :after
 
-  after_initialize :process_calculation
+  after_initialize :process_calculation, unless: -> { self.skip_process }
 
   validates :character,
             presence: true
@@ -14,20 +14,6 @@ class StandingCalculation
             presence: true
 
   attr_accessor :character, :participations, :raid, :settings
-
-  def qualified_for_attendance?
-    attendance_cutoff_time = Rails.env.production? ? settings.tardiness_cutoff_time : DEFAULT_SITE_SETTINGS[:attendance_cutoff_time]
-    raid_time = time_in_raid
-    # Time in raid (min) meets/exceeds attendance_cutoff_time
-    # OR
-    # Time in raid longer greater than or equal to total raid time
-    if raid_time.nil?
-      return false
-    elsif (raid_time / 60) >= attendance_cutoff_time || raid_time >= (raid.ended_at.to_i - raid.started_at.to_i)
-      return true
-    end
-    return false
-  end
 
   def calculate(args = {})
     tardiness_cutoff_time  = Rails.env.production? ? settings.tardiness_cutoff_time : DEFAULT_SITE_SETTINGS[:tardiness_cutoff_time]
@@ -39,7 +25,16 @@ class StandingCalculation
         # AND
         # Character qualified for attendance
         # VALUE: attendance_loss
-        return DEFAULT_SITE_SETTINGS[:attendance_loss] if (in_raid.present? && online.present? && qualified_for_attendance?)
+        # raid:
+        #   start_time: '6:30 PM'
+        # end_time:   '10:30 PM'
+        # size: 20
+        # roster:
+        #   size: 25
+        # standing:
+        #   tardiness_loss: -1
+        #return DEFAULT_SITE_SETTINGS[:attendance_loss] if (in_raid.present? && online.present? && qualified_for_attendance?)
+        return raid.attendance_loss if (in_raid.present? && online.present? && qualified_for_attendance?)
       when :attendance_gain
         # Character was online between start and start+settings.tardiness_cutoff_time
         online = first_time(event: :online, during_raid: true, within_cutoff: true)
@@ -123,7 +118,7 @@ class StandingCalculation
         @participations = attributes[:raid].participations.where(character: attributes[:character]).order(:timestamp)
       end
       @raid = attributes[:raid]
-      @settings = Setting.first
+      @skip_process = attributes[:skip_process]
     end
   end
 
@@ -145,8 +140,26 @@ class StandingCalculation
                          type: :delinquent) if delinquent_loss
   end
 
+  def qualified_for_attendance?
+    attendance_cutoff_time = Rails.env.production? ? settings.tardiness_cutoff_time : DEFAULT_SITE_SETTINGS[:attendance_cutoff_time]
+    raid_time = time_in_raid
+    # Time in raid (min) meets/exceeds attendance_cutoff_time
+    # OR
+    # Time in raid longer greater than or equal to total raid time
+    if raid_time.nil?
+      return false
+    elsif (raid_time / 60) >= attendance_cutoff_time || raid_time >= (raid.ended_at.to_i - raid.started_at.to_i)
+      return true
+    end
+    false
+  end
+
   def read_attribute_for_validation(key)
     @attributes[key]
+  end
+
+  def skip_process
+    @skip_process
   end
 
   def time_in_raid

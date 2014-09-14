@@ -25,9 +25,9 @@ User.create!(name: "Gabe Wyatt",
 end
 
 Setting.delete_all
-# Create basic raid time settings
-Setting.create!(raid_start_time: '6:30 PM',
-                raid_end_time: '10:30 PM')
+# Create basic settings
+Setting.create!(raid_start_time: Settings.raid.start_time,
+                raid_end_time: Settings.raid.end_time)
 
 CharacterClass.delete_all
 # Class populate
@@ -52,9 +52,9 @@ Character.delete_all
 # Delete guilds
 Guild.delete_all
 #if Rails.env.development?
-  Guild.create!(name: 'Vox Immortalis',
-                realm: 'Hyjal',
-                region: 'us')
+  Guild.create!(name:   Settings.guild.name,
+                realm:  Settings.guild.realm,
+                region: Settings.guild.region)
 #   Guild.create!(name: 'Method',
 #                 realm: 'Twisting Nether',
 #                 region: 'eu')

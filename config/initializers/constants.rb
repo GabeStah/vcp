@@ -1,21 +1,13 @@
 DEFAULT_SITE_SETTINGS = {
   attendance_cutoff_time: 15,
-  attendance_loss: -0.1,
   attendance_gain: 1.0,
+  attendance_loss: -0.1,
   delinquent_cutoff_time: 30,
   delinquent_loss: -1.0,
   tardiness_cutoff_time: 60,
 }
 DATETIME_FORMAT = '%m/%d/%Y %I:%M %p'
 DATETIME_FORMAT_UTC = '%Y-%m-%d %H:%M:%S UTC'
-DEFAULT_RAID_END_TIME = {
-  hour: 22,
-  min: 00,
-}
-DEFAULT_RAID_START_TIME = {
-  hour: 18,
-  min: 00,
-}
 PARTICIPATION_EVENTS = {
   invited: 'Invited to Raid',
   logged_in: {
@@ -78,7 +70,7 @@ WOW_ZONE_DEFAULTS = [
   },
   {
     level: 90,
-    name: "Siege of Orgimmar",
+    name: "Siege of Orgrimmar",
     zone_type: "raid",
   },
   {

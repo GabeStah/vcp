@@ -85,8 +85,8 @@ class StandingEvent < Event
     elsif self.type.to_sym == :delinquent
       # ensure loss
       if self.change < 0
-        # Find all standing where active = true and created_at was prior to raid.started_at
-        standings = Standing.created_before(self.raid.started_at).where(active: true)
+        # Find all standing where active = true
+        standings = Standing.where(active: true)
         # If only one standing, originator is only target so no change
         if standings.size > 1
           # Loop through standings
@@ -95,6 +95,8 @@ class StandingEvent < Event
             unless self.standing.id == standing.id
               # Get divided value
               value = self.change.to_f / (standings.size - 1)
+              # Double delinquent value gain for all others to balance out
+              value *= 2
               # Inverse value
               value *= -1
               # Create a StandingEvent with distributed value
@@ -189,6 +191,11 @@ class StandingEvent < Event
   end
 
   def revert_change
+    # if self.change_was
+    #   self.standing.update(points: self.standing.points - self.change_was)
+    # else
+    #   self.standing.update(points: self.standing.points)
+    # end
     # Subtract what change was prior to current instance; useful for update
     self.change_was ?
       self.standing.update(points: self.standing.points - self.change_was) :

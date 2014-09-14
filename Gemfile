@@ -36,6 +36,8 @@ gem 'jquery-ui-rails'
 gem 'jquery-datatables-rails', '~> 2.2.1'
 # Ajax DataTables integration
 gem 'ajax-datatables-rails', github: 'antillas21/ajax-datatables-rails'
+# Settings
+gem 'settingslogic'
 
 group :development, :test do
   gem 'rspec-rails'

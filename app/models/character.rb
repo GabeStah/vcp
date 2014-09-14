@@ -57,7 +57,7 @@ class Character < ActiveRecord::Base
   end
 
   def full_title
-    return "#{self.name} of #{self.realm}-#{self.region.upcase}"
+    "#{self.name} of #{self.realm}-#{self.region.upcase}"
   end
 
   def has_standing?
