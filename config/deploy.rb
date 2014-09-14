@@ -62,17 +62,6 @@ namespace :deploy do
     end
   end
 
-  desc "Restart sidekiq."
-  task :restart_sidekiq do
-    on roles(:app) do
-      within "#{current_path}" do
-        with rails_env: :production do
-          execute :rake, "sidekiq:restart"
-        end
-      end
-    end
-  end
-
   desc "Seed the database."
   task :seed_db do
     on roles(:app) do
@@ -102,7 +91,6 @@ namespace :deploy do
 
   after :publishing, :restart
   #after :publishing, :seed_db
-  #after :restart, :restart_sidekiq
   after :restart, :seed_db
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
