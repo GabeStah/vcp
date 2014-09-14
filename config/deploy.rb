@@ -29,6 +29,9 @@ set :ssh_options, { forward_agent: true, user: fetch(:user) }
 # Set temp directory
 set :tmp_dir, "/home/deploy/tmp"
 
+# Allow Sidekiq
+set :pty, false
+
 # Simple Role Syntax
 # ==================
 # Supports bulk-adding hosts to roles, the primary
@@ -54,6 +57,17 @@ namespace :deploy do
         with rails_env: :production do
           execute :rake, "db:drop"
           execute :rake, "db:create"
+        end
+      end
+    end
+  end
+
+  desc "Restart sidekiq."
+  task :restart_sidekiq do
+    on roles(:app) do
+      within "#{current_path}" do
+        with rails_env: :production do
+          execute :rake, "sidekiq:restart"
         end
       end
     end
@@ -88,6 +102,7 @@ namespace :deploy do
 
   after :publishing, :restart
   #after :publishing, :seed_db
+  after :restart, :restart_sidekiq
   after :restart, :seed_db
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
