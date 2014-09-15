@@ -10,6 +10,9 @@ gem 'faker', '1.1.2'
 gem 'sidekiq', github: 'mperham/sidekiq'
 gem 'sidekiq-failures'
 gem 'sidetiq'
+gem 'sidekiq_monitor'
+gem 'mina-sidekiq'
+
 # Enabled for Sidekiq frontend
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'attribute_normalizer'
@@ -35,9 +38,12 @@ gem 'jquery-ui-rails'
 # DataTables
 gem 'jquery-datatables-rails', '~> 2.2.1'
 # Ajax DataTables integration
-gem 'ajax-datatables-rails', github: 'antillas21/ajax-datatables-rails'
+gem 'ajax-datatables-rails', github: 'GabeStah/ajax-datatables-rails'
 # Settings
 gem 'settingslogic'
+# Fonts!
+gem 'font-awesome-rails'
+
 
 group :development, :test do
   gem 'rspec-rails'
@@ -46,11 +52,10 @@ group :development, :test do
   gem 'spork-rails'
   # gem 'guard-spork'
   gem 'childprocess'
-  gem 'capistrano'
-  gem 'capistrano-bundler'
-  gem 'capistrano-rails'
-  gem 'capistrano-rvm'
-  gem 'capistrano-sidekiq' , github: 'seuros/capistrano-sidekiq'
+
+  # Deployment
+  gem 'mina'
+
   gem 'launchy'
   gem 'quiet_assets'
   # Help with n+1

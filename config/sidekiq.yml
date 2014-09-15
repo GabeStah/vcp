@@ -1,0 +1,4 @@
+:pidfile: ./shared/pids/sidekiq.pid
+:queues:
+  - [priority, 4]
+  - [default, 1]

@@ -1,107 +1,84 @@
-require 'capistrano/sidekiq'
-# config valid only for Capistrano 3.1
-lock '3.2.1'
+require 'mina/bundler'
+require 'mina/rails'
+require 'mina/git'
+require 'mina_sidekiq/tasks'
+# require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
+# require 'mina/rvm'    # for rvm support. (http://rvm.io)
 
-set :application, 'VCP'
-
-# Default value for :scm is :git
-set :scm, :git
-set :repo_url, 'git@github.com:GabeStah/vcp.git'
+set :domain, 'gabestah.com'
+set :deploy_to, '/var/www/vcp'
+set :repository, 'https://github.com/GabeStah/vcp.git'
 set :branch, 'master'
 
-# Set the user for deployment
-set :user, "deploy"
+# Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
+# They will be linked in the 'deploy:link_shared_paths' step.
+set :shared_paths, ['config/database.yml', 'log', 'pids']
 
-# Default deploy_to directory is /var/www/my_app
-set :deploy_to, '/var/www/vcp'
+# Optional settings:
+set :user, 'deploy'    # Username in the server to SSH to.
+#   set :port, '30000'     # SSH port number.
 
-# How to make updates
-set :deploy_via, :copy
+# This task is the environment that is loaded for most commands, such as
+# `mina deploy` or `mina rake`.
+task :environment do
+  # If you're using rbenv, use this to load the rbenv environment.
+  # Be sure to commit your .rbenv-version to your repository.
+  # invoke :'rbenv:load'
 
-# Set environment
-set :rails_env, "production"
+  # For those using RVM, use this to load an RVM version@gemset.
+  # invoke :'rvm:use[ruby-1.9.3-p125@default]'
+end
 
-# Default value for keep_releases is 5
-set :keep_releases, 5
+# Put any custom mkdir's in here for when `mina setup` is ran.
+# For Rails apps, we'll make some of the shared paths that are shared between
+# all releases.
+task :setup => :environment do
+  queue! %[mkdir -p "#{deploy_to}/shared/log"]
+  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/log"]
 
-set :ssh_options, { forward_agent: true, user: fetch(:user) }
+  queue! %[mkdir -p "#{deploy_to}/shared/config"]
+  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/config"]
 
-# Set temp directory
-set :tmp_dir, "/home/deploy/tmp"
+  queue! %[touch "#{deploy_to}/shared/config/database.yml"]
+  queue  %[echo "-----> Be sure to edit 'shared/config/database.yml'."]
+end
 
-# Allow Sidekiq
-set :pty, false
+desc "Deploys the current version to the server."
+task :deploy => :environment do
+  deploy do
+    # Put things that will set up an empty directory into a fully set-up
+    # instance of your project.
+    # stop accepting new workers
+    invoke :'sidekiq:quiet'
+    invoke :'git:clone'
+    invoke :'deploy:link_shared_paths'
+    invoke :'bundle:install'
+    invoke :'rails:db_migrate'
+    invoke :'rails:assets_precompile'
+    invoke :reset_db
 
-# Simple Role Syntax
-# ==================
-# Supports bulk-adding hosts to roles, the primary
-# server in each group is considered to be the first
-# unless any hosts have the primary property set.
-role :app, %w{gabestah.com}
-role :web, %w{gabestah.com}
-role :db,  %w{gabestah.com}
-
-namespace :deploy do
-  desc 'Restart application'
-  task :restart do
-    on roles(:app), in: :sequence, wait: 5 do
-      # Your restart mechanism here, for example:
-      execute :touch, current_path.join('tmp/restart.txt')
-    end
-  end
-
-  desc "Recreate the database."
-  task :recreate_db do
-    on roles(:app) do
-      within "#{current_path}" do
-        with rails_env: :production do
-          execute :rake, "db:drop"
-          execute :rake, "db:create"
-        end
-      end
-    end
-  end
-
-  desc "Seed the database."
-  task :seed_db do
-    on roles(:app) do
-      within "#{current_path}" do
-        with rails_env: :production do
-          execute :rake, 'db:seed'
-        end
-      end
-    end
-  end
-
-  desc 'Create database.yml symlink'
-  task :symlink_db_yml do
-    on roles(:all) do
-      execute :ln, '-sf', "#{shared_path}/config/database.yml", "#{release_path}/config/database.yml"
-    end
-  end
-
-  desc 'Upload database.yml'
-  task :upload_db_yml do
-    run_locally do
-      execute :scp, '~/dev/projects/vcp/config/database.yml', 'deploy@gabestah.com:/var/www/vcp/shared/config/database.yml'
-    end
-  end
-
-  before :started, :upload_db_yml
-
-  after :publishing, :restart
-  #after :publishing, :seed_db
-  after :restart, :seed_db
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
+    to :launch do
+      invoke :restart_rails
+      invoke :'sidekiq:restart'
     end
   end
 end
 
-# Update symlink after release path is generated
-before 'deploy:assets:precompile', 'deploy:symlink_db_yml'
-after 'deploy:assets:precompile', 'deploy:recreate_db'
+desc "Resetting Database"
+task :reset_db do
+  queue 'rake app:reset_production RAILS_ENV=production'
+end
+
+desc "Restart Rails"
+task :restart_rails do
+  queue! %[mkdir -p "#{deploy_to}/#{current_path}/tmp"]
+  queue! %[chmod g+rx,u+rwx "#{deploy_to}/#{current_path}/tmp"]
+  queue "touch #{deploy_to}/#{current_path}/tmp/restart.txt"
+end
+
+# For help in making your deploy script, see the Mina documentation:
+#
+#  - http://nadarei.co/mina
+#  - http://nadarei.co/mina/tasks
+#  - http://nadarei.co/mina/settings
+#  - http://nadarei.co/mina/helpers
