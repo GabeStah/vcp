@@ -23,7 +23,7 @@ gem 'tipsy-rails'
 # Used for chaining OR queries, see: https://github.com/oelmekki/activerecord_any_of
 gem 'activerecord_any_of'
 # Used to allow history and revert actions
-gem 'paper_trail'
+#gem 'paper_trail'
 # Boostrap datetime picker
 gem 'momentjs-rails'
 gem 'bootstrap3-datetimepicker-rails'
