@@ -1,4 +1,5 @@
 :pidfile: ./shared/pids/sidekiq.pid
+:logfile: ./log/sidekiq.log
 :queues:
   - [priority, 4]
   - [default, 1]
