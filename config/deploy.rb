@@ -15,7 +15,7 @@ set :branch, 'master'
 set :shared_paths, ['config/database.yml', 'log', 'pids']
 
 # Optional settings:
-set :user, 'deploy'    # Username in the server to SSH to.
+set :user, 'vcp'    # Username in the server to SSH to.
 #   set :port, '30000'     # SSH port number.
 
 # This task is the environment that is loaded for most commands, such as
