@@ -80,7 +80,4 @@ Vcp::Application.configure do
 
   # Host
   config.action_mailer.default_url_options = { host: 'vcp.gabestah.com' }
-
-  # Precompile for production
-  config.assets.precompile = ['*.js', '*.css', '*.css.erb']
 end
