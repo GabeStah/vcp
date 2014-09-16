@@ -17,7 +17,7 @@
       <%= f.submit "Add Raid", class: "btn btn-large btn-primary" %>
 
       <% if records?(@standings) %>
-        <table class="standings table table-striped table-bordered table-white">
+        <table class="new-raid-standings table table-striped table-bordered table-white" id="new-raid-standings">
           <thead>
             <td><%= check_box_tag 'select_all', 'select_all' %></td>
             <th>Name</th>

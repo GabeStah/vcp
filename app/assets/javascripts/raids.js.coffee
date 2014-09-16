@@ -5,8 +5,7 @@ jQuery ->
   $('#raid_started_at').datetimepicker()
   $('#raid_ended_at').datetimepicker()
 
-jQuery ->
-  $(this).on('click', "[id^='add_participation']", ->
+  $("[id^='add_participation']").on('click', ->
     current_row = $(this).parent().parent()
     new_row = current_row.clone()
     # Count number of rows with matching slug
@@ -25,17 +24,14 @@ jQuery ->
     new_row.attr('id', current_row.attr('id').replace(/(\d+)/g, total_count+1))
     new_row.insertAfter($("tr[data-slug='#{current_row.data('slug')}']").last())
   )
-jQuery ->
+
   $(this).on('click', "[id^='delete_participation']", ->
     $(this).parent().parent().remove()
   )
 
-jQuery ->
-  $('.standings').dataTable
+  $('#new-raid-standings').dataTable
     pagingType: 'full_numbers'
 
-# INDEX
-jQuery ->
   $('#raids-table').dataTable
     ajax: $('#raids-table').data('source')
     lengthMenu: [ [10, 25, 50, 9223372036854775807], [10, 25, 50, "All"] ]

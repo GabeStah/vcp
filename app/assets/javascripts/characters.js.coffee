@@ -20,6 +20,7 @@ jQuery ->
     pagingType: 'full_numbers'
     processing: true
     serverSide: true
+
   $('#characters-unclaimed-table').dataTable
     ajax: $('#characters-unclaimed-table').data('source')
     lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
@@ -27,7 +28,6 @@ jQuery ->
     processing: true
     serverSide: true
 
-jQuery ->
   api_copy = $("#api_key_copy_button")
   _defaults = {
     title: 'Copy to clipboard',
@@ -51,7 +51,6 @@ jQuery ->
   )
 
   # Select api_key text when focused
-jQuery ->
   api_text = $('#api_key')
   api_text.click ->
     $(this).select()
