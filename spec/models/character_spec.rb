@@ -282,14 +282,14 @@ describe Character, type: :model do
       @standing_events_two = @raid.standing_events.where(standing: @standing_two)
       expect(@standing_events_two.size).to eq 1
       expect(@standing_events_two[0].type).to eq :delinquent.to_s
-      expect(@standing_events_two[0].change).to eq BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * -1) / (@standing_count - 1), 6)
-      expect(Standing.find(@standing_two).points).to eq 0 + BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * -1) / (@standing_count - 1), 6)
+      expect(@standing_events_two[0].change).to eq BigDecimal.new((Settings.standing.delinquent_loss.to_f * 2 * 0.75 * -1) / (@standing_count - 1), 6)
+      expect(Standing.find(@standing_two).points).to eq 0 + BigDecimal.new((Settings.standing.delinquent_loss.to_f * 2 * 0.75 * -1) / (@standing_count - 1), 6)
 
       @standing_events_three = @raid.standing_events.where(standing: @standing_three)
       expect(@standing_events_three.size).to eq 1
       expect(@standing_events_three[0].type).to eq :delinquent.to_s
-      expect(@standing_events_three[0].change).to eq BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * -1) / (@standing_count - 1), 6)
-      expect(Standing.find(@standing_three).points).to eq 1 + BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * -1) / (@standing_count - 1), 6)
+      expect(@standing_events_three[0].change).to eq BigDecimal.new((Settings.standing.delinquent_loss.to_f * 2 * 0.75 * -1) / (@standing_count - 1), 6)
+      expect(Standing.find(@standing_three).points).to eq 1 + BigDecimal.new((Settings.standing.delinquent_loss.to_f * 2 * 0.75 * -1) / (@standing_count - 1), 6)
 
       @character_one.destroy
 
@@ -306,14 +306,14 @@ describe Character, type: :model do
       @standing_events_two = @raid.standing_events.where(standing: @standing_two)
       expect(@standing_events_two.size).to eq 1
       expect(@standing_events_two[0].type).to eq :delinquent.to_s
-      expect(@standing_events_two[0].change).to eq BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * -1) / (@standing_count - 1), 6)
-      expect(Standing.find(@standing_two).points).to eq 0 + BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * -1) / (@standing_count - 1), 6)
+      expect(@standing_events_two[0].change).to eq BigDecimal.new((Settings.standing.delinquent_loss.to_f * 2 * 0.75 * -1) / (@standing_count - 1), 6)
+      expect(Standing.find(@standing_two).points).to eq 0 + BigDecimal.new((Settings.standing.delinquent_loss.to_f * 2 * 0.75 * -1) / (@standing_count - 1), 6)
 
       @standing_events_three = @raid.standing_events.where(standing: @standing_three)
       expect(@standing_events_three.size).to eq 1
       expect(@standing_events_three[0].type).to eq :delinquent.to_s
-      expect(@standing_events_three[0].change).to eq BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * -1) / (@standing_count - 1), 6)
-      expect(Standing.find(@standing_three).points).to eq 1 + BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * -1) / (@standing_count - 1), 6)
+      expect(@standing_events_three[0].change).to eq BigDecimal.new((Settings.standing.delinquent_loss.to_f * 2  * 0.75 * -1) / (@standing_count - 1), 6)
+      expect(Standing.find(@standing_three).points).to eq 1 + BigDecimal.new((Settings.standing.delinquent_loss.to_f * 2 * 0.75 * -1) / (@standing_count - 1), 6)
     end
 
     # SCENARIO:
@@ -345,14 +345,14 @@ describe Character, type: :model do
       @standing_events_two = @raid.standing_events.where(standing: @standing_two)
       expect(@standing_events_two.size).to eq 1
       expect(@standing_events_two[0].type).to eq :delinquent.to_s
-      expect(@standing_events_two[0].change).to eq BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * -1) / (@standing_count - 1), 6)
-      expect(Standing.find(@standing_two).points).to eq 0 + BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * -1) / (@standing_count - 1), 6)
+      expect(@standing_events_two[0].change).to eq BigDecimal.new((Settings.standing.delinquent_loss.to_f * 2 * 0.75 * -1) / (@standing_count - 1), 6)
+      expect(Standing.find(@standing_two).points).to eq 0 + BigDecimal.new((Settings.standing.delinquent_loss.to_f * 2 * 0.75 * -1) / (@standing_count - 1), 6)
 
       @standing_events_three = @raid.standing_events.where(standing: @standing_three)
       expect(@standing_events_three.size).to eq 1
       expect(@standing_events_three[0].type).to eq :delinquent.to_s
-      expect(@standing_events_three[0].change).to eq BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * -1) / (@standing_count - 1), 6)
-      expect(Standing.find(@standing_three).points).to eq 1 + BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * -1) / (@standing_count - 1), 6)
+      expect(@standing_events_three[0].change).to eq BigDecimal.new((Settings.standing.delinquent_loss.to_f * 2 * 0.75 * -1) / (@standing_count - 1), 6)
+      expect(Standing.find(@standing_three).points).to eq 1 + BigDecimal.new((Settings.standing.delinquent_loss.to_f * 2 * 0.75 * -1) / (@standing_count - 1), 6)
 
       standing_destroyed = @character_one.standing.destroy
 
@@ -372,14 +372,14 @@ describe Character, type: :model do
       @standing_events_two = @raid.standing_events.where(standing: @standing_two)
       expect(@standing_events_two.size).to eq 1
       expect(@standing_events_two[0].type).to eq :delinquent.to_s
-      expect(@standing_events_two[0].change).to eq BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * -1) / (@standing_count - 1), 6)
-      expect(Standing.find(@standing_two).points).to eq 0 + BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * -1) / (@standing_count - 1), 6)
+      expect(@standing_events_two[0].change).to eq BigDecimal.new((Settings.standing.delinquent_loss.to_f * 2 * 0.75 * -1) / (@standing_count - 1), 6)
+      expect(Standing.find(@standing_two).points).to eq 0 + BigDecimal.new((Settings.standing.delinquent_loss.to_f * 2 * 0.75 * -1) / (@standing_count - 1), 6)
 
       @standing_events_three = @raid.standing_events.where(standing: @standing_three)
       expect(@standing_events_three.size).to eq 1
       expect(@standing_events_three[0].type).to eq :delinquent.to_s
-      expect(@standing_events_three[0].change).to eq BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * -1) / (@standing_count - 1), 6)
-      expect(Standing.find(@standing_three).points).to eq 1 + BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * -1) / (@standing_count - 1), 6)
+      expect(@standing_events_three[0].change).to eq BigDecimal.new((Settings.standing.delinquent_loss.to_f * 0.75 * 2 * -1) / (@standing_count - 1), 6)
+      expect(Standing.find(@standing_three).points).to eq 1 + BigDecimal.new((Settings.standing.delinquent_loss.to_f * 2 * 0.75 * -1) / (@standing_count - 1), 6)
     end
   end
 end

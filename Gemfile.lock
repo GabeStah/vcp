@@ -127,6 +127,8 @@ GEM
     ice_cube (0.12.0)
     jbuilder (1.0.2)
       activesupport (>= 3.0.0)
+    jc-validates_timeliness (3.1.1)
+      timeliness (~> 0.3.7)
     jquery-datatables-rails (2.2.2)
       jquery-rails
       sass-rails
@@ -282,8 +284,6 @@ GEM
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
     uniform_notifier (1.6.2)
-    validates_timeliness (3.0.14)
-      timeliness (~> 0.3.6)
     websocket (1.0.7)
     will_paginate (3.0.4)
     win32-process (0.7.4)
@@ -316,6 +316,7 @@ DEPENDENCIES
   faker (= 1.1.2)
   font-awesome-rails
   jbuilder (= 1.0.2)
+  jc-validates_timeliness
   jquery-datatables-rails (~> 2.2.1)
   jquery-rails (= 3.0.4)
   jquery-ui-rails
@@ -343,6 +344,5 @@ DEPENDENCIES
   tipsy-rails
   turbolinks (= 1.1.1)
   uglifier (= 2.1.1)
-  validates_timeliness
   will_paginate (= 3.0.4)
   zeroclipboard-rails

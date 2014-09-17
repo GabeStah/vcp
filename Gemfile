@@ -27,8 +27,8 @@ gem 'activerecord_any_of'
 # Boostrap datetime picker
 gem 'momentjs-rails'
 gem 'bootstrap3-datetimepicker-rails'
-# Time validation
-gem 'validates_timeliness'
+# Time validation (Fixed version)
+gem 'jc-validates_timeliness'
 # Datagrid creation
 #gem 'wice_grid', '3.4.9'
 # Editing out paginate for wice_grid

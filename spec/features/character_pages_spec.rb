@@ -28,28 +28,6 @@ describe 'Character pages', type: :feature do
           page.has_selector?('td', text: character.name)
         end
       end
-
-      it { should_not have_link('delete', href: character_path(Character.order(:name).first)) }
-
-      describe 'as admin user' do
-        let(:admin) { FactoryGirl.create(:admin) }
-        before do
-          sign_in admin
-          visit characters_path
-        end
-
-        describe 'delete links' do
-          it 'should have delete character link' do
-            page.has_link?('Delete', href: character_path(Character.order(:name).first))
-          end
-          it 'should be able to delete a character' do
-            #save_and_open_page
-            expect do
-              click_link('Delete', match: :first)
-            end.to change(Character, :count).by(-1)
-          end
-        end
-      end
     end
   end
 

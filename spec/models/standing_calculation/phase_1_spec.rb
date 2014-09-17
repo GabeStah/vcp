@@ -81,7 +81,7 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events.size).to eq 1
       @standing_event = @standing_events.first
       expect(@standing_event.type).to eq :attendance.to_s
-      expect(@standing_event.change).to eq Settings.standing.attendance_gain
+      expect(@standing_event.change).to eq 0
     end
 
     # SCENARIO:
@@ -134,7 +134,7 @@ RSpec.describe StandingEvent, :type => :model do
       @standing_events = @raid.standing_events
       expect(@standing_events.size).to eq 2
       expect(@standing_events[0].type).to eq :attendance.to_s
-      expect(@standing_events[0].change).to eq Settings.standing.attendance_gain
+      expect(@standing_events[0].change).to eq @raid.attendance_loss
       expect(@standing_events[1].type).to eq :delinquent.to_s
       expect(@standing_events[1].change).to eq Settings.standing.delinquent_loss * 0.25
     end
