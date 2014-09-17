@@ -5,8 +5,6 @@ class Raid < ActiveRecord::Base
   has_many :characters, -> { uniq }, through: :participations, dependent: :delete_all
   has_many :standing_events, dependent: :destroy
 
-  attr_accessor :attendance_loss
-
   before_update :destroy_standing_events
   before_update :reset_processed
   after_update :process_standing_events
@@ -50,6 +48,16 @@ class Raid < ActiveRecord::Base
     end
   end
 
+  def attendance_loss
+    # If doesn't exist, create
+    self.calculate_attendance_loss if @attendance_loss.nil?
+    @attendance_loss
+  end
+
+  def attendance_loss=(value)
+    @attendance_loss = value
+  end
+
   def attendees
     all_attendees = Array.new
     # Primary stage firstself.participations
@@ -66,6 +74,13 @@ class Raid < ActiveRecord::Base
       end
     end
     all_attendees
+  end
+
+  def calculate_attendance_loss
+    all_attendees = self.attendees
+    if all_attendees.size > 0
+      self.attendance_loss = (Standing.where(active: true).size - all_attendees.size) * Settings.standing.delinquent_loss / all_attendees.size.to_f
+    end
   end
 
   def ended_at=(t)
@@ -115,13 +130,6 @@ class Raid < ActiveRecord::Base
 
 
   private
-
-  def calculate_attendance_loss
-    all_attendees = self.attendees
-    if all_attendees.size > 0
-      @attendance_loss = (Standing.where(active: true).size - all_attendees.size) * Settings.standing.tardiness_loss / all_attendees.size
-    end
-  end
 
   def dates_are_consecutive
     unless ended_at.blank? || started_at.blank?

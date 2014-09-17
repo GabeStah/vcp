@@ -40,7 +40,7 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events.size).to eq 1
       @standing_event = @standing_events.first
       expect(@standing_event.type).to eq :attendance.to_s
-      expect(@standing_event.change).to eq DEFAULT_SITE_SETTINGS[:attendance_loss]
+      expect(@standing_event.change).to eq @raid.attendance_loss
     end
 
     # SCENARIO: Online at raid_start
@@ -58,7 +58,7 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events.size).to eq 1
       @standing_event = @standing_events.first
       expect(@standing_event.type).to eq :attendance.to_s
-      expect(@standing_event.change).to eq DEFAULT_SITE_SETTINGS[:attendance_gain]
+      expect(@standing_event.change).to eq Settings.standing.attendance_gain
     end
 
     # SCENARIO: Online, joins raid during cutoff
@@ -81,7 +81,7 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events.size).to eq 1
       @standing_event = @standing_events.first
       expect(@standing_event.type).to eq :attendance.to_s
-      expect(@standing_event.change).to eq DEFAULT_SITE_SETTINGS[:attendance_loss]
+      expect(@standing_event.change).to eq Settings.standing.attendance_gain
     end
 
     # SCENARIO:
@@ -104,9 +104,9 @@ RSpec.describe StandingEvent, :type => :model do
       @standing_events = @raid.standing_events
       expect(@standing_events.size).to eq 2
       expect(@standing_events[0].type).to eq :attendance.to_s
-      expect(@standing_events[0].change).to eq DEFAULT_SITE_SETTINGS[:attendance_gain]
+      expect(@standing_events[0].change).to eq Settings.standing.attendance_gain
       expect(@standing_events[1].type).to eq :delinquent.to_s
-      expect(@standing_events[1].change).to eq DEFAULT_SITE_SETTINGS[:delinquent_loss] * 0.75
+      expect(@standing_events[1].change).to eq Settings.standing.delinquent_loss * 0.75
     end
 
     # SCENARIO:
@@ -134,9 +134,9 @@ RSpec.describe StandingEvent, :type => :model do
       @standing_events = @raid.standing_events
       expect(@standing_events.size).to eq 2
       expect(@standing_events[0].type).to eq :attendance.to_s
-      expect(@standing_events[0].change).to eq DEFAULT_SITE_SETTINGS[:attendance_loss]
+      expect(@standing_events[0].change).to eq Settings.standing.attendance_gain
       expect(@standing_events[1].type).to eq :delinquent.to_s
-      expect(@standing_events[1].change).to eq DEFAULT_SITE_SETTINGS[:delinquent_loss] * 0.25
+      expect(@standing_events[1].change).to eq Settings.standing.delinquent_loss * 0.25
     end
 
     # SCENARIO:
@@ -158,7 +158,7 @@ RSpec.describe StandingEvent, :type => :model do
       @standing_events = @raid.standing_events
       expect(@standing_events.size).to eq 1
       expect(@standing_events[0].type).to eq :delinquent.to_s
-      expect(@standing_events[0].change).to eq DEFAULT_SITE_SETTINGS[:delinquent_loss]
+      expect(@standing_events[0].change).to eq Settings.standing.delinquent_loss
     end
 
     # SCENARIO:
@@ -180,7 +180,7 @@ RSpec.describe StandingEvent, :type => :model do
       @standing_events = @raid.standing_events
       expect(@standing_events.size).to eq 1
       expect(@standing_events[0].type).to eq :delinquent.to_s
-      expect(@standing_events[0].change).to eq DEFAULT_SITE_SETTINGS[:delinquent_loss]
+      expect(@standing_events[0].change).to eq Settings.standing.delinquent_loss
     end
 
     # SCENARIO:
@@ -203,9 +203,9 @@ RSpec.describe StandingEvent, :type => :model do
       @standing_events = @raid.standing_events
       expect(@standing_events.size).to eq 2
       expect(@standing_events[0].type).to eq :attendance.to_s
-      expect(@standing_events[0].change).to eq DEFAULT_SITE_SETTINGS[:attendance_loss]
+      expect(@standing_events[0].change).to eq @raid.attendance_loss
       expect(@standing_events[1].type).to eq :delinquent.to_s
-      expect(@standing_events[1].change).to eq BigDecimal.new(DEFAULT_SITE_SETTINGS[:delinquent_loss] * 35/60, 6)
+      expect(@standing_events[1].change).to eq BigDecimal.new(Settings.standing.delinquent_loss * 35/60, 6)
     end
 
     # SCENARIO:
@@ -227,7 +227,7 @@ RSpec.describe StandingEvent, :type => :model do
       @standing_events = @raid.standing_events
       expect(@standing_events.size).to eq 1
       expect(@standing_events[0].type).to eq :attendance.to_s
-      expect(@standing_events[0].change).to eq DEFAULT_SITE_SETTINGS[:attendance_loss]
+      expect(@standing_events[0].change).to eq @raid.attendance_loss
     end
   end
 end

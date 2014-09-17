@@ -51,7 +51,7 @@ class Standing < ActiveRecord::Base
   end
 
   def self.total_points
-    Standing.where(active: true).sum(:points)
+    Standing.where(active: true).sum(:points).round(5)
   end
 
   private

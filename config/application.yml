@@ -1,4 +1,8 @@
 defaults: &defaults
+  cutoff:
+    attendance: 15
+    delinquent: 30
+    tardy: 60
   guild:
     name: 'Vox Immortalis'
     realm: 'Hyjal'
@@ -10,7 +14,8 @@ defaults: &defaults
   roster:
     size: 25
   standing:
-    tardiness_loss: -1
+    attendance_gain: 1.0
+    delinquent_loss: -1.0
 
 development:
   <<: *defaults

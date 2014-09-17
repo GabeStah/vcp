@@ -16,7 +16,7 @@ class StandingCalculation
   attr_accessor :character, :participations, :raid, :settings
 
   def calculate(args = {})
-    tardiness_cutoff_time  = Rails.env.production? ? settings.tardiness_cutoff_time : DEFAULT_SITE_SETTINGS[:tardiness_cutoff_time]
+    tardiness_cutoff_time  = Rails.env.production? ? settings.tardiness_cutoff_time : Settings.cutoff.tardy
     case args[:type]
       when :attendance_loss
         # Character was online and in_raid between start and start+settings.tardiness_cutoff_time
@@ -24,16 +24,6 @@ class StandingCalculation
         online = first_time(event: :online, during_raid: true, within_cutoff: true)
         # AND
         # Character qualified for attendance
-        # VALUE: attendance_loss
-        # raid:
-        #   start_time: '6:30 PM'
-        # end_time:   '10:30 PM'
-        # size: 20
-        # roster:
-        #   size: 25
-        # standing:
-        #   tardiness_loss: -1
-        #return DEFAULT_SITE_SETTINGS[:attendance_loss] if (in_raid.present? && online.present? && qualified_for_attendance?)
         return raid.attendance_loss if (in_raid.present? && online.present? && qualified_for_attendance?)
       when :attendance_gain
         # Character was online between start and start+settings.tardiness_cutoff_time
@@ -42,13 +32,13 @@ class StandingCalculation
         # Character was never in_raid between start and start+settings.tardiness_cutoff_time
         in_raid = first_time(event: :in_raid, during_raid: true, within_cutoff: true)
         # VALUE: attendance_gain
-        return DEFAULT_SITE_SETTINGS[:attendance_gain] if (online.present? && in_raid.nil?)
+        return Settings.standing.attendance_gain if (online.present? && in_raid.nil?)
       when :delinquent_loss
         online = first_time(event: :online, during_raid: true)
         # Character was never online during raid
         if online.nil?
           # VALUE: delinquent_loss
-          return DEFAULT_SITE_SETTINGS[:delinquent_loss]
+          return Settings.standing.delinquent_loss
         end
         # OR
         # Character was online after raid_start
@@ -56,11 +46,11 @@ class StandingCalculation
           if online.to_datetime <= (raid.started_at.to_time + tardiness_cutoff_time.minutes).to_datetime
             tardiness_percent = (online.to_f - raid.started_at.to_f) / (tardiness_cutoff_time * 60)
             # VALUE: delinquent_loss * percent_of_cutoff_missed
-            return (DEFAULT_SITE_SETTINGS[:delinquent_loss] * tardiness_percent)
+            return (Settings.standing.delinquent_loss * tardiness_percent)
           else
             # Character missed entire tardiness cutoff period
             # VALUE: delinquent_loss
-            return DEFAULT_SITE_SETTINGS[:delinquent_loss]
+            return Settings.standing.delinquent_loss
           end
         end
         # OR
@@ -69,16 +59,16 @@ class StandingCalculation
           cutoff_time_online = time_online(within_cutoff: true)
           cutoff_time_offline = (tardiness_cutoff_time * 60) - cutoff_time_online
           # If more than delinquent_cutoff_time minutes, qualify for absence and penalize cutoff period % of delinquency
-          if (cutoff_time_offline / 60) >= DEFAULT_SITE_SETTINGS[:delinquent_cutoff_time]
-            tardiness_percent = cutoff_time_offline.to_f / (DEFAULT_SITE_SETTINGS[:tardiness_cutoff_time] * 60)
-            return (DEFAULT_SITE_SETTINGS[:delinquent_loss] * tardiness_percent)
+          if (cutoff_time_offline / 60) >= Settings.cutoff.delinquent
+            tardiness_percent = cutoff_time_offline.to_f / (Settings.cutoff.tardy * 60)
+            return (Settings.standing.delinquent_loss * tardiness_percent)
           end
         end
     end
   end
 
   def first_time(args = {})
-    tardiness_cutoff_time = Rails.env.production? ? settings.tardiness_cutoff_time : DEFAULT_SITE_SETTINGS[:tardiness_cutoff_time]
+    tardiness_cutoff_time = Rails.env.production? ? settings.tardiness_cutoff_time : Settings.cutoff.tardy
     # Check only for first event that falls within raid timeframe
     during_raid = args[:during_raid].present? ? args[:during_raid] : true
     within_cutoff = args[:within_cutoff].present? ? args[:within_cutoff] : false
@@ -141,7 +131,7 @@ class StandingCalculation
   end
 
   def qualified_for_attendance?
-    attendance_cutoff_time = Rails.env.production? ? settings.tardiness_cutoff_time : DEFAULT_SITE_SETTINGS[:attendance_cutoff_time]
+    attendance_cutoff_time = Rails.env.production? ? settings.tardiness_cutoff_time : Settings.cutoff.attendance
     raid_time = time_in_raid
     # Time in raid (min) meets/exceeds attendance_cutoff_time
     # OR
@@ -200,7 +190,7 @@ class StandingCalculation
   end
 
   def time_online(args={})
-    tardiness_cutoff_time = Rails.env.production? ? settings.tardiness_cutoff_time : DEFAULT_SITE_SETTINGS[:tardiness_cutoff_time]
+    tardiness_cutoff_time = Rails.env.production? ? settings.tardiness_cutoff_time : Settings.cutoff.tardy
     within_cutoff = args[:within_cutoff].present? ? args[:within_cutoff] : true
     online = first_time(event: :online, during_raid: true, within_cutoff: within_cutoff)
     total_time = 0
