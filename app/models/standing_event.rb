@@ -28,6 +28,19 @@ class StandingEvent < Event
     where("#{table_name}.change > ?", 0)
   end
 
+  def has_attendance_loss?
+    #where(standing: standing, raid: raid, type: :attendance).where("#{table_name}.change < ?", 0)
+    # Find character participation set
+    participations = Participation.where(character: standing.character, raid: raid).order(:timestamp)
+    # Create StandingCalculation instance WITHOUT processing
+    standing_calculation = StandingCalculation.new(character: standing.character, participations: participations, raid: raid, skip_process: true)
+    in_raid = standing_calculation.first_time(event: :in_raid, during_raid: true, within_cutoff: true)
+    online = standing_calculation.first_time(event: :online, during_raid: true, within_cutoff: true)
+    # Verify that character qualified for attendence_loss
+    return true if in_raid.present? && online.present? && standing_calculation.qualified_for_attendance?
+    false
+  end
+
   def self.has_children
     includes(:children).where.not(children_events: { id: nil })
   end
@@ -85,6 +98,8 @@ class StandingEvent < Event
     elsif self.type.to_sym == :delinquent
       # ensure loss
       if self.change < 0
+        # If this is for attendee, do not double to children
+        multiplier = has_attendance_loss? ? 1 : 2
         # Find all standing where active = true
         standings = Standing.where(active: true)
         # If only one standing, originator is only target so no change
@@ -95,8 +110,8 @@ class StandingEvent < Event
             unless self.standing.id == standing.id
               # Get divided value
               value = self.change.to_f / (standings.size - 1)
-              # Double delinquent value gain for all others to balance out
-              value *= 2
+              # Apply multiplier for zero-sum balancing
+              value *= multiplier
               # Inverse value
               value *= -1
               # Create a StandingEvent with distributed value

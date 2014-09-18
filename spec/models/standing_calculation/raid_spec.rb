@@ -71,8 +71,8 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events_kulldar[0].type).to eq :attendance.to_s
       expect(@standing_events_kulldar[0].change).to eq @raid.attendance_loss
       expect(@standing_events_kulldar[1].type).to eq :delinquent.to_s
-      expect(@standing_events_kulldar[1].change).to eq Settings.standing.delinquent_loss * 0.25 * -1 * 2
-      expect(Standing.find(@standing_kulldar).points).to eq @standing_kulldar.points + @raid.attendance_loss + Settings.standing.delinquent_loss * 0.25 * -1 * 2
+      expect(@standing_events_kulldar[1].change).to eq Settings.standing.delinquent_loss * 0.25 * -1
+      expect(Standing.find(@standing_kulldar).points).to eq @standing_kulldar.points + @raid.attendance_loss + Settings.standing.delinquent_loss * 0.25 * -1
 
       @standing_events_mohx = StandingEvent.where(standing: @standing_mohx, raid: @raid)
       expect(@standing_events_mohx.size).to eq 2
@@ -98,17 +98,17 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events_kulldar[1].change).to eq Settings.standing.delinquent_loss * 0.25
       # 50% delinquency gain
       expect(@standing_events_kulldar[2].type).to eq :delinquent.to_s
-      expect(@standing_events_kulldar[2].change).to eq Settings.standing.delinquent_loss * 0.5 * -1 * 2
+      expect(@standing_events_kulldar[2].change).to eq Settings.standing.delinquent_loss * 0.5 * -1
       expect(Standing.find(@standing_kulldar).points).to eq @standing_kulldar.points +
                                                               @raid.attendance_loss +
                                                               Settings.standing.delinquent_loss * 0.25 +
-                                                              Settings.standing.delinquent_loss * 0.5 * 2 * -1
+                                                              Settings.standing.delinquent_loss * 0.5 * -1
 
       @standing_events_mohx = StandingEvent.where(standing: @standing_mohx, raid: @raid)
       expect(@standing_events_mohx.size).to eq 3
       # 25% delinquency gain
       expect(@standing_events_mohx[0].type).to eq :delinquent.to_s
-      expect(@standing_events_mohx[0].change).to eq Settings.standing.delinquent_loss * 0.25 * -1 * 2
+      expect(@standing_events_mohx[0].change).to eq Settings.standing.delinquent_loss * 0.25 * -1
       # Normal attendance
       expect(@standing_events_mohx[1].type).to eq :attendance.to_s
       expect(@standing_events_mohx[1].change).to eq @raid.attendance_loss
@@ -118,7 +118,7 @@ RSpec.describe StandingEvent, :type => :model do
       expect(Standing.find(@standing_mohx).points).to eq @standing_mohx.points +
                                                            @raid.attendance_loss +
                                                            Settings.standing.delinquent_loss * 0.5 +
-                                                           Settings.standing.delinquent_loss * 0.25 * -1 * 2
+                                                           Settings.standing.delinquent_loss * 0.25 * -1
 
     end
 

@@ -341,5 +341,74 @@ describe 'Raid pages', type: :feature do
         expect(Standing.total_points).to eq 0
       end
     end
+
+    describe 'adding new raid with 3 attending, one 15 minutes tardy, 1 sitting' do
+      before do
+        fill_in 'Start Date', with: "#{DateTime.now.strftime('%m/%d/%Y')} 06:30 PM"
+        fill_in 'End Date',   with: "#{DateTime.now.strftime('%m/%d/%Y')} 10:30 PM"
+        check "online[#{@character_alice.slug}][1]"
+        check "in_raid[#{@character_alice.slug}][1]"
+        check "online[#{@character_dick.slug}][1]"
+        check "in_raid[#{@character_dick.slug}][1]"
+        check "online[#{@character_harry.slug}][1]"
+        check "in_raid[#{@character_harry.slug}][1]"
+
+        check "online[#{@character_tom.slug}][2]"
+        check "in_raid[#{@character_tom.slug}][2]"
+        fill_in "timestamp[#{@character_tom.slug}][2]", with: "#{DateTime.now.strftime('%m/%d/%Y')} 06:45 PM"
+
+        check "online[#{@character_zack.slug}][1]"
+        select 'Naxxramas', from: 'Zone'
+        click_button 'Add Raid'
+        @raid = Raid.first
+      end
+
+      it 'should increment the Participation' do
+        expect(Participation.all.size).to eq 6
+      end
+
+      it 'should increment the Raid' do
+        expect(Raid.all.size).to eq 1
+      end
+
+      it 'Attendees should be 4' do
+        expect(@raid.attendees.size).to eq 4
+      end
+
+      it 'StandingEvents count' do
+        # Attendees 3: initial, attendance_loss, delinquent_gain
+        expect(StandingEvent.where(standing: @standing_alice).size).to eq 3
+        expect(StandingEvent.where(standing: @standing_dick).size).to eq 3
+        expect(StandingEvent.where(standing: @standing_harry).size).to eq 3
+        # Tardy 3: initial, attendance_loss, delinquent_loss
+        expect(StandingEvent.where(standing: @standing_tom).size).to eq 3
+        # Delinquent 3: initial, attendance_gain, delinquent_gain
+        expect(StandingEvent.where(standing: @standing_zack).size).to eq 3
+      end
+
+      it 'Raid.attendance_loss' do
+        # (roster_size - raid_size) * delinquent_loss / raid_size
+        # (5 - 4) * -1 / 4 = -0.25
+        expect(@raid.attendance_loss).to eq -0.25
+        expect(@raid.attendance_loss).to eq (Standing.where(active: true).size - @raid.attendees.size) * -1 / @raid.attendees.size.to_f
+      end
+
+      it 'Standing Points' do
+        delinquency_point_loss = Settings.standing.delinquent_loss * 0.25.to_f
+        # Attendees: attendance_loss, delinquent_gain
+        attendee_points = BigDecimal(@raid.attendance_loss + delinquency_point_loss * -1 / (Standing.where(active: true).size - 1), 6)
+        expect(Standing.find(@standing_alice).points).to eq attendee_points
+        expect(Standing.find(@standing_dick).points).to eq attendee_points
+        expect(Standing.find(@standing_harry).points).to eq attendee_points
+        # Tardy: attendance_loss, delinquency_point_loss
+        expect(Standing.find(@standing_tom).points).to eq BigDecimal(@raid.attendance_loss + delinquency_point_loss, 6)
+        # Delinquent: attendance_gain, deliquency_point_loss
+        expect(Standing.find(@standing_zack).points).to eq BigDecimal(Settings.standing.attendance_gain + delinquency_point_loss * -1 / (Standing.where(active: true).size - 1), 6)
+      end
+
+      it 'should have total points of zero' do
+        expect(Standing.total_points).to eq 0
+      end
+    end
   end
 end

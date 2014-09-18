@@ -64,7 +64,7 @@ class Raid < ActiveRecord::Base
     characters.each do |character|
       # Find character participation set
       participations = self.participations.where(character: character).order(:timestamp)
-      # Create StandingCalculation instance WUTHOUT processing
+      # Create StandingCalculation instance WITHOUT processing
       standing_calculation = StandingCalculation.new(character: character, participations: participations, raid: self, skip_process: true)
       in_raid = standing_calculation.first_time(event: :in_raid, during_raid: true, within_cutoff: true)
       online = standing_calculation.first_time(event: :online, during_raid: true, within_cutoff: true)

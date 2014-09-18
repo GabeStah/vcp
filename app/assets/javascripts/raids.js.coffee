@@ -30,6 +30,12 @@ jQuery ->
   )
 
   $('#new-raid-standings').dataTable
+    columnDefs: [{
+      targets: 0
+      sorting: false
+    }]
+    lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
+    order: [[3, "desc" ]]
     pagingType: 'full_numbers'
 
   $('#raids-table').dataTable
