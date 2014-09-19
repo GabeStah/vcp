@@ -4,7 +4,12 @@
 jQuery ->
   $('#raid_started_at').datetimepicker()
   $('#raid_ended_at').datetimepicker()
+  # Update timestamp entries based on Start Date
+  $('#raid_started_at').on('dp.change', (e) ->
+    $('input[id^=timestamp_]').val($('#raid_started_at').val())
+  )
 
+  # Add new row to participation table
   $("[id^='add_participation']").on('click', ->
     current_row = $(this).parent().parent()
     new_row = current_row.clone()
@@ -25,19 +30,40 @@ jQuery ->
     new_row.insertAfter($("tr[data-slug='#{current_row.data('slug')}']").last())
   )
 
+  # Remove current participation row
   $(this).on('click', "[id^='delete_participation']", ->
     $(this).parent().parent().remove()
   )
 
+  # Generate Raid Standings datatable
   $('#new-raid-standings').dataTable
-    columnDefs: [{
-      targets: 0
-      sorting: false
-    }]
+    columnDefs: [
+      {
+        targets: 0
+        sorting: false
+      },
+      {
+        targets: 4
+        title: "<input type='checkbox' id='online_select_all' /> Online"
+      },
+      {
+        targets: 5
+        title: "<input type='checkbox' id='in_raid_select_all' /> In Raid"
+      }
+    ]
     lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
     order: [[3, "desc" ]]
     pagingType: 'full_numbers'
 
+  # select_all checkbox in top column for Online
+  $("#online_select_all").click ->
+    $('input[id^=online_').prop("checked", this.checked)
+
+  # select_all checkbox in top column for In Raid
+  $("#in_raid_select_all").click ->
+    $('input[id^=in_raid_').prop("checked", this.checked)
+
+  # Create Raids datatable
   $('#raids-table').dataTable
     ajax: $('#raids-table').data('source')
     lengthMenu: [ [10, 25, 50, 9223372036854775807], [10, 25, 50, "All"] ]
