@@ -39,17 +39,23 @@ jQuery ->
   $('#new-raid-standings').dataTable
     columnDefs: [
       {
-        targets: 0
         sorting: false
+        targets: 0
       },
       {
+        sorting: false
         targets: 4
         title: "<input type='checkbox' id='select_all_online' /> Online"
       },
       {
+        sorting: false
         targets: 5
         title: "<input type='checkbox' id='select_all_in_raid' /> In Raid"
       }
+      {
+        sorting: false
+        targets: 6
+      },
     ]
     lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
     order: [[3, "desc" ]]

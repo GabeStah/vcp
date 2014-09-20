@@ -77,6 +77,14 @@ class StandingEvent < Event
     where(parent: nil)
   end
 
+  def self.sat
+    where(type: :attendance).where("#{table_name}.change = ?", Settings.standing.attendance_gain)
+  end
+
+  def self.sat?
+    self.sat.size > 0
+  end
+
   def self.tardy
     where(type: :delinquent).losses
   end

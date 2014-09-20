@@ -107,6 +107,12 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events[0].change).to eq Settings.standing.attendance_gain
       expect(@standing_events[1].type).to eq :delinquent.to_s
       expect(@standing_events[1].change).to eq Settings.standing.delinquent_loss * 0.75
+
+      expect(@standing_events.absent?).to eq false
+      expect(@standing_events.attended?(raid: @raid)).to eq false
+      expect(@standing_events.unexcused_absence?).to eq false
+      expect(@standing_events.sat?).to eq true
+      expect(@standing_events.tardy?).to eq true
     end
 
     # SCENARIO:
@@ -141,6 +147,7 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events.absent?).to eq false
       expect(@standing_events.attended?(raid: @raid)).to eq true
       expect(@standing_events.unexcused_absence?).to eq false
+      expect(@standing_events.sat?).to eq false
       expect(@standing_events.tardy?).to eq true
     end
 
@@ -168,6 +175,7 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events.absent?).to eq true
       expect(@standing_events.attended?(raid: @raid)).to eq false
       expect(@standing_events.unexcused_absence?).to eq false
+      expect(@standing_events.sat?).to eq false
       expect(@standing_events.tardy?).to eq true
     end
 
@@ -199,6 +207,7 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events.absent?).to eq true
       expect(@standing_events.attended?(raid: @raid)).to eq false
       expect(@standing_events.unexcused_absence?).to eq true
+      expect(@standing_events.sat?).to eq false
       expect(@standing_events.tardy?).to eq true
     end
 
