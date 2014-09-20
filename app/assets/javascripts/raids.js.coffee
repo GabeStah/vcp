@@ -44,11 +44,11 @@ jQuery ->
       },
       {
         targets: 4
-        title: "<input type='checkbox' id='online_select_all' /> Online"
+        title: "<input type='checkbox' id='select_all_online' /> Online"
       },
       {
         targets: 5
-        title: "<input type='checkbox' id='in_raid_select_all' /> In Raid"
+        title: "<input type='checkbox' id='select_all_in_raid' /> In Raid"
       }
     ]
     lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
@@ -56,12 +56,18 @@ jQuery ->
     pagingType: 'full_numbers'
 
   # select_all checkbox in top column for Online
-  $("#online_select_all").click ->
+  $("#select_all_online").click ->
+    #$('input[id^=online_').trigger('change')
     $('input[id^=online_').prop("checked", this.checked)
 
   # select_all checkbox in top column for In Raid
-  $("#in_raid_select_all").click ->
+  $("#select_all_in_raid").click ->
     $('input[id^=in_raid_').prop("checked", this.checked)
+
+#  # Add new row to participation table
+#  $("[id^=online_]").on('change', ->
+#    $(this).parent().parent().find("input[id^=unexcused]").prop('disabled', this.checked ? true : false)
+#  )
 
   # Create Raids datatable
   $('#raids-table').dataTable

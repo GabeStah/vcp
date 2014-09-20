@@ -8,6 +8,7 @@
     <td><%= standing.points || 0 %></td>
     <td><%= check_box_tag "online[#{standing.character.slug}][#{count+1}]" %></td>
     <td><%= check_box_tag "in_raid[#{standing.character.slug}][#{count+1}]" %></td>
+    <td><%= check_box_tag "unexcused[#{standing.character.slug}][#{count+1}]" %></td>
     <td><%= text_field_tag "timestamp[#{standing.character.slug}][#{count+1}]", @default_start ? @default_start : l(@raid.started_at) %></td>
     <td>
       <a id="<%= "add_participation[#{standing.character.slug}][#{count+1}]" %>" href="javascript:;">Add</a>

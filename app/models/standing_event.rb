@@ -20,6 +20,22 @@ class StandingEvent < Event
   validates :type,
             inclusion: %w(adjustment attendance delinquent infraction initial resume retirement)
 
+  def self.absent
+    where(type: :delinquent).where("#{table_name}.change <= ?", Settings.standing.delinquent_loss)
+  end
+
+  def self.absent?
+    absent.size > 0
+  end
+
+  def self.attended(raid: nil)
+    where(type: :attendance).where("#{table_name}.change = ?", raid.attendance_loss)
+  end
+
+  def self.attended?(raid: nil)
+    self.attended(raid: raid).size > 0
+  end
+
   def self.dominant
     where.any_of(no_parent.merge(no_children), has_children)
   end
@@ -45,6 +61,10 @@ class StandingEvent < Event
     includes(:children).where.not(children_events: { id: nil })
   end
 
+  def self.infraction
+    where(type: :infraction)
+  end
+
   def self.losses
     where("#{table_name}.change < ?", 0)
   end
@@ -55,6 +75,18 @@ class StandingEvent < Event
 
   def self.no_parent
     where(parent: nil)
+  end
+
+  def self.tardy
+    where(type: :delinquent).losses
+  end
+
+  def self.tardy?
+    self.tardy.size > 0
+  end
+
+  def self.unexcused_absence?
+    self.absent? && self.infraction.where("#{table_name}.change = ?", Settings.standing.unexcused_absence_loss).size > 0
   end
 
   def type=(new_type)

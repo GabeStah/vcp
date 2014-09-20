@@ -217,6 +217,72 @@ describe 'Raid pages', type: :feature do
       end
     end
 
+    describe 'adding new raid with 2 attending, 2 absent, 1 unexcused' do
+      before do
+        fill_in 'Start Date', with: "#{DateTime.now.strftime('%m/%d/%Y')} 06:30 PM"
+        fill_in 'End Date',   with: "#{DateTime.now.strftime('%m/%d/%Y')} 10:30 PM"
+        check "online[#{@character_alice.slug}][1]"
+        check "in_raid[#{@character_alice.slug}][1]"
+        check "online[#{@character_dick.slug}][1]"
+        check "in_raid[#{@character_dick.slug}][1]"
+        check "unexcused[#{@character_zack.slug}][1]"
+        select 'Naxxramas', from: 'Zone'
+        click_button 'Add Raid'
+        @raid = Raid.first
+      end
+
+      it 'should increment the Participation' do
+        expect(Participation.all.size).to eq 5
+      end
+
+      it 'should increment the Raid' do
+        expect(Raid.all.size).to eq 1
+      end
+
+      it 'Attendees should be 5' do
+        expect(@raid.attendees.size).to eq 2
+      end
+
+      it 'StandingEvents count' do
+        # Attendees 3: initial, attendance_loss, delinquent_gain * 3
+        expect(StandingEvent.where(standing: @standing_alice).size).to eq 6
+        expect(StandingEvent.where(standing: @standing_dick).size).to eq 6
+        # Delinquent 2: initial, delinquent_loss, delinquent_gain * 2
+        expect(StandingEvent.where(standing: @standing_harry).size).to eq 5
+        expect(StandingEvent.where(standing: @standing_tom).size).to eq 5
+        expect(StandingEvent.where(standing: @standing_zack).size).to eq 5
+      end
+
+      it 'Raid.attendance_loss' do
+        # (roster_size - raid_size) * delinquent_loss / raid_size
+        # (5 - 2) * -1 / 2 = -1.5
+        expect(@raid.attendance_loss).to eq -1.5
+        expect(@raid.attendance_loss).to eq (Standing.where(active: true).size - @raid.attendees.size) * -1 / @raid.attendees.size.to_f
+      end
+
+      it 'Standing Points' do
+        # Attendees: attendance_loss + (Settings.standing.delinquent_loss * 2 * -1 / (Standing.all.size - 1))
+        # attendance_loss
+        # delinquent_gain * # deliquents
+        delinquent_gain_per = BigDecimal(Settings.standing.delinquent_loss * 2 * -1 / (Standing.where(active: true).size - 1), 6)
+        unexcused_absence_per = BigDecimal(Settings.standing.unexcused_absence_loss * -1 / (Standing.where(active: true).size - 1), 6)
+        attendee_points = BigDecimal(@raid.attendance_loss + delinquent_gain_per * 3, 6)
+        expect(Standing.find(@standing_alice).points).to eq attendee_points + unexcused_absence_per
+        expect(Standing.find(@standing_dick).points).to eq attendee_points + unexcused_absence_per
+        # Delinquent:
+        # delinquent_loss
+        # delinquent_gain * # other deliquents
+        delinquent_points = BigDecimal(Settings.standing.delinquent_loss, 6)
+        expect(Standing.find(@standing_harry).points).to eq delinquent_points + delinquent_gain_per * 2 + unexcused_absence_per
+        expect(Standing.find(@standing_tom).points).to eq delinquent_points + delinquent_gain_per * 2 + unexcused_absence_per
+        expect(Standing.find(@standing_zack).points).to eq delinquent_points + delinquent_gain_per * 2 + Settings.standing.unexcused_absence_loss
+      end
+
+      it 'should have total points of zero' do
+        expect(Standing.total_points).to eq 0
+      end
+    end
+
     describe 'adding new raid with 4 attending, 1 sitting' do
       before do
         fill_in 'Start Date', with: "#{DateTime.now.strftime('%m/%d/%Y')} 06:30 PM"
@@ -353,9 +419,9 @@ describe 'Raid pages', type: :feature do
         check "online[#{@character_harry.slug}][1]"
         check "in_raid[#{@character_harry.slug}][1]"
 
-        check "online[#{@character_tom.slug}][2]"
-        check "in_raid[#{@character_tom.slug}][2]"
-        fill_in "timestamp[#{@character_tom.slug}][2]", with: "#{DateTime.now.strftime('%m/%d/%Y')} 06:45 PM"
+        check "online[#{@character_tom.slug}][1]"
+        check "in_raid[#{@character_tom.slug}][1]"
+        fill_in "timestamp[#{@character_tom.slug}][1]", with: "#{DateTime.now.strftime('%m/%d/%Y')} 06:45 PM"
 
         check "online[#{@character_zack.slug}][1]"
         select 'Naxxramas', from: 'Zone'
@@ -364,7 +430,7 @@ describe 'Raid pages', type: :feature do
       end
 
       it 'should increment the Participation' do
-        expect(Participation.all.size).to eq 6
+        expect(Participation.all.size).to eq 5
       end
 
       it 'should increment the Raid' do

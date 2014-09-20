@@ -16,6 +16,7 @@ defaults: &defaults
   standing:
     attendance_gain: 1.0
     delinquent_loss: -1.0
+    unexcused_absence_loss: -0.5
 
 development:
   <<: *defaults

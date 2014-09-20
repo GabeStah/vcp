@@ -137,6 +137,11 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events[0].change).to eq @raid.attendance_loss
       expect(@standing_events[1].type).to eq :delinquent.to_s
       expect(@standing_events[1].change).to eq Settings.standing.delinquent_loss * 0.25
+
+      expect(@standing_events.absent?).to eq false
+      expect(@standing_events.attended?(raid: @raid)).to eq true
+      expect(@standing_events.unexcused_absence?).to eq false
+      expect(@standing_events.tardy?).to eq true
     end
 
     # SCENARIO:
@@ -159,6 +164,42 @@ RSpec.describe StandingEvent, :type => :model do
       expect(@standing_events.size).to eq 1
       expect(@standing_events[0].type).to eq :delinquent.to_s
       expect(@standing_events[0].change).to eq Settings.standing.delinquent_loss
+
+      expect(@standing_events.absent?).to eq true
+      expect(@standing_events.attended?(raid: @raid)).to eq false
+      expect(@standing_events.unexcused_absence?).to eq false
+      expect(@standing_events.tardy?).to eq true
+    end
+
+    # SCENARIO:
+    # Offline at raid_start
+    # Unexcused absence infraction
+    # EXPECT:
+    # delinquent_loss (100% of delinquent_loss)
+    # infraction_loss (100% of unexcused_absence_loss)
+    it 'unexcused absence' do
+      Participation.create!(character: @character, raid: @raid,
+                            timestamp: @raid.started_at,
+                            online: false,
+                            in_raid: false)
+      StandingEvent.create!(change: Settings.standing.unexcused_absence_loss,
+                            raid: @raid,
+                            standing: @standing,
+                            type: :infraction)
+      @raid.process_standing_events
+
+      @standing_events = @raid.standing_events
+      expect(@standing_events.size).to eq 2
+      expect(@standing_events[0].type).to eq :infraction.to_s
+      expect(@standing_events[0].change).to eq Settings.standing.unexcused_absence_loss
+
+      expect(@standing_events[1].type).to eq :delinquent.to_s
+      expect(@standing_events[1].change).to eq Settings.standing.delinquent_loss
+
+      expect(@standing_events.absent?).to eq true
+      expect(@standing_events.attended?(raid: @raid)).to eq false
+      expect(@standing_events.unexcused_absence?).to eq true
+      expect(@standing_events.tardy?).to eq true
     end
 
     # SCENARIO:
