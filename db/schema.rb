@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140914034106) do
+ActiveRecord::Schema.define(version: 20140922121454) do
 
   create_table "character_classes", force: true do |t|
     t.string   "name"
@@ -112,7 +112,8 @@ ActiveRecord::Schema.define(version: 20140914034106) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "zone_id"
-    t.boolean  "processed",  default: false
+    t.boolean  "processed",                                default: false
+    t.decimal  "attendance_loss", precision: 10, scale: 6
   end
 
   add_index "raids", ["zone_id"], name: "index_raids_on_zone_id", using: :btree

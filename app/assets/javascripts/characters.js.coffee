@@ -28,6 +28,21 @@ jQuery ->
     processing: true
     serverSide: true
 
+  # Generate Raid Standings datatable
+  $('#character-history-table').dataTable
+    ajax: $('#character-history-table').data('source')
+    columnDefs: [
+      {
+        sorting: false
+        targets: 5
+      },
+    ]
+    lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
+    order: [[1, 'desc']]
+    pagingType: 'full_numbers'
+    processing: true
+    serverSide: true
+
   api_copy = $("#api_key_copy_button")
   _defaults = {
     title: 'Copy to clipboard',

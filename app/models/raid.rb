@@ -60,16 +60,6 @@ class Raid < ActiveRecord::Base
     end
   end
 
-  def attendance_loss
-    # If doesn't exist, create
-    self.calculate_attendance_loss if @attendance_loss.nil?
-    @attendance_loss
-  end
-
-  def attendance_loss=(value)
-    @attendance_loss = value
-  end
-
   def attendees
     all_attendees = Array.new
     # Primary stage firstself.participations
@@ -88,13 +78,6 @@ class Raid < ActiveRecord::Base
     all_attendees
   end
 
-  def calculate_attendance_loss
-    all_attendees = self.attendees
-    if all_attendees.size > 0
-      self.attendance_loss = (Standing.where(active: true).size - all_attendees.size) * Settings.standing.delinquent_loss / all_attendees.size.to_f
-    end
-  end
-
   def ended_at=(t)
     t = DateTime.strptime(t, DATETIME_FORMAT) unless t.blank? || t.class == DateTime || t.class == ActiveSupport::TimeWithZone
     super(t)
@@ -108,7 +91,7 @@ class Raid < ActiveRecord::Base
     #settings = Setting.first
     unless processed
       # Set attendance_loss
-      calculate_attendance_loss
+      update_attendance_loss
       # Primary stage firstself.participations
       self.characters.each do |character|
         # Find character participation set
@@ -133,6 +116,13 @@ class Raid < ActiveRecord::Base
   def started_at=(t)
     t = DateTime.strptime(t, DATETIME_FORMAT) unless t.blank? || t.class == DateTime || t.class == ActiveSupport::TimeWithZone
     super(t)
+  end
+
+  def update_attendance_loss
+    all_attendees = self.attendees
+    if all_attendees.size > 0
+      update_column(:attendance_loss, ((Standing.where(active: true).size - all_attendees.size) * Settings.standing.delinquent_loss / all_attendees.size.to_f).round(6))
+    end
   end
 
   def zone=(z)

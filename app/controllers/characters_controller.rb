@@ -1,5 +1,5 @@
 class CharactersController < ApplicationController
-  before_action :set_character,               only: [:claim, :destroy, :edit, :show, :sync, :unclaim, :update]
+  before_action :set_character,               only: [:claim, :destroy, :edit, :history, :show, :sync, :unclaim, :update]
   before_action :require_login,               only: [:claim, :create, :edit, :destroy, :new, :sync, :update]
   before_action :require_user_owns_character, only: [:sync]
   before_action :admin_user,                  only: [:destroy]
@@ -35,6 +35,16 @@ class CharactersController < ApplicationController
   end
   def edit
   end
+
+  def history
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: CharacterHistoryDatatable.new(view_context, character: @character, standing: Standing.find_by(character: @character))
+      end
+    end
+  end
+
   def index
     respond_to do |format|
       format.html
