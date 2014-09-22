@@ -24,6 +24,7 @@ class StandingEvent < Event
     where(type: :delinquent).where("#{table_name}.change <= ?", Settings.standing.delinquent_loss)
   end
 
+  # Was character absent for the raid
   def self.absent?
     absent.size > 0
   end
@@ -32,6 +33,7 @@ class StandingEvent < Event
     where(type: :attendance).where("#{table_name}.change = ?", raid.attendance_loss)
   end
 
+  # Did character attend raid
   def self.attended?(raid: nil)
     self.attended(raid: raid).size > 0
   end
@@ -81,6 +83,7 @@ class StandingEvent < Event
     where(type: :attendance).where("#{table_name}.change = ?", Settings.standing.attendance_gain)
   end
 
+  # Did character sit out for the raid (not attend)
   def self.sat?
     self.sat.size > 0
   end
@@ -89,10 +92,12 @@ class StandingEvent < Event
     where(type: :delinquent).losses
   end
 
+  # Was character tardy, but therefore not absent
   def self.tardy?
-    self.tardy.size > 0
+    !self.absent? && self.tardy.size > 0
   end
 
+  # Was character absent with unexcused infraction penalty as well
   def self.unexcused_absence?
     self.absent? && self.infraction.where("#{table_name}.change = ?", Settings.standing.unexcused_absence_loss).size > 0
   end
@@ -129,6 +134,7 @@ class StandingEvent < Event
               # Create a StandingEvent with distributed value
               StandingEvent.create(change: value,
                                    parent: self,
+                                   raid: self.raid,
                                    standing: standing,
                                    type: self.type.to_sym)
             end

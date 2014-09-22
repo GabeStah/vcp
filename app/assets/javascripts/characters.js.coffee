@@ -34,7 +34,7 @@ jQuery ->
     columnDefs: [
       {
         sorting: false
-        targets: 5
+        targets: [4, 5]
       },
     ]
     lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
