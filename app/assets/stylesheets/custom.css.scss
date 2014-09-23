@@ -203,3 +203,42 @@ input {
   border: solid 2px #666;
   &:first-letter { text-transform: uppercase };
 }
+
+/* Tipsy width alteration */
+.tipsy-inner {
+  padding: 5px 8px 4px 8px;
+  background-color: black;
+  color: white;
+  max-width: 350px;
+  text-align: center;
+  font-size: 1.1em;
+}
+
+.character-history-tooltip {
+  border-bottom: 2px dotted #ffb400;
+}
+
+.character-history-tooltip-table td {
+  padding: 0px 2px 0px 2px;
+}
+
+/* CLASS COLORS */
+.deathknight { color: #C41F3B; }
+.druid { color: #FF7D0A; }
+.hunter { color: #ABD473; }
+.mage { color: #69CCF0; }
+.monk { color: #00ff96; }
+.paladin { color: #F58CBA; }
+.priest { color: #FFFFFF; }
+.rogue { color: #FFCC00; }
+.shaman { color: #2459FF; }
+.warlock { color: #9482C9; }
+.warrior { color: #C79C6E; }
+
+/* BASIC COLORS */
+.green {
+  color: #009d00;
+}
+.red {
+  color: #ff1300;
+}

@@ -10,6 +10,10 @@ class CharacterClass < ActiveRecord::Base
 
   normalize_attributes :name
 
+  def short_name
+    name.gsub(/\s+/, '').downcase
+  end
+
   def name_must_be_titleized
     unless name.nil?
       unless name == name.titleize

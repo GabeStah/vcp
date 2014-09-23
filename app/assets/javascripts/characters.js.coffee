@@ -50,12 +50,12 @@ jQuery ->
   }
   clip = new ZeroClipboard(api_copy)
 
-  clip.on('ready', (client) ->
+  clip.on('ready', ->
     api_copy.tipsy()
     api_copy.attr('title', _defaults.title)
   )
 
-  clip.on('aftercopy', (client, args) ->
+  clip.on('aftercopy', ->
     copied_hint = $(this).data('copied-hint')
     if (!copied_hint)
       copied_hint = _defaults.copied_hint
@@ -69,3 +69,8 @@ jQuery ->
   api_text = $('#api_key')
   api_text.click ->
     $(this).select()
+
+  # Points tooltips
+  $('#character-history-table').on 'draw.dt', ->
+    $(".character-history-tooltip").each ->
+      $(this).tipsy({html: true, title: 'data-tip'})

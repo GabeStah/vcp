@@ -36,12 +36,16 @@ class CharacterHistoryDatatable < AjaxDatatablesRails::Base
   def data
     records.map do |raid|
       # Get standing_events list
-      absent = raid.standing_events.where(standing: @standing).absent?
-      attended = raid.standing_events.where(standing: @standing).attended?(raid: raid)
-      sat = raid.standing_events.where(standing: @standing).sat?
-      tardy = raid.standing_events.where(standing: @standing).tardy?
-      unexcused_absence = raid.standing_events.where(standing: @standing).unexcused_absence?
+      standing_events = raid.standing_events.where(standing: @standing)
+
+      absent = standing_events.absent?
+      attended = standing_events.attended?(raid: raid)
+      sat = standing_events.sat?
+      tardy = standing_events.tardy?
+      unexcused_absence = standing_events.unexcused_absence?
       events_output = "#{absent && unexcused_absence ? 'Unexcused Absence' : absent ? 'Absent' : nil} #{attended ? 'Attended' : nil} #{sat ? 'Sat' : nil} #{tardy ? 'Tardy' : nil}"
+
+      points = "<span class='character-history-tooltip' original-title='123' data-tip='#{standing_events_summary(standing_events)}'>#{standing_events.sum(:change)}</span>"
       # Sums all earned points from raids up to and including this raid
       # Also adds non-raid point totals occuring prior to this raid date (initial/resume/retire/etc)
       total_points = StandingEvent.where(standing: @standing).where.any_of({raid: Raid.where('started_at <= ?', raid.started_at)}, ['created_at <= ?', raid.started_at]).sum(:change)
@@ -51,11 +55,36 @@ class CharacterHistoryDatatable < AjaxDatatablesRails::Base
         link_to(raid.zone.name, raid),
         link_to(l(raid.started_at), raid),
         events_output,
-        raid.standing_events.where(standing: @standing).sum(:change),
+        points,
         total_points,
         link_to('more', '#'),
       ]
     end
+  end
+
+  def make_table(events)
+    events.collect do |event|
+      gain_loss = event.change >= 0 ? 'Gain' : 'Loss'
+      if event.parent && event.parent.standing
+        from = "<span class=#{event.parent.standing.character.character_class.short_name}>" + "#{event.parent.standing.character.name}</span>"
+      else
+        from = "<i>self</i>"
+      end
+      "<tr><td><span class=#{event.change > 0 ? 'green' : 'red'}>#{event.change}</span></td><td>#{event.type.camelize} #{gain_loss}</td><td>#{from}</td></tr>"
+    end.join
+  end
+
+  def standing_events_summary(events)
+    "<table class=character-history-tooltip-table>
+      <thead>
+        <th>Points</th>
+        <th>Type</th>
+        <th>Source</th>
+      </thead>
+      <tbody>
+        #{make_table(events)}
+      </tbody>
+    </table>"
   end
 
   def get_raw_records
