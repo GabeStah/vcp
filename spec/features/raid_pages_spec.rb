@@ -133,8 +133,8 @@ describe 'Raid pages', type: :feature do
       it 'Raid.attendance_loss' do
         # (roster_size - raid_size) * delinquent_loss / raid_size
         # (5 - 4) * -1 / 4 = -0.25
-        expect(@raid.attendance_loss).to eq -0.25
-        expect(@raid.attendance_loss).to eq (Standing.where(active: true).size - @raid.attendees.size) * -1 / @raid.attendees.size.to_f
+        expect(@raid.attendance_loss).to eq -25.0
+        expect(@raid.attendance_loss).to eq (Standing.where(active: true).size - @raid.attendees.size) * Settings.standing.delinquent_loss / @raid.attendees.size.to_f
       end
 
       it 'Standing Points' do
@@ -191,8 +191,8 @@ describe 'Raid pages', type: :feature do
       it 'Raid.attendance_loss' do
         # (roster_size - raid_size) * delinquent_loss / raid_size
         # (5 - 2) * -1 / 2 = -1.5
-        expect(@raid.attendance_loss).to eq -1.5
-        expect(@raid.attendance_loss).to eq (Standing.where(active: true).size - @raid.attendees.size) * -1 / @raid.attendees.size.to_f
+        expect(@raid.attendance_loss).to eq -150.0
+        expect(@raid.attendance_loss).to eq (Standing.where(active: true).size - @raid.attendees.size) * Settings.standing.delinquent_loss / @raid.attendees.size.to_f
       end
 
       it 'Standing Points' do
@@ -256,8 +256,8 @@ describe 'Raid pages', type: :feature do
       it 'Raid.attendance_loss' do
         # (roster_size - raid_size) * delinquent_loss / raid_size
         # (5 - 2) * -1 / 2 = -1.5
-        expect(@raid.attendance_loss).to eq -1.5
-        expect(@raid.attendance_loss).to eq (Standing.where(active: true).size - @raid.attendees.size) * -1 / @raid.attendees.size.to_f
+        expect(@raid.attendance_loss).to eq -150.0
+        expect(@raid.attendance_loss).to eq (Standing.where(active: true).size - @raid.attendees.size) * Settings.standing.delinquent_loss / @raid.attendees.size.to_f
       end
 
       it 'Standing Points' do
@@ -326,8 +326,8 @@ describe 'Raid pages', type: :feature do
       it 'Raid.attendance_loss' do
         # (roster_size - raid_size) * delinquent_loss / raid_size
         # (5 - 4) * -1 / 4 = -0.25
-        expect(@raid.attendance_loss).to eq -0.25
-        expect(@raid.attendance_loss).to eq (Standing.where(active: true).size - @raid.attendees.size) * -1 / @raid.attendees.size.to_f
+        expect(@raid.attendance_loss).to eq -25.0
+        expect(@raid.attendance_loss).to eq (Standing.where(active: true).size - @raid.attendees.size) * Settings.standing.delinquent_loss / @raid.attendees.size.to_f
       end
 
       it 'Standing Points' do
@@ -388,8 +388,8 @@ describe 'Raid pages', type: :feature do
       it 'Raid.attendance_loss' do
         # (roster_size - raid_size) * delinquent_loss / raid_size
         # (5 - 3) * -1 / 3 = -0.25
-        expect(@raid.attendance_loss).to eq -1 * 2 / 3.to_f
-        expect(@raid.attendance_loss).to eq (Standing.where(active: true).size - @raid.attendees.size) * -1 / @raid.attendees.size.to_f
+        expect(@raid.attendance_loss).to eq (-100 * 2 / 3.to_f).round(6)
+        expect(@raid.attendance_loss).to eq ((Standing.where(active: true).size - @raid.attendees.size) * Settings.standing.delinquent_loss / @raid.attendees.size.to_f).round(6)
       end
 
       it 'Standing Points' do
@@ -455,8 +455,8 @@ describe 'Raid pages', type: :feature do
       it 'Raid.attendance_loss' do
         # (roster_size - raid_size) * delinquent_loss / raid_size
         # (5 - 4) * -1 / 4 = -0.25
-        expect(@raid.attendance_loss).to eq -0.25
-        expect(@raid.attendance_loss).to eq (Standing.where(active: true).size - @raid.attendees.size) * -1 / @raid.attendees.size.to_f
+        expect(@raid.attendance_loss).to eq -25.0
+        expect(@raid.attendance_loss).to eq (Standing.where(active: true).size - @raid.attendees.size) * Settings.standing.delinquent_loss / @raid.attendees.size.to_f
       end
 
       it 'Standing Points' do

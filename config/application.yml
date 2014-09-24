@@ -14,9 +14,9 @@ defaults: &defaults
   roster:
     size: 25
   standing:
-    attendance_gain: 1.0
-    delinquent_loss: -1.0
-    unexcused_absence_loss: -0.5
+    attendance_gain: 100.0
+    delinquent_loss: -100.0
+    unexcused_absence_loss: -50.0
 
 development:
   <<: *defaults

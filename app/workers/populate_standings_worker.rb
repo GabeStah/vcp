@@ -11,7 +11,7 @@ class PopulateStandingsWorker
       characters.each do |character|
         Standing.create!(active: true,
                          character: character,
-                         points: Standing.calculate_starting_points(seed: seed, players: characters.size, increment: 0.2))
+                         points: Standing.calculate_starting_points(seed: seed, players: characters.size, increment: 10))
         seed += 1
       end
     else

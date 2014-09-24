@@ -45,10 +45,11 @@ class CharacterDatatable < AjaxDatatablesRails::Base
       case type.to_sym
         when :claimed
           records.map do |character|
+            class_name = "<span class=#{character.character_class.short_name}>#{character.character_class.name}</span>"
             [
               link_to(character.name, character),
               character.character_class.present? ?
-                character.character_class.name: nil,
+                class_name : nil,
               character.guild.present? ?
                 link_to(character.guild.name, character.guild) : nil,
               "#{character.realm}-#{character.region.upcase}",
@@ -63,10 +64,11 @@ class CharacterDatatable < AjaxDatatablesRails::Base
           end
         when :unclaimed
           records.map do |character|
+            class_name = "<span class=#{character.character_class.short_name}>#{character.character_class.name}</span>"
             [
               link_to(character.name, character),
               character.character_class.present? ?
-                character.character_class.name: nil,
+                class_name : nil,
               character.guild.present? ?
                 link_to(character.guild.name, character.guild) : nil,
               "#{character.realm}-#{character.region.upcase}",
@@ -79,10 +81,11 @@ class CharacterDatatable < AjaxDatatablesRails::Base
       end
     else
       records.map do |character|
+        class_name = "<span class=#{character.character_class.short_name}>#{character.character_class.name}</span>"
         [
           link_to(character.name, character),
           character.character_class.present? ?
-            character.character_class.name: nil,
+            class_name : nil,
           character.guild.present? ?
             link_to(character.guild.name, character.guild) : nil,
           "#{character.realm}-#{character.region.upcase}",
