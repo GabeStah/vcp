@@ -37,17 +37,23 @@ class Standing < ActiveRecord::Base
       StandingEvent.create(change: 0,
                            standing: self,
                            type: :resume)
+      return true
     end
+    false
   end
 
   # Retire standing record
   def retire
-    # 1. Set active = false
-    update(active: false)
-    # 2. StandingEvent for retirement
-    StandingEvent.create(change: 0,
-                         standing: self,
-                         type: :retirement)
+    unless !self.active
+      # 1. Set active = false
+      update(active: false)
+      # 2. StandingEvent for retirement
+      StandingEvent.create(change: 0,
+                           standing: self,
+                           type: :retirement)
+      return true
+    end
+    false
   end
 
   def self.total_points

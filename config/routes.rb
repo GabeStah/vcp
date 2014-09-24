@@ -22,6 +22,8 @@ Vcp::Application.routes.draw do
   match '/characters/:id/unclaim',      to: 'characters#unclaim',       via: 'post',  as: 'unclaim_character'
 
   resources :standings
+  match '/standings/:id/retire',      to: 'standings#retire',       via: 'post',  as: 'retire_standing'
+  match '/standings/:id/resume',      to: 'standings#resume',       via: 'post',  as: 'resume_standing'
   resources :sessions, only: [:new, :create, :destroy]
   resources :raids
   resources :users

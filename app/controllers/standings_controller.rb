@@ -1,7 +1,7 @@
 class StandingsController < ApplicationController
-  before_action :set_standing,                only: [:destroy, :edit, :show, :update]
-  before_action :require_login,               only: [:create, :edit, :destroy, :new, :update]
-  before_action :admin_user,                  only: [:create, :edit, :destroy, :new, :update]
+  before_action :set_standing,                only: [:destroy, :edit, :resume, :retire, :show, :update]
+  before_action :require_login,               only: [:create, :edit, :destroy, :new, :resume, :retire, :update]
+  before_action :admin_user,                  only: [:create, :edit, :destroy, :new, :resume, :retire, :update]
 
   def create
     @standing = Standing.new(active: true, character: Character.find(standing_params[:character]))
@@ -30,6 +30,24 @@ class StandingsController < ApplicationController
         render json: StandingDatatable.new(view_context, type: params[:type])
       end
     end
+  end
+
+  def resume
+    if @standing.resume
+      flash[:success] = "Standing for #{@standing.character.full_title} resumed!"
+    else
+      flash[:error] = "Standing for #{@standing.character.full_title} could not be resumed."
+    end
+    redirect_to :back
+  end
+
+  def retire
+    if @standing.retire
+      flash[:success] = "Standing for #{@standing.character.full_title} retired!"
+    else
+      flash[:error] = "Standing for #{@standing.character.full_title} could not be retired."
+    end
+    redirect_to :back
   end
 
   def update
