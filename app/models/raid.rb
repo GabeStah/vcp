@@ -84,7 +84,7 @@ class Raid < ActiveRecord::Base
   end
 
   def full_title
-    "#{zone.name} @ #{I18n.l(started_at)}"
+    "#{zone.name} @ #{I18n.l(started_at.in_time_zone)}"
   end
 
   def process_standing_events

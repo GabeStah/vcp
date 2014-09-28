@@ -56,7 +56,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
               character.raids.distinct.size > 0 ?
                 character.raids.distinct.size : nil,
               character.achievement_points,
-              l(character.created_at, format: :short),
+              l(character.created_at.in_time_zone, format: :short),
               @current_user && @current_user.admin? ?
                 "#{link_to('Unclaim', unclaim_character_path(character), method: :post, data: { confirm: "Relinquish claim on #{character.full_title}?" })}
                  #{link_to('Sync', sync_character_path(character), method: :post)}" : nil,
@@ -75,7 +75,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
               character.raids.distinct.size > 0 ?
                 character.raids.distinct.size : nil,
               character.achievement_points,
-              l(character.created_at, format: :short),
+              l(character.created_at.in_time_zone, format: :short),
             ]
           end
       end
@@ -92,7 +92,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
           character.raids.distinct.size > 0 ?
             character.raids.distinct.size : nil,
           character.achievement_points,
-          l(character.created_at, format: :short),
+          l(character.created_at.in_time_zone, format: :short),
         ]
       end
     end

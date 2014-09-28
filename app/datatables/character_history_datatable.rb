@@ -71,7 +71,7 @@ class CharacterHistoryDatatable < AjaxDatatablesRails::Base
       # Return table
       [
         link_to(raid.zone.name, raid),
-        link_to(l(raid.started_at), raid),
+        link_to(l(raid.started_at.in_time_zone), raid),
         events_output,
         points,
         total_points,
