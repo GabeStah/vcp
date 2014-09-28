@@ -56,12 +56,12 @@ class Participation < ActiveRecord::Base
     online = args[:online]
 
     if after.nil? == false
-      if self.timestamp.to_datetime < after.to_datetime
+      if self.timestamp < after
         return false
       end
     end
     if before.nil? == false
-      if self.timestamp.to_datetime > before.to_datetime
+      if self.timestamp > before
         return false
       end
     end
@@ -129,13 +129,7 @@ class Participation < ActiveRecord::Base
   end
 
   def timestamp=(t)
-    unless t.blank? || t.class == DateTime || t.class == ActiveSupport::TimeWithZone
-      if t.include? 'UTC'
-        t = DateTime.strptime(t, DATETIME_FORMAT_UTC)
-      else
-        t = DateTime.strptime(t, DATETIME_FORMAT)
-      end
-    end
+    t = TimeManagement.local(t)
     super(t)
   end
 
@@ -146,6 +140,6 @@ class Participation < ActiveRecord::Base
   end
 
   def timestamp_is_valid_datetime
-    errors.add(:timestamp, 'must be a valid datetime') if ((DateTime.parse(timestamp.to_s) rescue ArgumentError) == ArgumentError)
+    errors.add(:timestamp, 'must be a valid datetime') if ((TimeManagement.local(timestamp) rescue ArgumentError) == ArgumentError)
   end
 end

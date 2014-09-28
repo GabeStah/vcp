@@ -2,11 +2,15 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 jQuery ->
-  $('#raid_started_at').datetimepicker()
-  $('#raid_ended_at').datetimepicker()
+#  $('#raid_started_at').datetimepicker()
+#  $('#raid_ended_at').datetimepicker()
   # Update timestamp entries based on Start Date
-  $('#raid_started_at').on('dp.change', (e) ->
-    $('input[id^=timestamp_]').val($('#raid_started_at').val())
+  format_date = (val) ->
+    $.formatDateTime('mm/dd/yy gg:ii a', new Date(new Date(val).getTime() + (new Date().getTimezoneOffset() * 60000)))
+
+  $('input[id^=timestamp_]').val(format_date($('#raid_started_at').val()))
+  $('#raid_started_at').on('change', (e) ->
+    $('input[id^=timestamp_]').val(format_date($('#raid_started_at').val()))
   )
 
   # Add new row to participation table

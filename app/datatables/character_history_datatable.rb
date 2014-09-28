@@ -45,7 +45,7 @@ class CharacterHistoryDatatable < AjaxDatatablesRails::Base
       unexcused_absence = standing_events.unexcused_absence?
       events_output = "#{absent && unexcused_absence ? 'Unexcused Absence' : absent ? 'Absent' : nil} #{attended ? 'Attended' : nil} #{sat ? 'Sat' : nil} #{tardy ? 'Tardy' : nil}"
 
-      points = "<span class='character-history-tooltip' original-title='123' data-tip='#{standing_events_summary(standing_events)}'>#{standing_events.sum(:change)}</span>"
+      points = "<span class='character-history-tooltip' data-tip='#{standing_events_summary(standing_events)}'>#{standing_events.sum(:change)}</span>"
       # Sums all earned points from raids up to and including this raid
       # Also adds non-raid point totals occuring prior to this raid date (initial/resume/retire/etc)
       total_points = StandingEvent.where(standing: @standing).where.any_of({raid: Raid.where('started_at <= ?', raid.started_at)}, ['created_at <= ?', raid.started_at]).sum(:change)

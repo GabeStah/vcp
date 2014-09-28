@@ -44,6 +44,8 @@ gem 'settingslogic'
 # Fonts!
 gem 'font-awesome-rails'
 
+# TimeZone addition for Time.zone.strptime
+gem 'time_zone_ext'
 
 group :development, :test do
   gem 'rspec-rails'

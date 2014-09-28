@@ -410,8 +410,8 @@ describe 'Raid pages', type: :feature do
 
     describe 'adding new raid with 3 attending, one 15 minutes tardy, 1 sitting' do
       before do
-        fill_in 'Start Date', with: "#{DateTime.now.strftime('%m/%d/%Y')} 06:30 PM"
-        fill_in 'End Date',   with: "#{DateTime.now.strftime('%m/%d/%Y')} 10:30 PM"
+        fill_in 'Start Date', with: "#{Time.zone.now.strftime('%m/%d/%Y')} 06:30 PM"
+        fill_in 'End Date',   with: "#{Time.zone.now.strftime('%m/%d/%Y')} 10:30 PM"
         check "online[#{@character_alice.slug}][1]"
         check "in_raid[#{@character_alice.slug}][1]"
         check "online[#{@character_dick.slug}][1]"
@@ -421,7 +421,7 @@ describe 'Raid pages', type: :feature do
 
         check "online[#{@character_tom.slug}][1]"
         check "in_raid[#{@character_tom.slug}][1]"
-        fill_in "timestamp[#{@character_tom.slug}][1]", with: "#{DateTime.now.strftime('%m/%d/%Y')} 06:45 PM"
+        fill_in "timestamp[#{@character_tom.slug}][1]", with: "#{Time.zone.now.strftime('%m/%d/%Y')} 06:45 PM"
 
         check "online[#{@character_zack.slug}][1]"
         select 'Naxxramas', from: 'Zone'

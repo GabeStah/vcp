@@ -73,4 +73,4 @@ PopulateRaidsWorker.perform_in(5.seconds)
 PopulateStandingsWorker.perform_in(90.seconds)
 
 # Create some participations
-PopulateParticipationsWorker.perform_in(120.seconds)
+#PopulateParticipationsWorker.perform_in(120.seconds)

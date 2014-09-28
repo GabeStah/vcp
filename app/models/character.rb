@@ -137,7 +137,7 @@ class Character < ActiveRecord::Base
           level:              @json['level'],
           portrait:           @json['thumbnail'],
           race:               Race.find_by(blizzard_id: @json['race']),
-          synced_at:          DateTime.now,
+          synced_at:          Time.zone.now,
           verified:           true
       )
     end

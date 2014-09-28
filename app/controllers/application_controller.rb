@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   include SessionsHelper
 
+  around_filter :set_timezone
+
   helper_method :user_owns_character?
 
   private
@@ -22,12 +24,21 @@ class ApplicationController < ActionController::Base
     redirect_to signin_url, notice: "Please sign in." unless signed_in?
   end
 
+  def set_timezone
+    default_timezone = Time.zone
+    client_timezone  = cookies[:timezone]
+    Time.zone = client_timezone if client_timezone.present?
+    yield
+  ensure
+    Time.zone = default_timezone
+  end
+
   def user_owns_character?(character = nil)
     if current_user && current_user.characters.include?(character.present? ? character : @character)
       @owned_character = true
       return true
     end
     @owned_character = false
-    return false
+    false
   end
 end

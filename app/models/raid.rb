@@ -78,8 +78,20 @@ class Raid < ActiveRecord::Base
     all_attendees
   end
 
+  def ended_at
+    unless @ended_at
+      # default
+      raid_end_time = Time.zone.parse("1/1/2000 #{Settings.raid.end_time}")
+      @ended_at = Time.zone.now.change(
+        hour: 22,
+        min: 30,
+      )
+    end
+    @ended_at
+  end
+
   def ended_at=(t)
-    t = DateTime.strptime(t, DATETIME_FORMAT) unless t.blank? || t.class == DateTime || t.class == ActiveSupport::TimeWithZone
+    t = TimeManagement.local(t)
     super(t)
   end
 
@@ -113,8 +125,24 @@ class Raid < ActiveRecord::Base
     process_standing_events
   end
 
+  def self.skip_time_zone_conversion_for_attributes
+    [:ended_at, :started_at]
+  end
+
+  def started_at
+    unless @started_at
+      # default
+      raid_start_time = Time.zone.parse("1/1/2000 #{Settings.raid.start_time}")
+      @started_at = Time.zone.now.change(
+        hour: 18,
+        min: 30,
+      )
+    end
+    @started_at
+  end
+
   def started_at=(t)
-    t = DateTime.strptime(t, DATETIME_FORMAT) unless t.blank? || t.class == DateTime || t.class == ActiveSupport::TimeWithZone
+    t = TimeManagement.local(t)
     super(t)
   end
 
@@ -147,7 +175,7 @@ class Raid < ActiveRecord::Base
 
   def ended_at_is_valid_datetime
     unless ended_at.blank?
-      errors.add(:ended_at, 'must be a valid datetime') if ((DateTime.parse(ended_at.to_s) rescue ArgumentError) == ArgumentError)
+      errors.add(:ended_at, 'must be a valid datetime') if ((TimeManagement.local(ended_at) rescue ArgumentError) == ArgumentError)
     end
   end
 
@@ -156,6 +184,6 @@ class Raid < ActiveRecord::Base
   end
 
   def started_at_is_valid_datetime
-    errors.add(:started_at, 'must be a valid datetime') if ((DateTime.parse(started_at.to_s) rescue ArgumentError) == ArgumentError)
+    errors.add(:started_at, 'must be a valid datetime') if ((TimeManagement.local(started_at) rescue ArgumentError) == ArgumentError)
   end
 end

@@ -28,16 +28,6 @@ class RaidsController < ApplicationController
   end
   def new
     @raid = Raid.new
-    raid_start_time = DateTime.parse("1/1/2000 #{Settings.raid.start_time}")
-    raid_end_time = DateTime.parse("1/1/2000 #{Settings.raid.end_time}")
-    @default_start = DateTime.now.change(
-        hour: raid_start_time.hour,
-        min: raid_start_time.min,
-    ).strftime(DATETIME_FORMAT)
-    @default_end = DateTime.now.change(
-        hour: raid_end_time.hour,
-        min: raid_end_time.min,
-    ).strftime(DATETIME_FORMAT)
   end
   def show
     @participations = @raid.participations.includes(:character)
@@ -61,6 +51,6 @@ class RaidsController < ApplicationController
       @raid = Raid.find(params[:id])
     end
     def set_standings
-      @standings = Standing.includes(:character).order(:points)
+      @standings = Standing.where(active: true).includes(:character).order(:points)
     end
 end
