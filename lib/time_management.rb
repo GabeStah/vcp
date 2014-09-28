@@ -4,16 +4,34 @@ class TimeManagement
     # Nil of nil
     return nil if value.blank? || value.nil?
     # return value if appropriate class
-    return value if value.class == ActiveSupport::TimeWithZone
-    # check for AM/PM
-    return Time.zone.strptime(value, DATETIME_FORMAT) if value.include?('AM') || value.include?('PM')
-    # check for UTC
-    return Time.zone.strptime(value, DATETIME_FORMAT_UTC) if value.include? 'UTC'
+    return value if value.class == Time || value.class == ActiveSupport::TimeWithZone
     # try parse
     begin
       return Time.zone.parse(value)
     rescue Exception => e
-      nil
+      # check for AM/PM
+      return Chronic.parse(value) if value.include?('AM') || value.include?('PM')
+      # check for UTC
+      return Chronic.parse(value) if value.include? 'UTC'
     end
   end
+
+  def self.raid_end(format: nil)
+    now = Time.zone.now
+    output = Time.local(now.year, now.month, now.day, Settings.raid.end_time.hour, Settings.raid.end_time.min)
+    if format
+      return output.strftime(format)
+    end
+    return output
+  end
+
+  def self.raid_start(format: nil)
+    now = Time.zone.now
+    output = Time.local(now.year, now.month, now.day, Settings.raid.start_time.hour, Settings.raid.start_time.min)
+    if format
+      return output.strftime(format)
+    end
+    return output
+  end
+
 end

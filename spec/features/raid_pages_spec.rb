@@ -41,8 +41,8 @@ describe 'Raid pages', type: :feature do
 
     describe 'adding new raid with all attending' do
       before do
-        fill_in 'Start Date', with: "#{Time.zone.now.strftime('%m/%d/%Y')} 06:30 PM"
-        fill_in 'End Date',   with: "#{Time.zone.now.strftime('%m/%d/%Y')} 10:30 PM"
+        fill_in 'Start Date', with: TimeManagement.raid_start(format: DATETIME_FORMAT)
+        fill_in 'End Date',   with: TimeManagement.raid_end(format: DATETIME_FORMAT)
         check "online[#{@character_alice.slug}][1]"
         check "in_raid[#{@character_alice.slug}][1]"
         check "online[#{@character_dick.slug}][1]"

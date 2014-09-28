@@ -72,7 +72,7 @@ RSpec.describe StandingEvent, :type => :model do
                             in_raid: false)
       # 2. timestamp: @raid.started_at, online: true, in_raid: true
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 20.minutes),
+                            timestamp: (@raid.started_at + 20.minutes),
                             online: true,
                             in_raid: true)
       @raid.process_standing_events
@@ -96,7 +96,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 45.minutes),
+                            timestamp: (@raid.started_at + 45.minutes),
                             online: true,
                             in_raid: false)
       @raid.process_standing_events
@@ -128,11 +128,11 @@ RSpec.describe StandingEvent, :type => :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 15.minutes),
+                            timestamp: (@raid.started_at + 15.minutes),
                             online: true,
                             in_raid: false)
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 20.minutes),
+                            timestamp: (@raid.started_at + 20.minutes),
                             online: true,
                             in_raid: true)
       @raid.process_standing_events
@@ -162,7 +162,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 90.minutes),
+                            timestamp: (@raid.started_at + 90.minutes),
                             online: true,
                             in_raid: false)
       @raid.process_standing_events
@@ -218,11 +218,11 @@ RSpec.describe StandingEvent, :type => :model do
     # delinquent_loss (100% of standard Standard)
     it 'multi-event: online before raid, then offline after raid start' do
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time - 5.minutes),
+                            timestamp: (@raid.started_at - 5.minutes),
                             online: true,
                             in_raid: false)
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 15.minutes),
+                            timestamp: (@raid.started_at + 15.minutes),
                             online: false,
                             in_raid: false)
       @raid.process_standing_events
@@ -245,7 +245,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: true,
                             in_raid: true)
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 25.minutes),
+                            timestamp: (@raid.started_at + 25.minutes),
                             online: false,
                             in_raid: true)
       @raid.process_standing_events
@@ -269,7 +269,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: true,
                             in_raid: true)
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 35.minutes),
+                            timestamp: (@raid.started_at + 35.minutes),
                             online: false,
                             in_raid: true)
       @raid.process_standing_events

@@ -78,18 +78,6 @@ class Raid < ActiveRecord::Base
     all_attendees
   end
 
-  def ended_at
-    unless @ended_at
-      # default
-      raid_end_time = Time.zone.parse("1/1/2000 #{Settings.raid.end_time}")
-      @ended_at = Time.zone.now.change(
-        hour: 22,
-        min: 30,
-      )
-    end
-    @ended_at
-  end
-
   def ended_at=(t)
     t = TimeManagement.local(t)
     super(t)
@@ -127,18 +115,6 @@ class Raid < ActiveRecord::Base
 
   def self.skip_time_zone_conversion_for_attributes
     [:ended_at, :started_at]
-  end
-
-  def started_at
-    unless @started_at
-      # default
-      raid_start_time = Time.zone.parse("1/1/2000 #{Settings.raid.start_time}")
-      @started_at = Time.zone.now.change(
-        hour: 18,
-        min: 30,
-      )
-    end
-    @started_at
   end
 
   def started_at=(t)

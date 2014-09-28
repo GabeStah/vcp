@@ -28,6 +28,8 @@ class RaidsController < ApplicationController
   end
   def new
     @raid = Raid.new
+    @default_start = TimeManagement.raid_start(format: DATETIME_FORMAT_PICKER)
+    @default_end = TimeManagement.raid_end(format: DATETIME_FORMAT_PICKER)
   end
   def show
     @participations = @raid.participations.includes(:character)

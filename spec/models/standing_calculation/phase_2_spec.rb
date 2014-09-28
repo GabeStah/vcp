@@ -69,7 +69,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character_one, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 45.minutes),
+                            timestamp: (@raid.started_at + 45.minutes),
                             online: true,
                             in_raid: false)
       @raid.process_standing_events
@@ -128,7 +128,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character_one, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 45.minutes),
+                            timestamp: (@raid.started_at + 45.minutes),
                             online: true,
                             in_raid: false)
       @raid.process_standing_events
@@ -194,7 +194,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character_one, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 45.minutes),
+                            timestamp: (@raid.started_at + 45.minutes),
                             online: true,
                             in_raid: false)
       @raid.process_standing_events
@@ -221,7 +221,7 @@ RSpec.describe StandingEvent, :type => :model do
 
       # Get Participations
       participations = Participation.where(raid: @raid, character: @character_one)
-      participations[1].update(timestamp:(@raid.started_at.to_time + 15.minutes))
+      participations[1].update(timestamp:(@raid.started_at + 15.minutes))
 
       current_change = Settings.standing.delinquent_loss.to_f * 0.25 * 2
 
@@ -263,7 +263,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character_one, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 45.minutes),
+                            timestamp: (@raid.started_at + 45.minutes),
                             online: true,
                             in_raid: false)
       @raid.process_standing_events

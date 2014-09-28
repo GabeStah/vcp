@@ -9,10 +9,10 @@
       <%= f.select :zone, Zone.where(zone_type: 'raid').order(:name).collect { |z| [z.name, z.id] } %>
 
       <%= f.label :started_at %>
-      <%= f.datetime_local_field :started_at %>
+      <%= f.datetime_local_field :started_at, value: @default_start %>
 
       <%= f.label :ended_at %>
-      <%= f.datetime_local_field :ended_at %>
+      <%= f.datetime_local_field :ended_at, value: @default_end %>
 
       <%= f.submit "Add Raid", class: "btn btn-large btn-primary" %>
 

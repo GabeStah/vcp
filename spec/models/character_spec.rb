@@ -266,7 +266,7 @@ describe Character, type: :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character_one, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 45.minutes),
+                            timestamp: (@raid.started_at + 45.minutes),
                             online: true,
                             in_raid: false)
       @raid.process_standing_events
@@ -329,7 +329,7 @@ describe Character, type: :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character_one, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 45.minutes),
+                            timestamp: (@raid.started_at + 45.minutes),
                             online: true,
                             in_raid: false)
       @raid.process_standing_events

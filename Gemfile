@@ -46,6 +46,7 @@ gem 'font-awesome-rails'
 
 # TimeZone addition for Time.zone.strptime
 gem 'time_zone_ext'
+gem 'chronic'
 
 group :development, :test do
   gem 'rspec-rails'

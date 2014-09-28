@@ -1,5 +1,6 @@
 DATETIME_FORMAT = '%m/%d/%Y %I:%M %p'
 DATETIME_FORMAT_UTC = '%Y-%m-%d %H:%M:%S UTC'
+DATETIME_FORMAT_PICKER = '%Y-%m-%dT%H:%M'
 PARTICIPATION_EVENTS = {
   invited: 'Invited to Raid',
   logged_in: {

@@ -8,9 +8,13 @@ defaults: &defaults
     realm: 'Hyjal'
     region: 'us'
   raid:
-    start_time: '6:30 PM'
-    end_time:   '10:30 PM'
+    end_time:
+      hour: 22
+      min: 30
     size: 20
+    start_time:
+      hour: 18
+      min: 30
   roster:
     size: 25
   standing:

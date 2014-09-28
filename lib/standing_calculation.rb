@@ -76,7 +76,7 @@ class StandingCalculation
       when :in_raid
         participations.each do |participation|
           if within_cutoff
-            return participation.timestamp if participation.matches_filter?(in_raid: true, after: raid.started_at, before: (raid.started_at.to_time + tardiness_cutoff_time.minutes))
+            return participation.timestamp if participation.matches_filter?(in_raid: true, after: raid.started_at, before: (raid.started_at + tardiness_cutoff_time.minutes))
           elsif during_raid
             return participation.timestamp if participation.matches_filter?(in_raid: true, after: raid.started_at, before: raid.ended_at)
           else
@@ -86,7 +86,7 @@ class StandingCalculation
       when :online
         participations.each do |participation|
           if within_cutoff
-            return participation.timestamp if participation.matches_filter?(online: true, after: raid.started_at, before: (raid.started_at.to_time + tardiness_cutoff_time.minutes))
+            return participation.timestamp if participation.matches_filter?(online: true, after: raid.started_at, before: (raid.started_at + tardiness_cutoff_time.minutes))
           elsif during_raid
             return participation.timestamp if participation.matches_filter?(online: true, after: raid.started_at, before: raid.ended_at)
           else
@@ -218,7 +218,7 @@ class StandingCalculation
           else
             if participation.matches_filter?(online: false)
               # Add difference to total time and nil previous
-              total_time += ((raid.started_at.to_time + tardiness_cutoff_time.minutes).to_i - previous_timestamp.to_i)
+              total_time += ((raid.started_at + tardiness_cutoff_time.minutes).to_i - previous_timestamp.to_i)
               previous_timestamp = nil
             else # still online
               # Check if occurs after raid_end
@@ -232,7 +232,7 @@ class StandingCalculation
         else
           # Check for cutoff flag
           if within_cutoff
-            if participation.matches_filter?(online: true, after: raid.started_at, before: (raid.started_at.to_time + tardiness_cutoff_time.minutes))
+            if participation.matches_filter?(online: true, after: raid.started_at, before: (raid.started_at + tardiness_cutoff_time.minutes))
               # Match, assign previous_timestamp
               previous_timestamp = participation.timestamp
             end
@@ -248,7 +248,7 @@ class StandingCalculation
     # Cutoff flag
     if within_cutoff
       # If previous_timestamp still exists, add time to end of cutoff time
-      total_time += ((raid.started_at.to_time + tardiness_cutoff_time.minutes).to_i - previous_timestamp.to_i) if previous_timestamp
+      total_time += ((raid.started_at + tardiness_cutoff_time.minutes).to_i - previous_timestamp.to_i) if previous_timestamp
     else # Check entire raid
       # If previous_timestamp still exists, add time to end of raid to total
       total_time += (raid.ended_at.to_i - previous_timestamp.to_i) if previous_timestamp
