@@ -106,6 +106,7 @@ GEM
       nokogiri (>= 1.5.0)
       rails (>= 3.0.0)
     diff-lcs (1.2.5)
+    dotiw (0.4.1)
     erubis (2.7.0)
     execjs (2.2.1)
     factory_girl (4.4.0)
@@ -317,6 +318,7 @@ DEPENDENCIES
   coffee-rails (= 4.0.1)
   cucumber-rails (= 1.4.0)
   database_cleaner!
+  dotiw
   factory_girl_rails
   faker (= 1.1.2)
   font-awesome-rails

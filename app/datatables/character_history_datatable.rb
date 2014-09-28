@@ -5,6 +5,7 @@ class CharacterHistoryDatatable < AjaxDatatablesRails::Base
 
   def_delegators :@view,
                  :current_user,
+                 :distance_of_time_in_words,
                  :l,
                  :link_to
 
@@ -42,8 +43,25 @@ class CharacterHistoryDatatable < AjaxDatatablesRails::Base
       attended = standing_events.attended?(raid: raid)
       sat = standing_events.sat?
       tardy = standing_events.tardy?
+      if tardy || absent
+        participations = Participation.where(character: @standing.character, raid: raid).order(:timestamp)
+        # Create StandingCalculation instance WITHOUT processing
+        standing_calculation = StandingCalculation.new(character: @standing.character, participations: participations, raid: raid, skip_process: true)
+        first_online = standing_calculation.first_time(event: :online)
+        if first_online.nil?
+          absent = "<span class='character-history-tooltip' data-tip='<span class=red>Not online</span>'>Absent</span>"
+        else
+          time_diff = distance_of_time_in_words(raid.started_at, first_online)
+          if tardy
+            tardy = "<span class='character-history-tooltip' data-tip='<span class=green>#{time_diff} late</span><br/>(#{first_online})'>Tardy</span>"
+          elsif absent
+            absent = "<span class='character-history-tooltip' data-tip='<span class=green>#{time_diff} late</span><br/>(#{first_online})'>Absent</span>"
+          end
+        end
+      end
+
       unexcused_absence = standing_events.unexcused_absence?
-      events_output = "#{absent && unexcused_absence ? 'Unexcused Absence' : absent ? 'Absent' : nil} #{attended ? 'Attended' : nil} #{sat ? 'Sat' : nil} #{tardy ? 'Tardy' : nil}"
+      events_output = "#{absent && unexcused_absence ? 'Unexcused Absence' : absent ? absent : nil} #{attended ? 'Attended' : nil} #{sat ? 'Sat' : nil} #{tardy ? tardy : nil}"
 
       points = "<span class='character-history-tooltip' data-tip='#{standing_events_summary(standing_events)}'>#{standing_events.sum(:change)}</span>"
       # Sums all earned points from raids up to and including this raid

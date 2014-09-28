@@ -48,6 +48,9 @@ gem 'font-awesome-rails'
 gem 'time_zone_ext'
 gem 'chronic'
 
+# Accurate distance_of_time_in_words
+gem 'dotiw'
+
 group :development, :test do
   gem 'rspec-rails'
   # The following optional lines are part of the advanced setup.
