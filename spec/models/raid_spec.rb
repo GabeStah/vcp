@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Raid, :type => :model do
   before {
-    @raid = Raid.new(zone: FactoryGirl.create(:zone), started_at: DateTime.now, ended_at: 4.hours.from_now)
+    @raid = Raid.new(zone: FactoryGirl.create(:zone), started_at: Time.zone.now, ended_at: 4.hours.from_now)
   }
 
   subject { @raid }

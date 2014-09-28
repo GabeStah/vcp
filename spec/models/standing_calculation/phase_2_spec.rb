@@ -42,7 +42,7 @@ RSpec.describe StandingEvent, :type => :model do
                                            realm: 'Hyjal',
                                            user: FactoryGirl.create(:user),
                                            verified: true)
-      @raid = Raid.create!(zone: FactoryGirl.create(:zone), started_at: DateTime.now, ended_at: 4.hours.from_now)
+      @raid = Raid.create!(zone: FactoryGirl.create(:zone), started_at: Time.zone.now, ended_at: 4.hours.from_now)
       # Create participation data
       @standing_one = Standing.create!(active: true, character: @character_one, points: -1)
       @standing_two = Standing.create!(active: true, character: @character_two, points: 0)
@@ -69,7 +69,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character_one, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 45.minutes).to_datetime,
+                            timestamp: (@raid.started_at.to_time + 45.minutes),
                             online: true,
                             in_raid: false)
       @raid.process_standing_events
@@ -128,7 +128,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character_one, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 45.minutes).to_datetime,
+                            timestamp: (@raid.started_at.to_time + 45.minutes),
                             online: true,
                             in_raid: false)
       @raid.process_standing_events
@@ -194,7 +194,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character_one, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 45.minutes).to_datetime,
+                            timestamp: (@raid.started_at.to_time + 45.minutes),
                             online: true,
                             in_raid: false)
       @raid.process_standing_events
@@ -221,7 +221,7 @@ RSpec.describe StandingEvent, :type => :model do
 
       # Get Participations
       participations = Participation.where(raid: @raid, character: @character_one)
-      participations[1].update(timestamp:(@raid.started_at.to_time + 15.minutes).to_datetime)
+      participations[1].update(timestamp:(@raid.started_at.to_time + 15.minutes))
 
       current_change = Settings.standing.delinquent_loss.to_f * 0.25 * 2
 
@@ -263,7 +263,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character_one, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 45.minutes).to_datetime,
+                            timestamp: (@raid.started_at.to_time + 45.minutes),
                             online: true,
                             in_raid: false)
       @raid.process_standing_events

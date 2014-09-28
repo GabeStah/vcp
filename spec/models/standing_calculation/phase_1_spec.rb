@@ -17,7 +17,7 @@ RSpec.describe StandingEvent, :type => :model do
                                      realm: 'Hyjal',
                                      user: FactoryGirl.create(:user),
                                      verified: true)
-      @raid = Raid.create!(zone: FactoryGirl.create(:zone), started_at: DateTime.now, ended_at: 4.hours.from_now)
+      @raid = Raid.create!(zone: FactoryGirl.create(:zone), started_at: Time.zone.now, ended_at: 4.hours.from_now)
       # Create participation data
       @standing = Standing.create!(active: true, character: @character)
       @raid = Raid.find(@raid)
@@ -72,7 +72,7 @@ RSpec.describe StandingEvent, :type => :model do
                             in_raid: false)
       # 2. timestamp: @raid.started_at, online: true, in_raid: true
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 20.minutes).to_datetime,
+                            timestamp: (@raid.started_at.to_time + 20.minutes),
                             online: true,
                             in_raid: true)
       @raid.process_standing_events
@@ -96,7 +96,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 45.minutes).to_datetime,
+                            timestamp: (@raid.started_at.to_time + 45.minutes),
                             online: true,
                             in_raid: false)
       @raid.process_standing_events
@@ -128,11 +128,11 @@ RSpec.describe StandingEvent, :type => :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 15.minutes).to_datetime,
+                            timestamp: (@raid.started_at.to_time + 15.minutes),
                             online: true,
                             in_raid: false)
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 20.minutes).to_datetime,
+                            timestamp: (@raid.started_at.to_time + 20.minutes),
                             online: true,
                             in_raid: true)
       @raid.process_standing_events
@@ -162,7 +162,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 90.minutes).to_datetime,
+                            timestamp: (@raid.started_at.to_time + 90.minutes),
                             online: true,
                             in_raid: false)
       @raid.process_standing_events
@@ -218,11 +218,11 @@ RSpec.describe StandingEvent, :type => :model do
     # delinquent_loss (100% of standard Standard)
     it 'multi-event: online before raid, then offline after raid start' do
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time - 5.minutes).to_datetime,
+                            timestamp: (@raid.started_at.to_time - 5.minutes),
                             online: true,
                             in_raid: false)
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 15.minutes).to_datetime,
+                            timestamp: (@raid.started_at.to_time + 15.minutes),
                             online: false,
                             in_raid: false)
       @raid.process_standing_events
@@ -245,7 +245,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: true,
                             in_raid: true)
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 25.minutes).to_datetime,
+                            timestamp: (@raid.started_at.to_time + 25.minutes),
                             online: false,
                             in_raid: true)
       @raid.process_standing_events
@@ -269,7 +269,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: true,
                             in_raid: true)
       Participation.create!(character: @character, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 35.minutes).to_datetime,
+                            timestamp: (@raid.started_at.to_time + 35.minutes),
                             online: false,
                             in_raid: true)
       @raid.process_standing_events

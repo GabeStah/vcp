@@ -33,7 +33,7 @@ FactoryGirl.define do
     in_raid true
     online true
     raid
-    timestamp DateTime.now
+    timestamp Time.zone.now
   end
 
   factory :race do
@@ -44,7 +44,7 @@ FactoryGirl.define do
 
   factory :raid do
     ended_at 4.hours.from_now
-    started_at DateTime.now
+    started_at Time.zone.now
     zone
   end
 

@@ -244,7 +244,7 @@ describe Character, type: :model do
                                            realm: 'Hyjal',
                                            user: FactoryGirl.create(:user),
                                            verified: true)
-      @raid = Raid.create!(zone: FactoryGirl.create(:zone), started_at: DateTime.now, ended_at: 4.hours.from_now)
+      @raid = Raid.create!(zone: FactoryGirl.create(:zone), started_at: Time.zone.now, ended_at: 4.hours.from_now)
       # Create participation data
       @standing_one = Standing.create!(active: true, character: @character_one, points: -1)
       @standing_two = Standing.create!(active: true, character: @character_two, points: 0)
@@ -266,7 +266,7 @@ describe Character, type: :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character_one, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 45.minutes).to_datetime,
+                            timestamp: (@raid.started_at.to_time + 45.minutes),
                             online: true,
                             in_raid: false)
       @raid.process_standing_events
@@ -329,7 +329,7 @@ describe Character, type: :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @character_one, raid: @raid,
-                            timestamp: (@raid.started_at.to_time + 45.minutes).to_datetime,
+                            timestamp: (@raid.started_at.to_time + 45.minutes),
                             online: true,
                             in_raid: false)
       @raid.process_standing_events

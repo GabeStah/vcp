@@ -15,7 +15,7 @@ RSpec.describe StandingEvent, :type => :model do
                                    realm: 'Hyjal',
                                    user: FactoryGirl.create(:user),
                                    verified: true)
-    @raid = Raid.create!(zone: FactoryGirl.create(:zone), started_at: DateTime.now, ended_at: 4.hours.from_now)
+    @raid = Raid.create!(zone: FactoryGirl.create(:zone), started_at: Time.zone.now, ended_at: 4.hours.from_now)
     # Create participation data
     @standing = Standing.create!(character: @character)
     @participation = Participation.create!(

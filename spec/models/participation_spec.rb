@@ -15,7 +15,7 @@ RSpec.describe Participation, :type => :model do
                                realm: 'Hyjal',
                                user: FactoryGirl.create(:user),
                                verified: true)
-    @raid = Raid.create!(zone: FactoryGirl.create(:zone), started_at: DateTime.now, ended_at: 4.hours.from_now)
+    @raid = Raid.create!(zone: FactoryGirl.create(:zone), started_at: Time.zone.now, ended_at: 4.hours.from_now)
     @participation = Participation.new(
         character: @character,
         in_raid: true,

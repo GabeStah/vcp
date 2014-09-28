@@ -30,10 +30,10 @@ RSpec.describe StandingEvent, :type => :model do
                                 realm: 'Hyjal',
                                 user: FactoryGirl.create(:user),
                                 verified: true)
-      @raid = Raid.create!(zone: FactoryGirl.create(:zone), started_at: DateTime.now, ended_at: 4.hours.from_now)
+      @raid = Raid.create!(zone: FactoryGirl.create(:zone), started_at: Time.zone.now, ended_at: 4.hours.from_now)
       # Create participation data
-      @standing_kulldar = Standing.create!(active: true, character: @kulldar, created_at: DateTime.now - 30.minutes, points: -0.5)
-      @standing_mohx = Standing.create!(active: true, character: @mohx,  created_at: DateTime.now - 30.minutes, points: 0.5)
+      @standing_kulldar = Standing.create!(active: true, character: @kulldar, created_at: Time.zone.now - 30.minutes, points: -0.5)
+      @standing_mohx = Standing.create!(active: true, character: @mohx,  created_at: Time.zone.now - 30.minutes, points: 0.5)
       @raid = Raid.find(@raid)
     end
     before :each do
@@ -61,7 +61,7 @@ RSpec.describe StandingEvent, :type => :model do
                             online: false,
                             in_raid: false)
       Participation.create!(character: @mohx, raid: @raid,
-                            timestamp: (@raid.started_at + 15.minutes).to_datetime,
+                            timestamp: (@raid.started_at + 15.minutes),
                             online: true,
                             in_raid: true)
       @raid.process_standing_events
@@ -83,7 +83,7 @@ RSpec.describe StandingEvent, :type => :model do
       expect(Standing.find(@standing_mohx).points).to eq @standing_mohx.points + @raid.attendance_loss + Settings.standing.delinquent_loss * 0.25
 
       # update raid
-      @raid.update(started_at: (@raid.started_at - 15.minutes).to_datetime)
+      @raid.update(started_at: (@raid.started_at - 15.minutes))
 
       @participations = Participation.where(character: @kulldar, raid: @raid)
       expect(@participations.size).to eq 1

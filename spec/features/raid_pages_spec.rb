@@ -41,8 +41,8 @@ describe 'Raid pages', type: :feature do
 
     describe 'adding new raid with all attending' do
       before do
-        fill_in 'Start Date', with: "#{DateTime.now.strftime('%m/%d/%Y')} 06:30 PM"
-        fill_in 'End Date',   with: "#{DateTime.now.strftime('%m/%d/%Y')} 10:30 PM"
+        fill_in 'Start Date', with: "#{Time.zone.now.strftime('%m/%d/%Y')} 06:30 PM"
+        fill_in 'End Date',   with: "#{Time.zone.now.strftime('%m/%d/%Y')} 10:30 PM"
         check "online[#{@character_alice.slug}][1]"
         check "in_raid[#{@character_alice.slug}][1]"
         check "online[#{@character_dick.slug}][1]"
@@ -93,8 +93,8 @@ describe 'Raid pages', type: :feature do
 
     describe 'adding new raid with 4 attending, 1 absent' do
       before do
-        fill_in 'Start Date', with: "#{DateTime.now.strftime('%m/%d/%Y')} 06:30 PM"
-        fill_in 'End Date',   with: "#{DateTime.now.strftime('%m/%d/%Y')} 10:30 PM"
+        fill_in 'Start Date', with: "#{Time.zone.now.strftime('%m/%d/%Y')} 06:30 PM"
+        fill_in 'End Date',   with: "#{Time.zone.now.strftime('%m/%d/%Y')} 10:30 PM"
         check "online[#{@character_alice.slug}][1]"
         check "in_raid[#{@character_alice.slug}][1]"
         check "online[#{@character_dick.slug}][1]"
@@ -155,8 +155,8 @@ describe 'Raid pages', type: :feature do
 
     describe 'adding new raid with 2 attending, 3 absent' do
       before do
-        fill_in 'Start Date', with: "#{DateTime.now.strftime('%m/%d/%Y')} 06:30 PM"
-        fill_in 'End Date',   with: "#{DateTime.now.strftime('%m/%d/%Y')} 10:30 PM"
+        fill_in 'Start Date', with: "#{Time.zone.now.strftime('%m/%d/%Y')} 06:30 PM"
+        fill_in 'End Date',   with: "#{Time.zone.now.strftime('%m/%d/%Y')} 10:30 PM"
         check "online[#{@character_alice.slug}][1]"
         check "in_raid[#{@character_alice.slug}][1]"
         check "online[#{@character_dick.slug}][1]"
@@ -219,8 +219,8 @@ describe 'Raid pages', type: :feature do
 
     describe 'adding new raid with 2 attending, 2 absent, 1 unexcused' do
       before do
-        fill_in 'Start Date', with: "#{DateTime.now.strftime('%m/%d/%Y')} 06:30 PM"
-        fill_in 'End Date',   with: "#{DateTime.now.strftime('%m/%d/%Y')} 10:30 PM"
+        fill_in 'Start Date', with: "#{Time.zone.now.strftime('%m/%d/%Y')} 06:30 PM"
+        fill_in 'End Date',   with: "#{Time.zone.now.strftime('%m/%d/%Y')} 10:30 PM"
         check "online[#{@character_alice.slug}][1]"
         check "in_raid[#{@character_alice.slug}][1]"
         check "online[#{@character_dick.slug}][1]"
@@ -285,8 +285,8 @@ describe 'Raid pages', type: :feature do
 
     describe 'adding new raid with 4 attending, 1 sitting' do
       before do
-        fill_in 'Start Date', with: "#{DateTime.now.strftime('%m/%d/%Y')} 06:30 PM"
-        fill_in 'End Date',   with: "#{DateTime.now.strftime('%m/%d/%Y')} 10:30 PM"
+        fill_in 'Start Date', with: "#{Time.zone.now.strftime('%m/%d/%Y')} 06:30 PM"
+        fill_in 'End Date',   with: "#{Time.zone.now.strftime('%m/%d/%Y')} 10:30 PM"
         check "online[#{@character_alice.slug}][1]"
         check "in_raid[#{@character_alice.slug}][1]"
         check "online[#{@character_dick.slug}][1]"
@@ -348,8 +348,8 @@ describe 'Raid pages', type: :feature do
 
     describe 'adding new raid with 3 attending, 2 sitting' do
       before do
-        fill_in 'Start Date', with: "#{DateTime.now.strftime('%m/%d/%Y')} 06:30 PM"
-        fill_in 'End Date',   with: "#{DateTime.now.strftime('%m/%d/%Y')} 10:30 PM"
+        fill_in 'Start Date', with: "#{Time.zone.now.strftime('%m/%d/%Y')} 06:30 PM"
+        fill_in 'End Date',   with: "#{Time.zone.now.strftime('%m/%d/%Y')} 10:30 PM"
         check "online[#{@character_alice.slug}][1]"
         check "in_raid[#{@character_alice.slug}][1]"
         check "online[#{@character_dick.slug}][1]"
