@@ -21,12 +21,16 @@ class StandingEvent < Event
             inclusion: %w(adjustment attendance delinquent infraction initial resume retirement)
 
   def self.absent
-    where(type: :delinquent).where("#{table_name}.change <= ?", Settings.standing.delinquent_loss)
+    where(type: :delinquent).where("#{table_name}.change = ?", Settings.standing.delinquent_loss)
   end
 
   # Was character absent for the raid
   def self.absent?
     absent.size > 0
+  end
+
+  def self.attendance
+    where(type: :attendance)
   end
 
   def self.attended(raid: nil)
@@ -36,6 +40,10 @@ class StandingEvent < Event
   # Did character attend raid
   def self.attended?(raid: nil)
     self.attended(raid: raid).size > 0
+  end
+
+  def self.deliquent
+    where(type: :delinquent)
   end
 
   def self.dominant

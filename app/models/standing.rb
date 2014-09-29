@@ -67,6 +67,36 @@ class Standing < ActiveRecord::Base
     true
   end
 
+  def gains(type: nil)
+    case type.to_sym
+      when :delinquency
+        standing_events.gains.delinquent
+      when :infraction
+        standing_events.gains.infraction
+      when :sitting
+        standing_event.gains.sat
+      else # :total
+        standing_events.gains
+    end
+  end
+
+  def losses(type: nil)
+    case type.to_sym
+      when :absence
+        standing_event.losses.absent
+      when :attendance
+        standing_event.losses.attendance
+      when :delinquency
+        standing_events.losses.delinquent
+      when :infraction
+        standing_events.losses.infraction
+      else # :total
+        standing_events.losses
+    end
+  end
+
+
+  # Total points for all active Standings
   def self.total_points
     Standing.where(active: true).sum(:points).round(5)
   end

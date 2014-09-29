@@ -24,6 +24,9 @@
       <% end %>
     </section>
   </aside>
+  <aside class="span4">
+    <%= render 'modules/vcp_module' %>
+  </aside>
   <% if !@owned_character && current_user %>
     <div class="span6 offset3">
       <%= label_tag :api_key, 'API Key:' %>

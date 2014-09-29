@@ -44,15 +44,18 @@ class RaidsController < ApplicationController
   end
 
   private
-    def raid_params
-      params.require(:raid).permit(:ended_at,
-                                   :started_at,
-                                   :zone)
-    end
-    def set_raid
-      @raid = Raid.find(params[:id])
-    end
-    def set_standings
-      @standings = Standing.where(active: true).includes(:character).order(:points)
-    end
+
+  def raid_params
+    params.require(:raid).permit(:ended_at,
+                                 :started_at,
+                                 :zone)
+  end
+
+  def set_raid
+    @raid = Raid.find(params[:id])
+  end
+
+  def set_standings
+    @standings = Standing.where(active: true).includes(:character).order(:points)
+  end
 end
