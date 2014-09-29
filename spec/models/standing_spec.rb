@@ -16,6 +16,11 @@ RSpec.describe Standing, :type => :model do
                                    user: FactoryGirl.create(:user),
                                    verified: true)
     @standing = Standing.new(active: true, character: @character)
+    #@zone = create(:zone)
+    #@setting = create(:setting)
+    @character_alice = create(:character, name: 'Alice')
+    @character_dick = create(:character, name: 'Dick')
+    @standing_alice = create(:standing, character: @character_alice)
   end
 
   subject { @standing }
@@ -49,4 +54,27 @@ RSpec.describe Standing, :type => :model do
     it { should_not be_valid }
   end
 
+  describe 'transfer Standing record' do
+    before do
+      @standing.save
+      @standing.transfer(@character_dick)
+    end
+
+    it 'should be transfered' do
+      expect(Standing.last.character.name).to eq @character_dick.name
+      expect(Standing.find_by(character: @character)).to eq nil
+    end
+  end
+
+  describe 'transfer to existing standing character' do
+    before do
+      @standing.save
+      @standing.transfer(@character_alice)
+    end
+
+    it 'should not be transfered' do
+      expect(Standing.last.character.name).to eq @character.name
+      expect(Standing.find_by(character: @character)).to eq @standing
+    end
+  end
 end

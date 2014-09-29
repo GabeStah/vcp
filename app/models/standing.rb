@@ -56,6 +56,17 @@ class Standing < ActiveRecord::Base
     false
   end
 
+  # Transfer existing Standing records to new Character
+  def transfer(character)
+    return nil if character.nil?
+    character = Character.find(character) unless character.is_a? Character
+    # Make sure new Character doesn't have a Standing
+    return nil if Standing.find_by(character: character).present?
+    # Transfer record
+    result = update_attributes(character: character)
+    true
+  end
+
   def self.total_points
     Standing.where(active: true).sum(:points).round(5)
   end

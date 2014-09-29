@@ -53,6 +53,7 @@ class CharactersController < ApplicationController
       end
     end
   end
+
   def new
     @character = Character.new
   end

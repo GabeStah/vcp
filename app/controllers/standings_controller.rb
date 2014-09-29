@@ -1,7 +1,7 @@
 class StandingsController < ApplicationController
-  before_action :set_standing,                only: [:destroy, :edit, :resume, :retire, :show, :update]
-  before_action :require_login,               only: [:create, :edit, :destroy, :new, :resume, :retire, :update]
-  before_action :admin_user,                  only: [:create, :edit, :destroy, :new, :resume, :retire, :update]
+  before_action :set_standing,                only: [:destroy, :edit, :list_characters, :resume, :retire, :show, :transfer, :update]
+  before_action :require_login,               only: [:create, :edit, :destroy, :list_characters, :new, :resume, :retire, :transfer, :update]
+  before_action :admin_user,                  only: [:create, :edit, :destroy, :list_characters, :new, :resume, :retire, :transfer, :update]
 
   def create
     @standing = Standing.new(active: true, character: Character.find(standing_params[:character]))
@@ -32,6 +32,15 @@ class StandingsController < ApplicationController
     end
   end
 
+  def list_characters
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: StandingTransferDatatable.new(view_context, @standing)
+      end
+    end
+  end
+
   def resume
     if @standing.resume
       flash[:success] = "Standing for #{@standing.character.full_title} resumed!"
@@ -48,6 +57,20 @@ class StandingsController < ApplicationController
       flash[:error] = "Standing for #{@standing.character.full_title} could not be retired."
     end
     redirect_to :back
+  end
+
+  def transfer
+    if @standing
+      character = Character.find(params[:character])
+      if character
+        if @standing.transfer(character)
+          flash[:success] = "Standing transfered to #{@standing.character.full_title}!"
+        else
+          flash[:error] = "Standing could not be transfered."
+        end
+        redirect_to :back
+      end
+    end
   end
 
   def update

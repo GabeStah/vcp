@@ -17,8 +17,8 @@ class RaidDatatable < AjaxDatatablesRails::Base
     records.map do |raid|
       [
         link_to(raid.zone.name, raid),
-        l(raid.started_at),
-        l(raid.ended_at)
+        l(raid.started_at.in_time_zone),
+        l(raid.ended_at.in_time_zone)
       ]
     end
   end

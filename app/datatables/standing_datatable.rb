@@ -3,6 +3,7 @@ class StandingDatatable < AjaxDatatablesRails::Base
 
   def_delegators :@view,
                  :current_user,
+                 :edit_standing_path,
                  :l,
                  :link_to,
                  :retire_standing_path
@@ -45,15 +46,26 @@ class StandingDatatable < AjaxDatatablesRails::Base
       guild = link_to(standing.character.guild.name, standing.character.guild) if @current_user && @current_user.admin? && standing.character.guild
       realm = "#{standing.character.realm}-#{standing.character.region.upcase}"
       points = standing.points || 0
-      retire = link_to("Retire", retire_standing_path(standing), method: :post, data: { confirm: "Retire #{standing.character.full_title} from Standings?" }) if @current_user && @current_user.admin?
-      [
-        name,
-        character_class,
-        guild,
-        realm,
-        points,
-        retire,
-      ]
+      if @current_user && @current_user.admin?
+        retire = link_to("Retire", retire_standing_path(standing), method: :post, data: { confirm: "Retire #{standing.character.full_title} from Standings?" }) if @current_user && @current_user.admin?
+        edit = link_to('Edit', edit_standing_path(standing))
+        [
+          name,
+          character_class,
+          guild,
+          realm,
+          points,
+          "#{edit} #{retire}",
+        ]
+      else
+        [
+          name,
+          character_class,
+          guild,
+          realm,
+          points,
+        ]
+      end
     end
   end
 
