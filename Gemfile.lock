@@ -311,7 +311,7 @@ DEPENDENCIES
   autoprefixer-rails
   bcrypt-ruby (= 3.1.2)
   best_in_place!
-  bootstrap-sass (~> 3.2.0)
+  bootstrap-sass
   bootstrap-will_paginate (= 0.0.9)
   bootstrap3-datetimepicker-rails
   bullet
@@ -340,7 +340,7 @@ DEPENDENCIES
   rails_12factor
   rspec-its
   rspec-rails
-  sass-rails (>= 3.2)
+  sass-rails
   sdoc (= 0.3.20)
   selenium-webdriver
   settingslogic
@@ -350,7 +350,7 @@ DEPENDENCIES
   sidetiq
   sinatra (>= 1.3.0)
   spork-rails
-  sprockets (= 2.11.0)
+  sprockets
   time_zone_ext
   tipsy-rails
   turbolinks (= 1.1.1)
