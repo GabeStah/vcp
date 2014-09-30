@@ -1,6 +1,6 @@
 class Standing < ActiveRecord::Base
   belongs_to :character
-  has_many :standing_events
+  has_many :standing_events, foreign_key: :actor_id
 
   attr_accessor :distribute
 
@@ -25,6 +25,35 @@ class Standing < ActiveRecord::Base
 
   def self.created_before(time)
     where("#{table_name}.created_at <= ?", time)
+  end
+
+  def gains(type)
+    case type.to_sym
+      when :delinquency
+        #self.standing_events.sum(:change)
+        standing_events.gains.where(type: :delinquent).sum(:change)
+      when :infraction
+        standing_events.gains.sum(:change)
+      when :sitting
+        standing_events.where(type: :attendance).where("#{StandingEvent.table_name}.change = ?", Settings.standing.attendance_gain).sum(:change)
+      else # :total
+        standing_events.gains.sum(:change)
+    end
+  end
+
+  def losses(type)
+    case type.to_sym
+      when :absence
+        standing_events.losses.where(type: :delinquent).where("#{StandingEvent.table_name}.change = ?", Settings.standing.delinquent_loss).sum(:change)
+      when :attendance
+        standing_events.losses.where(type: :attendance).sum(:change)
+      when :delinquency
+        standing_events.losses.where(type: :delinquent).sum(:change)
+      when :infraction
+        standing_events.losses.where(type: :infraction).sum(:change)
+      else # :total
+        standing_events.losses.sum(:change)
+    end
   end
 
   # Resume a previously inactive record
@@ -66,35 +95,6 @@ class Standing < ActiveRecord::Base
     result = update_attributes(character: character)
     true
   end
-
-  def gains(type: nil)
-    case type.to_sym
-      when :delinquency
-        standing_events.gains.delinquent
-      when :infraction
-        standing_events.gains.infraction
-      when :sitting
-        standing_event.gains.sat
-      else # :total
-        standing_events.gains
-    end
-  end
-
-  def losses(type: nil)
-    case type.to_sym
-      when :absence
-        standing_event.losses.absent
-      when :attendance
-        standing_event.losses.attendance
-      when :delinquency
-        standing_events.losses.delinquent
-      when :infraction
-        standing_events.losses.infraction
-      else # :total
-        standing_events.losses
-    end
-  end
-
 
   # Total points for all active Standings
   def self.total_points

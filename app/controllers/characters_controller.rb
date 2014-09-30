@@ -60,6 +60,23 @@ class CharactersController < ApplicationController
   def show
     # Add key for basic testing
     @generated_key = @character.process_key(current_user.secret_key) if signed_in? && current_user
+
+    # Standing
+    if @character.standing
+      standing = @character.standing
+      @data = Hash.new
+      @data[:gains] = Hash.new
+      @data[:gains][:delinquency] = standing.gains(:delinquency)
+      @data[:gains][:infraction] = standing.gains(:infraction)
+      @data[:gains][:sitting] = standing.gains(:sitting)
+      @data[:gains][:total] = standing.gains(:total)
+      @data[:losses] = Hash.new
+      @data[:losses][:attendance] = standing.losses(:attendance)
+      @data[:losses][:absence] = standing.losses(:absence)
+      @data[:losses][:delinquency] = standing.losses(:delinquency)
+      @data[:losses][:infraction] = standing.losses(:infraction)
+      @data[:losses][:total] = standing.losses(:total)
+    end
   end
 
   def sync

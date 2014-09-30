@@ -5,19 +5,50 @@
     <ul class="list-group">
       <li class="list-group-item">
         <span class="name bold">Gains</span>
-        <span class="value">6,567.24</span>
+        <span class="value"><%= @data[:gains][:total] %></span>
+        <span class="clear"><!-- --></span>
       </li>
       <li class="list-group-item">
         <span class="name">Sitting</span>
-        <span class="value">5,726.05</span>
+        <span class="value"><%= @data[:gains][:sitting] %></span>
+        <span class="clear"><!-- --></span>
       </li>
       <li class="list-group-item">
         <span class="name">Delinquency</span>
-        <span class="value">346.75</span>
+        <span class="value"><%= @data[:gains][:delinquency] %></span>
+        <span class="clear"><!-- --></span>
       </li>
       <li class="list-group-item">
         <span class="name">Infraction</span>
-        <span class="value">25.00</span>
+        <span class="value"><%= @data[:gains][:infraction] %></span>
+        <span class="clear"><!-- --></span>
+      </li>
+    </ul>
+    <ul class="list-group">
+      <li class="list-group-item">
+        <span class="name bold">Losses</span>
+        <span class="value"><%= @data[:losses][:total] %></span>
+        <span class="clear"><!-- --></span>
+      </li>
+      <li class="list-group-item">
+        <span class="name">Attendance</span>
+        <span class="value"><%= @data[:losses][:attendance] %></span>
+        <span class="clear"><!-- --></span>
+      </li>
+      <li class="list-group-item">
+        <span class="name">Absence</span>
+        <span class="value"><%= @data[:losses][:absence] %></span>
+        <span class="clear"><!-- --></span>
+      </li>
+      <li class="list-group-item">
+        <span class="name">Delinquency</span>
+        <span class="value"><%= @data[:losses][:delinquency] %></span>
+        <span class="clear"><!-- --></span>
+      </li>
+      <li class="list-group-item">
+        <span class="name">Infraction</span>
+        <span class="value"><%= @data[:losses][:infraction] %></span>
+        <span class="clear"><!-- --></span>
       </li>
     </ul>
   </div>
