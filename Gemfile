@@ -14,6 +14,7 @@ gem 'sidekiq-failures'
 gem 'sidetiq'
 gem 'sidekiq_monitor'
 gem 'mina-sidekiq'
+gem 'unicorn'
 
 # Enabled for Sidekiq frontend
 gem 'sinatra', '>= 1.3.0', :require => nil

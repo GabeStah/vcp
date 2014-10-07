@@ -110,6 +110,15 @@ class StandingEvent < Event
     self.absent? && self.infraction.where("#{table_name}.change = ?", Settings.standing.unexcused_absence_loss).size > 0
   end
 
+  def self.between(type: :any, before: Time.zone.now, after: Time.zone.local(1970))
+    case type.to_sym
+      when :any
+        joins(:raid).where('raids.started_at <= ?', before).where('raids.started_at >= ?', after)
+      when :attended
+        where(type: :attended).where("#{table_name}.change < ?", 0).joins(:raid).where('raids.started_at <= ?', before).where('raids.started_at >= ?', after)
+    end
+  end
+
   def type=(new_type)
     super new_type.to_s
   end

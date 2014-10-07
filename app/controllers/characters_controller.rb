@@ -64,18 +64,53 @@ class CharactersController < ApplicationController
     # Standing
     if @character.standing
       standing = @character.standing
+
+      # Get standing_events list
+      standing_events = standing.standing_events
+
+      attended = standing_events.where(type: :attendance).where("#{StandingEvent.table_name}.change < 0")
+      absent = standing_events.absent
+
+      sat = standing_events.sat
+      delinquent = standing_events.tardy
+
+      between = standing_events.between
+
       @data = Hash.new
+
       @data[:gains] = Hash.new
       @data[:gains][:delinquency] = standing.gains(:delinquency)
       @data[:gains][:infraction] = standing.gains(:infraction)
       @data[:gains][:sitting] = standing.gains(:sitting)
       @data[:gains][:total] = standing.gains(:total)
+
       @data[:losses] = Hash.new
       @data[:losses][:attendance] = standing.losses(:attendance)
       @data[:losses][:absence] = standing.losses(:absence)
       @data[:losses][:delinquency] = standing.losses(:delinquency)
       @data[:losses][:infraction] = standing.losses(:infraction)
       @data[:losses][:total] = standing.losses(:total)
+
+      @data[:raids] = Hash.new
+      @data[:raids][:attended] = Hash.new
+      @data[:raids][:attended][:three_month] = attended.size
+      @data[:raids][:attended][:year] = attended.size
+      @data[:raids][:attended][:total] = attended.size
+
+      @data[:raids][:sat] = Hash.new
+      @data[:raids][:sat][:three_month] = sat.size
+      @data[:raids][:sat][:year] = sat.size
+      @data[:raids][:sat][:total] = sat.size
+
+      @data[:raids][:delinquent] = Hash.new
+      @data[:raids][:delinquent][:three_month] = delinquent.size
+      @data[:raids][:delinquent][:year] = delinquent.size
+      @data[:raids][:delinquent][:total] = delinquent.size
+
+      @data[:raids][:absent] = Hash.new
+      @data[:raids][:absent][:three_month] = absent.size
+      @data[:raids][:absent][:year] = absent.size
+      @data[:raids][:absent][:total] = absent.size
     end
   end
 
