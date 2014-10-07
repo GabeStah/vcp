@@ -78,6 +78,11 @@ class Raid < ActiveRecord::Base
     all_attendees
   end
 
+  # All raids between date range
+  def self.between(before: Time.zone.now, after: Time.zone.local(1970))
+    where("#{table_name}.started_at <= ?", before).where("#{table_name}.started_at >= ?", after)
+  end
+
   def ended_at=(t)
     t = TimeManagement.local(t)
     super(t)

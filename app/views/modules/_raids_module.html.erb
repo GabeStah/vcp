@@ -1,0 +1,98 @@
+<div class="raids module">
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">RAIDS</div>
+    <div class="row col-md-6">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <span class="name bold">Attended</span>
+          <span class="value bold"><%= @data[:raids][:attended][:total] %></span>
+          <span class="clear"><!-- --></span>
+        </li>
+        <li class="list-group-item">
+          <span class="name">Last 3 months</span>
+          <span class="value"><%= @data[:raids][:attended][:three_month] %></span>
+          <span class="clear"><!-- --></span>
+        </li>
+        <li class="list-group-item">
+          <span class="name">Last year</span>
+          <span class="value"><%= @data[:raids][:attended][:year] %></span>
+          <span class="clear"><!-- --></span>
+        </li>
+        <li class="list-group-item">
+          <span class="name">Lifetime %</span>
+          <span class="value"><%= number_to_percentage(@data[:raids][:attended][:percent], precision: 2) %></span>
+          <span class="clear"><!-- --></span>
+        </li>
+      </ul>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <span class="name bold">Delinquencies</span>
+          <span class="value bold"><%= @data[:raids][:delinquent][:total] %></span>
+          <span class="clear"><!-- --></span>
+        </li>
+        <li class="list-group-item">
+          <span class="name">Last 3 months</span>
+          <span class="value"><%= @data[:raids][:delinquent][:three_month] %></span>
+          <span class="clear"><!-- --></span>
+        </li>
+        <li class="list-group-item">
+          <span class="name">Last year</span>
+          <span class="value"><%= @data[:raids][:delinquent][:year] %></span>
+          <span class="clear"><!-- --></span>
+        </li>
+        <li class="list-group-item">
+          <span class="name">Lifetime %</span>
+          <span class="value"><%= number_to_percentage(@data[:raids][:delinquent][:percent], precision: 2) %></span>
+          <span class="clear"><!-- --></span>
+        </li>
+      </ul>
+    </div>
+    <div class="row col-md-6">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <span class="name bold">Sitting</span>
+          <span class="value bold"><%= @data[:raids][:sat][:total] %></span>
+          <span class="clear"><!-- --></span>
+        </li>
+        <li class="list-group-item">
+          <span class="name">Last 3 months</span>
+          <span class="value"><%= @data[:raids][:sat][:three_month] %></span>
+          <span class="clear"><!-- --></span>
+        </li>
+        <li class="list-group-item">
+          <span class="name">Last year</span>
+          <span class="value"><%= @data[:raids][:sat][:year] %></span>
+          <span class="clear"><!-- --></span>
+        </li>
+        <li class="list-group-item">
+          <span class="name">Lifetime %</span>
+          <span class="value"><%= number_to_percentage(@data[:raids][:sat][:percent], precision: 2) %></span>
+          <span class="clear"><!-- --></span>
+        </li>
+      </ul>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <span class="name bold">Absent</span>
+          <span class="value bold"><%= @data[:raids][:absent][:total] %></span>
+          <span class="clear"><!-- --></span>
+        </li>
+        <li class="list-group-item">
+          <span class="name">Last 3 months</span>
+          <span class="value"><%= @data[:raids][:absent][:three_month] %></span>
+          <span class="clear"><!-- --></span>
+        </li>
+        <li class="list-group-item">
+          <span class="name">Last year</span>
+          <span class="value"><%= @data[:raids][:absent][:year] %></span>
+          <span class="clear"><!-- --></span>
+        </li>
+        <li class="list-group-item">
+          <span class="name">Lifetime %</span>
+          <span class="value"><%= number_to_percentage(@data[:raids][:absent][:percent], precision: 2) %></span>
+          <span class="clear"><!-- --></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

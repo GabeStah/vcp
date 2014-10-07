@@ -25,9 +25,12 @@
     </section>
   </aside>
   <% if @character.standing %>
-    <aside class="span4">
+    <div class="col-md-4">
       <%= render 'modules/vcp_module' %>
-    </aside>
+    </div>
+    <div class="col-md-8">
+      <%= render 'modules/raids_module' %>
+    </div>
   <% end %>
   <% if !@owned_character && current_user %>
     <div class="span6 offset3">
