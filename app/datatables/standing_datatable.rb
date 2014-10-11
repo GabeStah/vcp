@@ -2,6 +2,7 @@ class StandingDatatable < AjaxDatatablesRails::Base
   include AjaxDatatablesRails::Extensions::WillPaginate
 
   def_delegators :@view,
+                 :can,
                  :current_user,
                  :edit_standing_path,
                  :l,
@@ -43,11 +44,11 @@ class StandingDatatable < AjaxDatatablesRails::Base
       name = link_to(standing.character.name, standing.character)
       character_class = standing.character.character_class.present? ? standing.character.character_class.name : nil
       guild = standing.character.guild.name
-      guild = link_to(standing.character.guild.name, standing.character.guild) if @current_user && @current_user.admin? && standing.character.guild
+      guild = link_to(standing.character.guild.name, standing.character.guild) if can?(:update, Guild) && standing.character.guild
       realm = "#{standing.character.realm}-#{standing.character.region.upcase}"
       points = standing.points || 0
-      if @current_user && @current_user.admin?
-        retire = link_to("Retire", retire_standing_path(standing), method: :post, data: { confirm: "Retire #{standing.character.full_title} from Standings?" }) if @current_user && @current_user.admin?
+      if can?(:update, standing)
+        retire = link_to("Retire", retire_standing_path(standing), method: :post, data: { confirm: "Retire #{standing.character.full_title} from Standings?" }) if can?(:update, standing)
         edit = link_to('Edit', edit_standing_path(standing))
         [
           name,

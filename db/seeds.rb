@@ -5,23 +5,29 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+Role.delete_all
+role_admin = Role.create!(name: :admin)
+role_moderator = Role.create!(name: :moderator)
+
 User.delete_all
 # Initial user
-User.create!(name: "Gabe Wyatt",
-             email: "gwyattkelsey@gmail.com",
-             password: "hobbes",
-             password_confirmation: "hobbes",
-             admin: true)
+user = User.new(email: "gwyattkelsey@gmail.com",
+                    password: "hobbes",
+                    password_confirmation: "hobbes")
+user.roles << role_admin
+user.skip_confirmation!
+user.save!
 
 # Add test users
 99.times do |n|
   name  = Faker::Name.name
   email = Faker::Internet.email
   password  = "password"
-  User.create!(name: name,
-               email: email,
-               password: password,
-               password_confirmation: password)
+  user = User.create!(email: email,
+                      password: password,
+                      password_confirmation: password)
+  user.skip_confirmation!
+  user.save!
 end
 
 Setting.delete_all

@@ -4,6 +4,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
   attr_accessor :type
 
   def_delegators :@view,
+                 :can?,
                  :current_user,
                  :l,
                  :link_to,
@@ -41,7 +42,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
   private
 
   def data
-    if @current_user
+    if current_user
       case type.to_sym
         when :claimed
           records.map do |character|
@@ -57,7 +58,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
                 character.raids.distinct.size : nil,
               character.achievement_points,
               l(character.created_at.in_time_zone, format: :short),
-              @current_user && @current_user.admin? ?
+              can?(:update, character) ?
                 "#{link_to('Unclaim', unclaim_character_path(character), method: :post, data: { confirm: "Relinquish claim on #{character.full_title}?" })}
                  #{link_to('Sync', sync_character_path(character), method: :post)}" : nil,
             ]
@@ -101,13 +102,13 @@ class CharacterDatatable < AjaxDatatablesRails::Base
   def get_raw_records
     case type.to_sym
       when :claimed
-        if @current_user
-          Character.claimed(@current_user).
+        if current_user
+          Character.claimed(current_user).
             eager_load(:character_class, :guild, :raids, :user)
         end
       when :unclaimed
-        if @current_user
-          Character.unclaimed(@current_user).
+        if current_user
+          Character.unclaimed(current_user).
             eager_load(:character_class, :guild, :raids, :user)
         end
       when :all

@@ -1,0 +1,32 @@
+defaults: &defaults
+  cutoff:
+    attendance: 15
+    delinquent: 30
+    tardy: 60
+  guild:
+    name: 'Vox Immortalis'
+    realm: 'Hyjal'
+    region: 'us'
+  raid:
+    end_time:
+      hour: 22
+      min: 30
+    size: 20
+    start_time:
+      hour: 18
+      min: 30
+  roster:
+    size: 25
+  standing:
+    attendance_gain: 100.0
+    delinquent_loss: -100.0
+    unexcused_absence_loss: -50.0
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

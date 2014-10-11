@@ -1,7 +1,5 @@
 class ZonesController < ApplicationController
   before_action :set_zone, only: [:edit, :update, :destroy]
-  before_action :require_login
-  before_action :admin_user
 
   def index
     @zones = Zone.all.order('level desc', :name)

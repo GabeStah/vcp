@@ -3,7 +3,7 @@
   <td><%= zone.zone_type.titleize %></td>
   <td><%= zone.level %></td>
   <td><%= zone.blizzard_id %></td>
-  <% if admin_signed_in? %>
+  <% if can? :update, zone %>
     <td>
       <%= render 'zone_edit', zone: zone %>
     </td>

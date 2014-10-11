@@ -1,7 +1,5 @@
 class RacesController < ApplicationController
   before_action :set_race, only: [:destroy, :update]
-  before_action :require_login
-  before_action :admin_user
 
   def create
     @race = Race.new(race_params)

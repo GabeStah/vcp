@@ -54,6 +54,13 @@ gem 'chronic'
 # Accurate distance_of_time_in_words
 gem 'dotiw'
 
+# User management
+gem 'devise'
+gem 'cancan'
+
+# ENV variables
+gem 'figaro'
+
 group :development, :test do
   gem 'rspec-rails'
   # The following optional lines are part of the advanced setup.

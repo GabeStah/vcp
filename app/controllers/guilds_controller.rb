@@ -1,7 +1,5 @@
 class GuildsController < ApplicationController
   before_action :set_guild, only: [:destroy, :edit, :show, :update]
-  before_action :require_login
-  before_action :admin_user
 
   def create
     @guild = Guild.new(guild_params)

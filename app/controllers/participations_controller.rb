@@ -1,7 +1,5 @@
 class ParticipationsController < ApplicationController
   before_action :set_participation
-  before_action :require_login
-  before_action :admin_user
 
   def destroy
     flash[:success] = "Participation for #{@participation.character.name} deleted."

@@ -1,6 +1,6 @@
 <li>
   <%= link_to guild.name, guild %>
-  <% if current_user && current_user.admin? %>
+  <% if can? :destroy, guild %>
     | <%= link_to 'delete', guild, method: :delete,
                   data: { confirm: 'You sure?' } %>
   <% end %>

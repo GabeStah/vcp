@@ -10,7 +10,7 @@
       <th>Type</th>
       <th>Level</th>
       <th>Blizzard ID</th>
-      <% if admin_signed_in? %>
+      <% if can? :update, Zone %>
         <th>Edit</th>
       <% end %>
     </thead>

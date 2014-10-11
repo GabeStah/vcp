@@ -10,7 +10,7 @@
     <th>Class</th>
     <th>Realm</th>
     <th>Joined</th>
-    <% if current_user && current_user.admin? %>
+    <% if can? :update, @standing %>
       <th>Edit</th>
     <% end %>
     </thead>

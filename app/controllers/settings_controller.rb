@@ -1,7 +1,5 @@
 class SettingsController < ApplicationController
   before_action :set_setting, only: [:update]
-  before_action :require_login
-  before_action :admin_user
 
   def index
     @setting = Setting.first

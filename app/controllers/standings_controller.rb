@@ -1,7 +1,5 @@
 class StandingsController < ApplicationController
   before_action :set_standing,                only: [:destroy, :edit, :list_characters, :resume, :retire, :show, :transfer, :update]
-  before_action :require_login,               only: [:create, :edit, :destroy, :list_characters, :new, :resume, :retire, :transfer, :update]
-  before_action :admin_user,                  only: [:create, :edit, :destroy, :list_characters, :new, :resume, :retire, :transfer, :update]
 
   def create
     @standing = Standing.new(active: true, character: Character.find(standing_params[:character]))

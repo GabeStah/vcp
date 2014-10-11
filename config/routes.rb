@@ -1,4 +1,8 @@
 Vcp::Application.routes.draw do
+  devise_for :users
+  # Removing sessions/users for devise
+  #resources :sessions, only: [:new, :create, :destroy]
+  resources :users
   # Added for Sidekiq frontend
   require 'sidekiq/web'
   require 'sidetiq/web'
@@ -26,17 +30,15 @@ Vcp::Application.routes.draw do
   match '/standings/:id/resume',              to: 'standings#resume',           via: 'post',  as: 'resume_standing'
   match '/standings/:id/list_characters',     to: 'standings#list_characters',  via: 'get',   as: 'list_characters'
   match '/standings/:id/transfer/:character',        to: 'standings#transfer',         via: 'post',  as: 'transfer_standing'
-  resources :sessions, only: [:new, :create, :destroy]
   resources :raids
-  resources :users
 
   root 'static_pages#home'
-  match '/about',   to: 'static_pages#about',   via: 'get'
-  match '/contact', to: 'static_pages#contact', via: 'get'
-  match '/help',    to: 'static_pages#help',    via: 'get'
-  match '/signin',  to: 'sessions#new',         via: 'get'
-  match '/signout', to: 'sessions#destroy',     via: 'delete'
-  match '/signup',  to: 'users#new',            via: 'get'
+  match '/about',         to: 'static_pages#about',   via: 'get'
+  match '/contact',       to: 'static_pages#contact', via: 'get'
+  match '/help',          to: 'static_pages#help',    via: 'get'
+  match '/users/sign_in', to: 'sessions#new',         via: 'get'
+  match '/signout',       to: 'sessions#destroy',     via: 'delete'
+  match '/signup',        to: 'users#new',            via: 'get'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

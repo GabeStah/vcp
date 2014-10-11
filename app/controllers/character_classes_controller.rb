@@ -1,7 +1,5 @@
 class CharacterClassesController < ApplicationController
   before_action :set_character_class, only: [:destroy, :update]
-  before_action :require_login
-  before_action :admin_user
 
   def create
     @character_class = CharacterClass.new(character_class_params)
