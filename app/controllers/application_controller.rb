@@ -2,27 +2,23 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  #include SessionsHelper
 
   around_filter :set_timezone
 
+  # Auto-call param retrieval for controllers
+  before_filter do
+    resource = controller_name.singularize.to_sym
+    method = "#{resource}_params"
+    params[resource] &&= send(method) if respond_to?(method, true)
+  end
+
   helper_method :user_owns_character?
 
-  private
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_url, :alert => exception.message
+  end
 
-  # def admin_user
-  #   redirect_to(root_url) unless current_user.admin?
-  # end
-  #
-  # def correct_user
-  #   @user = User.find(params[:id])
-  #   redirect_to(root_url) unless current_user?(@user)
-  # end
-  #
-  # def require_login
-  #   store_location
-  #   redirect_to signin_url, notice: "Please sign in." unless signed_in?
-  # end
+  private
 
   def set_timezone
     default_timezone = Time.zone

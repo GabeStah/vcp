@@ -1,4 +1,19 @@
 module ApplicationHelper
+  def bootstrap_class_for(flash_type)
+    case flash_type.to_sym
+      when :success
+        "alert-success"
+      when :error
+        "alert-danger"
+      when :alert
+        "alert-warning"
+      when :notice
+        "alert-info"
+      else
+        flash_type.to_s
+    end
+  end
+
   # returns the full title on a per-page basis
   def full_title(page_title)
     base_title = 'VCP'

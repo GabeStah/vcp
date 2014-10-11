@@ -1,4 +1,5 @@
 class CharactersController < ApplicationController
+  load_and_authorize_resource
   before_action :set_character,               only: [:claim, :destroy, :edit, :history, :show, :sync, :unclaim, :update]
   before_action :require_user_owns_character, only: [:sync]
   before_action :user_owns_character?
@@ -149,6 +150,7 @@ class CharactersController < ApplicationController
                                         :realm,
                                         :region)
     end
+
     def require_user_owns_character
       @character = Character.find(params[:id])
       unless user_owns_character?
@@ -156,6 +158,7 @@ class CharactersController < ApplicationController
         redirect_to @character
       end
     end
+
     def set_character
       @character = Character.find(params[:id])
     end

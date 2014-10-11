@@ -11,9 +11,10 @@ role_moderator = Role.create!(name: :moderator)
 
 User.delete_all
 # Initial user
-user = User.new(email: "gwyattkelsey@gmail.com",
-                    password: "hobbes",
-                    password_confirmation: "hobbes")
+user = User.new(name: "Gabe Wyatt",
+                email: "gwyattkelsey@gmail.com",
+                password: "hobbes",
+                password_confirmation: "hobbes")
 user.roles << role_admin
 user.skip_confirmation!
 user.save!
@@ -23,7 +24,8 @@ user.save!
   name  = Faker::Name.name
   email = Faker::Internet.email
   password  = "password"
-  user = User.create!(email: email,
+  user = User.create!(name: name,
+                      email: email,
                       password: password,
                       password_confirmation: password)
   user.skip_confirmation!

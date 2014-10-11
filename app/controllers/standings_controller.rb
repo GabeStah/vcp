@@ -1,4 +1,5 @@
 class StandingsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_standing,                only: [:destroy, :edit, :list_characters, :resume, :retire, :show, :transfer, :update]
 
   def create
