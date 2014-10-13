@@ -75,7 +75,7 @@ class Character < ActiveRecord::Base
   # determine if passed key (user_key + character_key) = combined
   def key_match?(passed_key, user)
     return false unless passed_key
-    return passed_key == process_key(user.secret_key)
+    passed_key == process_key(user.secret_key)
   end
 
   # Retrieve the full portrait path
@@ -102,7 +102,7 @@ class Character < ActiveRecord::Base
           processed = Digest::SHA2.hexdigest("#{processed}#{self.slug}#{user_key}")
       end
     end
-    return processed
+    processed
   end
 
   # #Alter the primary parameter from :id

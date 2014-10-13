@@ -5,49 +5,49 @@
     <ul class="list-group">
       <li class="list-group-item">
         <span class="name bold">Gains</span>
-        <span class="value bold"><%= @data[:gains][:total] %></span>
+        <span class="value bold"><%= @standing_statistics.gains_total %></span>
         <span class="clear"><!-- --></span>
       </li>
       <li class="list-group-item">
         <span class="name">Sitting</span>
-        <span class="value"><%= @data[:gains][:sitting] %></span>
+        <span class="value"><%= @standing_statistics.gains_sitting %></span>
         <span class="clear"><!-- --></span>
       </li>
       <li class="list-group-item">
         <span class="name">Delinquency</span>
-        <span class="value"><%= @data[:gains][:delinquency] %></span>
+        <span class="value"><%= @standing_statistics.gains_delinquency %></span>
         <span class="clear"><!-- --></span>
       </li>
       <li class="list-group-item">
         <span class="name">Infraction</span>
-        <span class="value"><%= @data[:gains][:infraction] %></span>
+        <span class="value"><%= @standing_statistics.gains_infraction %></span>
         <span class="clear"><!-- --></span>
       </li>
     </ul>
     <ul class="list-group">
       <li class="list-group-item">
         <span class="name bold">Losses</span>
-        <span class="value bold"><%= @data[:losses][:total] %></span>
+        <span class="value bold"><%= @standing_statistics.losses_total %></span>
         <span class="clear"><!-- --></span>
       </li>
       <li class="list-group-item">
         <span class="name">Attendance</span>
-        <span class="value"><%= @data[:losses][:attendance] %></span>
+        <span class="value"><%= @standing_statistics.losses_attendance %></span>
         <span class="clear"><!-- --></span>
       </li>
       <li class="list-group-item">
         <span class="name">Absence</span>
-        <span class="value"><%= @data[:losses][:absence] %></span>
+        <span class="value"><%= @standing_statistics.losses_absence %></span>
         <span class="clear"><!-- --></span>
       </li>
       <li class="list-group-item">
         <span class="name">Delinquency</span>
-        <span class="value"><%= @data[:losses][:delinquency] %></span>
+        <span class="value"><%= @standing_statistics.losses_delinquency %></span>
         <span class="clear"><!-- --></span>
       </li>
       <li class="list-group-item">
         <span class="name">Infraction</span>
-        <span class="value"><%= @data[:losses][:infraction] %></span>
+        <span class="value"><%= @standing_statistics.losses_infraction %></span>
         <span class="clear"><!-- --></span>
       </li>
     </ul>

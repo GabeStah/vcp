@@ -62,53 +62,55 @@ class CharactersController < ApplicationController
 
     # Standing
     if @character.standing
-      standing = @character.standing
-      active_start_date, active_end_date = standing.active_between
-      # Raids during activity
-      active_raid_count = Raid.between(after: active_start_date, before: active_end_date).size
+      # standing = @character.standing
+      # active_start_date, active_end_date = standing.active_between
+      # # Raids during activity
+      # active_raid_count = Raid.between(after: active_start_date, before: active_end_date).size
+      #
+      # # Get standing_events list
+      # standing_events = standing.standing_events
 
-      # Get standing_events list
-      standing_events = standing.standing_events
+      @standing_statistics = @character.standing.standing_statistic
 
-      @data = Hash.new
-      @data[:losses] = Hash.new
-      @data[:gains] = Hash.new
-      @data[:raids] = Hash.new
-      @data[:raids][:absent] = Hash.new
-      @data[:raids][:attended] = Hash.new
-      @data[:raids][:delinquent] = Hash.new
-      @data[:raids][:sat] = Hash.new
-
-      @data[:gains][:delinquency] = standing.gains(:delinquency)
-      @data[:gains][:infraction] = standing.gains(:infraction)
-      @data[:gains][:sitting] = standing.gains(:sitting)
-      @data[:gains][:total] = standing.gains(:total)
-
-      @data[:losses][:attendance] = standing.losses(:attendance)
-      @data[:losses][:absence] = standing.losses(:absence)
-      @data[:losses][:delinquency] = standing.losses(:delinquency)
-      @data[:losses][:infraction] = standing.losses(:infraction)
-      @data[:losses][:total] = standing.losses(:total)
-
-      @data[:raids][:absent][:three_month] = standing_events.between(type: :absent, after: 3.months.ago).size
-      @data[:raids][:absent][:year]        = standing_events.between(type: :absent, after: 1.year.ago).size
-      @data[:raids][:absent][:total]       = standing_events.between(type: :absent).size
-      @data[:raids][:absent][:percent]     = standing_events.between(type: :absent, after: active_start_date, before: active_end_date).size / active_raid_count.to_f * 100
-
-      @data[:raids][:attended][:three_month] = standing_events.between(type: :attended, after: 3.months.ago).size
-      @data[:raids][:attended][:year]        = standing_events.between(type: :attended, after: 1.year.ago).size
-      @data[:raids][:attended][:total]       = standing_events.between(type: :attended).size
-      @data[:raids][:attended][:percent]     = standing_events.between(type: :attended, after: active_start_date, before: active_end_date).size / active_raid_count.to_f * 100
-
-      @data[:raids][:delinquent][:three_month] = standing_events.between(type: :delinquent, after: 3.months.ago).size
-      @data[:raids][:delinquent][:year]        = standing_events.between(type: :delinquent, after: 1.year.ago).size
-      @data[:raids][:delinquent][:total]       = standing_events.between(type: :delinquent).size
-      @data[:raids][:delinquent][:percent]     = standing_events.between(type: :delinquent, after: active_start_date, before: active_end_date).size / active_raid_count.to_f * 100
-
-      @data[:raids][:sat][:three_month]  = standing_events.between(type: :sat, after: 3.months.ago).size
-      @data[:raids][:sat][:year]         = standing_events.between(type: :sat, after: 1.year.ago).size
-      @data[:raids][:sat][:total]        = standing_events.between(type: :sat).size
-      @data[:raids][:sat][:percent]      = standing_events.between(type: :sat, after: active_start_date, before: active_end_date).size / active_raid_count.to_f * 100
+      # @data = Hash.new
+      # @data[:losses] = Hash.new
+      # @data[:gains] = Hash.new
+      # @data[:raids] = Hash.new
+      # @data[:raids][:absent] = Hash.new
+      # @data[:raids][:attended] = Hash.new
+      # @data[:raids][:delinquent] = Hash.new
+      # @data[:raids][:sat] = Hash.new
+      #
+      # @data[:gains][:delinquency] = standing.gains(:delinquency)
+      # @data[:gains][:infraction] = standing.gains(:infraction)
+      # @data[:gains][:sitting] = standing.gains(:sitting)
+      # @data[:gains][:total] = standing.gains(:total)
+      #
+      # @data[:losses][:attendance] = standing.losses(:attendance)
+      # @data[:losses][:absence] = standing.losses(:absence)
+      # @data[:losses][:delinquency] = standing.losses(:delinquency)
+      # @data[:losses][:infraction] = standing.losses(:infraction)
+      # @data[:losses][:total] = standing.losses(:total)
+      #
+      # @data[:raids][:absent][:three_month] = standing_events.between(type: :absent, after: 3.months.ago).size
+      # @data[:raids][:absent][:year]        = standing_events.between(type: :absent, after: 1.year.ago).size
+      # @data[:raids][:absent][:total]       = standing_events.between(type: :absent).size
+      # @data[:raids][:absent][:percent]     = standing_events.between(type: :absent, after: active_start_date, before: active_end_date).size / active_raid_count.to_f * 100
+      #
+      # @data[:raids][:attended][:three_month] = standing_events.between(type: :attended, after: 3.months.ago).size
+      # @data[:raids][:attended][:year]        = standing_events.between(type: :attended, after: 1.year.ago).size
+      # @data[:raids][:attended][:total]       = standing_events.between(type: :attended).size
+      # @data[:raids][:attended][:percent]     = standing_events.between(type: :attended, after: active_start_date, before: active_end_date).size / active_raid_count.to_f * 100
+      #
+      # @data[:raids][:delinquent][:three_month] = standing_events.between(type: :delinquent, after: 3.months.ago).size
+      # @data[:raids][:delinquent][:year]        = standing_events.between(type: :delinquent, after: 1.year.ago).size
+      # @data[:raids][:delinquent][:total]       = standing_events.between(type: :delinquent).size
+      # @data[:raids][:delinquent][:percent]     = standing_events.between(type: :delinquent, after: active_start_date, before: active_end_date).size / active_raid_count.to_f * 100
+      #
+      # @data[:raids][:sat][:three_month]  = standing_events.between(type: :sat, after: 3.months.ago).size
+      # @data[:raids][:sat][:year]         = standing_events.between(type: :sat, after: 1.year.ago).size
+      # @data[:raids][:sat][:total]        = standing_events.between(type: :sat).size
+      # @data[:raids][:sat][:percent]      = standing_events.between(type: :sat, after: active_start_date, before: active_end_date).size / active_raid_count.to_f * 100
 
     end
   end

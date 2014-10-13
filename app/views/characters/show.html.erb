@@ -24,7 +24,7 @@
       <% end %>
     </section>
   </aside>
-  <% if @character.standing %>
+  <% if @character.standing && @character.standing.standing_statistic %>
     <div class="col-md-4">
       <%= render 'modules/vcp_module' %>
     </div>
