@@ -1,0 +1,1 @@
+web: bundle exec thin start --debug -p 3001 --ssl --ssl-verify --ssl-key-file ~/.ssl/server.key --ssl-cert-file ~/.ssl/server.crt

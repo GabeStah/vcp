@@ -1,4 +1,5 @@
 class GuildsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_guild, only: [:destroy, :edit, :show, :update]
 
   def create

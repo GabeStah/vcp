@@ -6,44 +6,44 @@
       <ul class="list-group">
         <li class="list-group-item">
           <span class="name bold">Attended</span>
-          <span class="value bold"><%= @data[:raids][:attended][:total] %></span>
+          <span class="value bold"><%= @standing_statistics.raids_attended_total %></span>
           <span class="clear"><!-- --></span>
         </li>
         <li class="list-group-item">
           <span class="name">Last 3 months</span>
-          <span class="value"><%= @data[:raids][:attended][:three_month] %></span>
+          <span class="value"><%= @standing_statistics.raids_attended_three_month %></span>
           <span class="clear"><!-- --></span>
         </li>
         <li class="list-group-item">
           <span class="name">Last year</span>
-          <span class="value"><%= @data[:raids][:attended][:year] %></span>
+          <span class="value"><%= @standing_statistics.raids_attended_year %></span>
           <span class="clear"><!-- --></span>
         </li>
         <li class="list-group-item">
           <span class="name">Lifetime %</span>
-          <span class="value"><%= number_to_percentage(@data[:raids][:attended][:percent], precision: 2) %></span>
+          <span class="value"><%= number_to_percentage(@standing_statistics.raids_attended_percent, precision: 2) %></span>
           <span class="clear"><!-- --></span>
         </li>
       </ul>
       <ul class="list-group">
         <li class="list-group-item">
           <span class="name bold">Delinquencies</span>
-          <span class="value bold"><%= @data[:raids][:delinquent][:total] %></span>
+          <span class="value bold"><%= @standing_statistics.raids_delinquent_total %></span>
           <span class="clear"><!-- --></span>
         </li>
         <li class="list-group-item">
           <span class="name">Last 3 months</span>
-          <span class="value"><%= @data[:raids][:delinquent][:three_month] %></span>
+          <span class="value"><%= @standing_statistics.raids_delinquent_three_month %></span>
           <span class="clear"><!-- --></span>
         </li>
         <li class="list-group-item">
           <span class="name">Last year</span>
-          <span class="value"><%= @data[:raids][:delinquent][:year] %></span>
+          <span class="value"><%= @standing_statistics.raids_delinquent_year %></span>
           <span class="clear"><!-- --></span>
         </li>
         <li class="list-group-item">
           <span class="name">Lifetime %</span>
-          <span class="value"><%= number_to_percentage(@data[:raids][:delinquent][:percent], precision: 2) %></span>
+          <span class="value"><%= number_to_percentage(@standing_statistics.raids_delinquent_percent, precision: 2) %></span>
           <span class="clear"><!-- --></span>
         </li>
       </ul>
@@ -52,44 +52,44 @@
       <ul class="list-group">
         <li class="list-group-item">
           <span class="name bold">Sitting</span>
-          <span class="value bold"><%= @data[:raids][:sat][:total] %></span>
+          <span class="value bold"><%= @standing_statistics.raids_sat_total %></span>
           <span class="clear"><!-- --></span>
         </li>
         <li class="list-group-item">
           <span class="name">Last 3 months</span>
-          <span class="value"><%= @data[:raids][:sat][:three_month] %></span>
+          <span class="value"><%= @standing_statistics.raids_sat_three_month %></span>
           <span class="clear"><!-- --></span>
         </li>
         <li class="list-group-item">
           <span class="name">Last year</span>
-          <span class="value"><%= @data[:raids][:sat][:year] %></span>
+          <span class="value"><%= @standing_statistics.raids_sat_year %></span>
           <span class="clear"><!-- --></span>
         </li>
         <li class="list-group-item">
           <span class="name">Lifetime %</span>
-          <span class="value"><%= number_to_percentage(@data[:raids][:sat][:percent], precision: 2) %></span>
+          <span class="value"><%= number_to_percentage(@standing_statistics.raids_sat_percent, precision: 2) %></span>
           <span class="clear"><!-- --></span>
         </li>
       </ul>
       <ul class="list-group">
         <li class="list-group-item">
           <span class="name bold">Absent</span>
-          <span class="value bold"><%= @data[:raids][:absent][:total] %></span>
+          <span class="value bold"><%= @standing_statistics.raids_absent_total %></span>
           <span class="clear"><!-- --></span>
         </li>
         <li class="list-group-item">
           <span class="name">Last 3 months</span>
-          <span class="value"><%= @data[:raids][:absent][:three_month] %></span>
+          <span class="value"><%= @standing_statistics.raids_absent_three_month %></span>
           <span class="clear"><!-- --></span>
         </li>
         <li class="list-group-item">
           <span class="name">Last year</span>
-          <span class="value"><%= @data[:raids][:absent][:year] %></span>
+          <span class="value"><%= @standing_statistics.raids_absent_year %></span>
           <span class="clear"><!-- --></span>
         </li>
         <li class="list-group-item">
           <span class="name">Lifetime %</span>
-          <span class="value"><%= number_to_percentage(@data[:raids][:absent][:percent], precision: 2) %></span>
+          <span class="value"><%= number_to_percentage(@standing_statistics.raids_absent_percent, precision: 2) %></span>
           <span class="clear"><!-- --></span>
         </li>
       </ul>

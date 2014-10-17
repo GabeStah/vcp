@@ -1,4 +1,5 @@
 class RacesController < ApplicationController
+  load_and_authorize_resource
   before_action :set_race, only: [:destroy, :update]
 
   def create

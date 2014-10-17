@@ -6,7 +6,7 @@ class Ability
     @user.roles.each { |role| send(role.name) }
 
     if @user.roles.size == 0
-      can :read, :all #for guest without roles
+      can :read, [Character, Raid, Standing, User]
     end
   end
 

@@ -1,4 +1,5 @@
 class CharacterClassesController < ApplicationController
+  load_and_authorize_resource
   before_action :set_character_class, only: [:destroy, :update]
 
   def create

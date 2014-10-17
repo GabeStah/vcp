@@ -2,7 +2,7 @@ class StandingDatatable < AjaxDatatablesRails::Base
   include AjaxDatatablesRails::Extensions::WillPaginate
 
   def_delegators :@view,
-                 :can,
+                 :can?,
                  :current_user,
                  :edit_standing_path,
                  :l,

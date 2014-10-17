@@ -75,7 +75,7 @@ class Character < ActiveRecord::Base
   # determine if passed key (user_key + character_key) = combined
   def key_match?(passed_key, user)
     return false unless passed_key
-    return passed_key == process_key(user.secret_key)
+    passed_key == process_key(user.secret_key)
   end
 
   # Retrieve the full portrait path
@@ -102,7 +102,7 @@ class Character < ActiveRecord::Base
           processed = Digest::SHA2.hexdigest("#{processed}#{self.slug}#{user_key}")
       end
     end
-    return processed
+    processed
   end
 
   # #Alter the primary parameter from :id
@@ -114,7 +114,7 @@ class Character < ActiveRecord::Base
   def update_from_battle_net
     # Establish connection
     # Retrieve json
-    @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{self.region.downcase}.battle.net/api/wow/character/#{self.realm.downcase}/#{self.name}?fields=guild"))).body)
+    @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{self.region.downcase}.#{Settings.api.domain}/wow/character/#{self.realm.downcase}/#{self.name}?fields=guildapikey=#{ENV['battle_net_api_key']}"))).body)
     # Process json
     if @json['status'] == 'nok'
       unless @json['reason'] == 'Character not found.'

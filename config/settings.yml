@@ -1,4 +1,6 @@
 defaults: &defaults
+  api:
+    domain: 'api.battle.net'
   cutoff:
     attendance: 15
     delinquent: 30

@@ -1,4 +1,5 @@
 class RaidsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_raid, only: [:destroy, :edit, :show, :update]
   before_action :set_standings, only: [:create, :new]
 

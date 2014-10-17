@@ -62,9 +62,9 @@ class Guild < ActiveRecord::Base
     # Retrieve json
     case type
       when 'guild'
-        @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{self.region.downcase}.battle.net/api/wow/guild/#{self.realm.downcase}/#{self.name}"))).body)
+        @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{self.region.downcase}.#{Settings.api.domain}/wow/guild/#{self.realm.downcase}/#{self.name}?apikey=#{ENV['battle_net_api_key']}"))).body)
       when 'guild-members'
-        @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{self.region.downcase}.battle.net/api/wow/guild/#{self.realm.downcase}/#{self.name}?fields=members"))).body)
+        @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{self.region.downcase}.#{Settings.api.domain}/wow/guild/#{self.realm.downcase}/#{self.name}?fields=members&apikey=#{ENV['battle_net_api_key']}"))).body)
     end
     # Process json
     if @json['status'] == 'nok'

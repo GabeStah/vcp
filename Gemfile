@@ -58,8 +58,15 @@ gem 'dotiw'
 gem 'devise'
 gem 'cancan'
 
+gem 'omniauth'
+# Battle.net OAuth
+gem 'omniauth-bnet'
+
 # ENV variables
 gem 'figaro'
+
+gem 'thin'
+gem 'foreman'
 
 group :development, :test do
   gem 'rspec-rails'

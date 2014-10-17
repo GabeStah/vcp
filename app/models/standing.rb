@@ -1,6 +1,7 @@
 class Standing < ActiveRecord::Base
   belongs_to :character
-  has_many :standing_events, foreign_key: :actor_id
+  has_many :standing_events,     foreign_key: :actor_id
+  has_one :standing_statistic, foreign_key: :record_id
 
   attr_accessor :distribute
 
@@ -32,7 +33,7 @@ class Standing < ActiveRecord::Base
     if self.active
       # If active, end date is now and start date is recent :resume or :initial
       end_date = Time.zone.now
-      start_date = standing_events.any_of({type: :initial}, {type: :resume}).order(:created_at).last.created_at
+      start_date = standing_events.where.any_of({type: :initial}, {type: :resume}).order(:created_at).last.created_at
       return start_date, end_date
     else
       # If inactive, end date is recent :retire and start date is prior :resume or :initial
@@ -114,6 +115,12 @@ class Standing < ActiveRecord::Base
   # Total points for all active Standings
   def self.total_points
     Standing.where(active: true).sum(:points).round(5)
+  end
+
+  def update_statistics
+    StandingStatistic.create(standing: self) if self.standing_statistic.nil?
+    statistic = StandingStatistic.where(standing: self).first
+    statistic.calculate_all if statistic
   end
 
   private

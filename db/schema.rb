@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141010234259) do
+ActiveRecord::Schema.define(version: 20141017064819) do
 
   create_table "assignments", force: true do |t|
     t.integer "role_id", null: false
@@ -89,6 +89,16 @@ ActiveRecord::Schema.define(version: 20141010234259) do
   add_index "guilds", ["name", "realm"], name: "index_guilds_on_name_and_realm", using: :btree
   add_index "guilds", ["name"], name: "index_guilds_on_name", using: :btree
   add_index "guilds", ["slug"], name: "index_guilds_on_slug", unique: true, using: :btree
+
+  create_table "identities", force: true do |t|
+    t.integer  "user_id"
+    t.string   "provider"
+    t.string   "uid"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "identities", ["user_id"], name: "index_identities_on_user_id", using: :btree
 
   create_table "participations", force: true do |t|
     t.integer  "character_id"
@@ -169,6 +179,46 @@ ActiveRecord::Schema.define(version: 20141010234259) do
     t.datetime "updated_at"
     t.integer  "character_id"
   end
+
+  create_table "statistics", force: true do |t|
+    t.string   "record_type"
+    t.integer  "record_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.decimal  "gains_delinquency",            precision: 10, scale: 6, default: 0.0
+    t.decimal  "gains_infraction",             precision: 10, scale: 6, default: 0.0
+    t.decimal  "gains_sitting",                precision: 10, scale: 6, default: 0.0
+    t.decimal  "gains_total",                  precision: 10, scale: 6, default: 0.0
+    t.decimal  "losses_attendance",            precision: 10, scale: 6, default: 0.0
+    t.decimal  "losses_absence",               precision: 10, scale: 6, default: 0.0
+    t.decimal  "losses_delinquency",           precision: 10, scale: 6, default: 0.0
+    t.decimal  "losses_infraction",            precision: 10, scale: 6, default: 0.0
+    t.decimal  "losses_total",                 precision: 10, scale: 6, default: 0.0
+    t.integer  "raids_absent_three_month"
+    t.integer  "raids_absent_year"
+    t.integer  "raids_absent_total"
+    t.decimal  "raids_absent_percent",         precision: 10, scale: 6, default: 0.0
+    t.integer  "raids_attended_three_month"
+    t.integer  "raids_attended_year"
+    t.integer  "raids_attended_total"
+    t.decimal  "raids_attended_percent",       precision: 10, scale: 6, default: 0.0
+    t.integer  "raids_delinquent_three_month"
+    t.integer  "raids_delinquent_year"
+    t.integer  "raids_delinquent_total"
+    t.decimal  "raids_delinquent_percent",     precision: 10, scale: 6, default: 0.0
+    t.integer  "raids_sat_three_month"
+    t.integer  "raids_sat_year"
+    t.integer  "raids_sat_total"
+    t.decimal  "raids_sat_percent",            precision: 10, scale: 6, default: 0.0
+    t.integer  "time_raiding_three_month"
+    t.integer  "time_raiding_year"
+    t.integer  "time_absent_three_month"
+    t.integer  "time_absent_year"
+    t.integer  "time_delinquent_three_month"
+    t.integer  "time_delinquent_year"
+  end
+
+  add_index "statistics", ["record_type", "record_id"], name: "index_statistics_on_record_type_and_record_id", unique: true, using: :btree
 
   create_table "users", force: true do |t|
     t.string   "name"

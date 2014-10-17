@@ -1,4 +1,5 @@
 class StandingsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_standing,                only: [:destroy, :edit, :list_characters, :resume, :retire, :show, :transfer, :update]
 
   def create
@@ -17,11 +18,12 @@ class StandingsController < ApplicationController
     flash[:success] = "Standing deleted."
     redirect_to standings_url
   end
+
   def edit
 
   end
+
   def index
-    #@standings = Standing.includes(character: [:character_class, :guild]).where(active: true).order(:points)
     respond_to do |format|
       format.html
       format.json do
