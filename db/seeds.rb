@@ -12,7 +12,7 @@ role_moderator = Role.create!(name: :moderator)
 User.delete_all
 # Initial user
 user = User.new(name: "Gabe Wyatt",
-                email: "gwyattkelsey@gmail.com",
+                email: "test@test.com",
                 password: "hobbes",
                 password_confirmation: "hobbes")
 user.roles << role_admin

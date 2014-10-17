@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-  TEMP_EMAIL_PREFIX = 'change@me'
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable and :omniauthable
   devise :confirmable, :database_authenticatable, :registerable,
@@ -18,6 +17,8 @@ class User < ActiveRecord::Base
   normalize_attribute :email
 
   def self.from_omniauth(auth)
+    blah = true
+    logger.info 'BATTLE_NET_AUTH: User#from_omniauth'
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.provider = auth.provider
       user.uid = auth.uid

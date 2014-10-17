@@ -8,7 +8,7 @@ class BattleNetWorker
     
     case type
       when 'class-population'
-        classes = JSON.parse(Net::HTTP.get_response(URI.parse("http://#{Settings.guild.region}.#{Settings.api.domain}/wow/data/character/classes?apikey=#{ENV['battle_net_api_key']}")).body)
+        classes = JSON.parse(Net::HTTP.get_response(URI.parse("https://#{Settings.guild.region}.#{Settings.api.domain}/wow/data/character/classes?apikey=#{ENV['battle_net_api_key']}")).body)
         if classes['status'] == 'nok'
           raise BattleNetError.new(message: classes['reason'])
         else
@@ -48,7 +48,7 @@ class BattleNetWorker
           raise GuildError.new(message: "#{type.camelize} not found ID: #{id}")
         end
       when 'race-population'
-        races = JSON.parse(Net::HTTP.get_response(URI.parse("http://#{Settings.guild.region}.#{Settings.api.domain}/wow/data/character/races?apikey=#{ENV['battle_net_api_key']}")).body)
+        races = JSON.parse(Net::HTTP.get_response(URI.parse("https://#{Settings.guild.region}.#{Settings.api.domain}/wow/data/character/races?apikey=#{ENV['battle_net_api_key']}")).body)
         if races['status'] == 'nok'
           raise BattleNetError.new(message: races['reason'])
         else

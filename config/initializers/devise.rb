@@ -234,7 +234,7 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
 
-  config.omniauth :bnet, ENV['battle_net_api_key'], ENV['battle_net_api_secret'], scope: "wow.profile", provider_ignores_state: true
+  #config.omniauth :bnet, ENV['battle_net_api_key'], ENV['battle_net_api_secret'], scope: "wow.profile"
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

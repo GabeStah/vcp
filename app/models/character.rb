@@ -114,7 +114,7 @@ class Character < ActiveRecord::Base
   def update_from_battle_net
     # Establish connection
     # Retrieve json
-    @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("http://#{self.region.downcase}.#{Settings.api.domain}/wow/character/#{self.realm.downcase}/#{self.name}?fields=guildapikey=#{ENV['battle_net_api_key']}"))).body)
+    @json = JSON.parse(Net::HTTP.get_response(URI.parse(URI.encode("https://#{self.region.downcase}.#{Settings.api.domain}/wow/character/#{self.realm.downcase}/#{self.name}?fields=guildapikey=#{ENV['battle_net_api_key']}"))).body)
     # Process json
     if @json['status'] == 'nok'
       unless @json['reason'] == 'Character not found.'

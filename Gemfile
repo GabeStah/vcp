@@ -68,6 +68,8 @@ gem 'figaro'
 gem 'thin'
 gem 'foreman'
 
+gem 'httplog'
+
 group :development, :test do
   gem 'rspec-rails'
   # The following optional lines are part of the advanced setup.
