@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141017064819) do
+ActiveRecord::Schema.define(version: 20141017184703) do
 
   create_table "assignments", force: true do |t|
     t.integer "role_id", null: false
@@ -89,16 +89,6 @@ ActiveRecord::Schema.define(version: 20141017064819) do
   add_index "guilds", ["name", "realm"], name: "index_guilds_on_name_and_realm", using: :btree
   add_index "guilds", ["name"], name: "index_guilds_on_name", using: :btree
   add_index "guilds", ["slug"], name: "index_guilds_on_slug", unique: true, using: :btree
-
-  create_table "identities", force: true do |t|
-    t.integer  "user_id"
-    t.string   "provider"
-    t.string   "uid"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "identities", ["user_id"], name: "index_identities_on_user_id", using: :btree
 
   create_table "participations", force: true do |t|
     t.integer  "character_id"
@@ -221,11 +211,10 @@ ActiveRecord::Schema.define(version: 20141017064819) do
   add_index "statistics", ["record_type", "record_id"], name: "index_statistics_on_record_type_and_record_id", unique: true, using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "name"
+    t.string   "battle_tag"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "secret_key"
-    t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -239,10 +228,11 @@ ActiveRecord::Schema.define(version: 20141017064819) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
+    t.string   "provider"
+    t.string   "uid"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["secret_key"], name: "index_users_on_secret_key", unique: true, using: :btree
 

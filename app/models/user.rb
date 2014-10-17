@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable and :omniauthable
-  devise :confirmable, :database_authenticatable, :registerable,
+  devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:bnet]
   before_create :create_secret_key
@@ -9,22 +9,29 @@ class User < ActiveRecord::Base
   has_many :characters
   has_many :roles, through: :assignments
 
-  validates :name,
+  validates :battle_tag,
             presence: true,
             length: { maximum: 50 }
 
-  normalize_attribute :name, :with => :squish
-  normalize_attribute :email
-
   def self.from_omniauth(auth)
-    blah = true
     logger.info 'BATTLE_NET_AUTH: User#from_omniauth'
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+    new_user = where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.provider = auth.provider
       user.uid = auth.uid
-      user.email = auth.info.email
       user.password = Devise.friendly_token[0,20]
+      user.battle_tag = auth['info']['battletag']
     end
+    # worker update
+    BattleNetWorker.perform_async(access_token: auth['credentials']['token'], type: 'characters', user_id: new_user.id)
+    new_user
+  end
+
+  def email_required?
+    false
+  end
+
+  def email_changed?
+    false
   end
 
   # def self.find_for_oauth(auth, signed_in_resource = nil)
@@ -74,6 +81,6 @@ class User < ActiveRecord::Base
   end
 
   def create_secret_key
-    self.secret_key = Digest::SHA2.hexdigest(email)
+    self.secret_key = Digest::SHA2.hexdigest(battle_tag)
   end
 end

@@ -5,6 +5,8 @@ class BattleNetWorker
   def perform(options={})
     id = options['id']
     type = options['type']
+    access_token = options['access_token']
+    user_id = options['user_id']
     
     case type
       when 'class-population'
@@ -26,6 +28,30 @@ class BattleNetWorker
         else
           logger.info "Type: #{type.upcase}, DBID: #{id}, Status: Error - #{type.camelize} not found in database."
           raise CharacterError.new(message: "#{type.camelize} not found ID: #{id}")
+        end
+      when 'characters'
+        if access_token
+          url = "https://#{Settings.region}.#{Settings.api.domain}/wow/user/characters?access_token=#{access_token}"
+          characters = JSON.parse(Net::HTTP.get_response(URI.parse(url)).body)
+          user = User.find_by(id: user_id)
+          characters['characters'].each do |data|
+            character = Character.find_or_create_by(name: data['name'], realm: data['realm'], region: Settings.region)
+
+            character.update(
+              achievement_points: data['achievementPoints'],
+              character_class:    CharacterClass.find_by(blizzard_id: data['class']),
+              gender:             data['gender'],
+              guild:              data['guild'] ? Guild.find_by(name: data['guild'], realm: data['guildRealm'], region: Settings.region) : nil,
+              level:              data['level'],
+              portrait:           data['thumbnail'],
+              race:               Race.find_by(blizzard_id: data['race']),
+              synced_at:          Time.zone.now,
+              user:               user
+            )
+          end
+          logger.info "BattleNetWorker#characters SUCCESS"
+        else
+          logger.info "BattleNetWorker#characters FAILURE"
         end
       when 'guild'
         guild = Guild.find_by(id: id)

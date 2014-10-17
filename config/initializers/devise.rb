@@ -29,7 +29,7 @@ Devise.setup do |config|
   # session. If you need permissions, you should implement that in a before filter.
   # You can also supply a hash where the value is a boolean determining whether
   # or not authentication should be aborted when the value is not present.
-  # config.authentication_keys = [ :email ]
+  config.authentication_keys = [ :battle_tag ]
 
   # Configure parameters from the request object used for authentication. Each entry
   # given should be a request method and it will automatically be passed to the
@@ -41,12 +41,12 @@ Devise.setup do |config|
   # Configure which authentication keys should be case-insensitive.
   # These keys will be downcased upon creating or modifying a user and when used
   # to authenticate or find a user. Default is :email.
-  config.case_insensitive_keys = [ :email ]
+  config.case_insensitive_keys = [ :battle_tag ]
 
   # Configure which authentication keys should have whitespace stripped.
   # These keys will have whitespace before and after removed upon creating or
   # modifying a user and when used to authenticate or find a user. Default is :email.
-  config.strip_whitespace_keys = [ :email ]
+  config.strip_whitespace_keys = [ :battle_tag ]
 
   # Tell if authentication through request.params is enabled. True by default.
   # It can be set to an array that will enable params authentication only for the
@@ -234,7 +234,9 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
 
-  #config.omniauth :bnet, ENV['battle_net_api_key'], ENV['battle_net_api_secret'], scope: "wow.profile"
+  # config.omniauth :bnet, ENV['battle_net_api_key'], ENV['battle_net_api_secret'], scope: "wow.profile"
+
+  config.omniauth :bnet, 'zkknhcmzz834sge3uvathm9q6u88vnbt', 'cdzvXUrW86qD29FvkygrjvzyFEGyq4aS', scope: "wow.profile sc2.profile"
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

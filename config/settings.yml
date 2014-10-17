@@ -17,6 +17,7 @@ defaults: &defaults
     start_time:
       hour: 18
       min: 30
+  region: 'us'
   roster:
     size: 25
   standing:
