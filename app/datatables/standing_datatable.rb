@@ -43,7 +43,6 @@ class StandingDatatable < AjaxDatatablesRails::Base
     records.map do |standing|
       name = link_to(standing.character.name, standing.character)
       character_class = standing.character.character_class.present? ? standing.character.character_class.name : nil
-      guild = standing.character.guild.name
       guild = link_to(standing.character.guild.name, standing.character.guild) if can?(:update, Guild) && standing.character.guild
       realm = "#{standing.character.realm}-#{standing.character.region.upcase}"
       points = standing.points || 0

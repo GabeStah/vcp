@@ -70,6 +70,9 @@ gem 'foreman'
 
 gem 'httplog'
 
+# Manage attachments
+gem 'paperclip'
+
 group :development, :test do
   gem 'rspec-rails'
   # The following optional lines are part of the advanced setup.

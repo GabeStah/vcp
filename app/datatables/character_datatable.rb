@@ -58,8 +58,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
               character.achievement_points,
               l(character.created_at.in_time_zone, format: :short),
               can?(:update, character) ?
-                "#{link_to('Unclaim', unclaim_character_path(character), method: :post, data: { confirm: "Relinquish claim on #{character.full_title}?" })}
-                 #{link_to('Sync', sync_character_path(character), method: :post)}" : nil,
+                "#{link_to('Sync', sync_character_path(character), method: :post)}" : nil,
             ]
           end
         when :unclaimed
@@ -80,11 +79,10 @@ class CharacterDatatable < AjaxDatatablesRails::Base
       end
     else
       records.map do |character|
-        class_name = "<span class=#{character.character_class.short_name}>#{character.character_class.name}</span>"
         [
           link_to(character.name, character),
-          character.character_class.present? ?
-            class_name : nil,
+          character.character_class ?
+            "<span class=#{character.character_class.short_name}>#{character.character_class.name}</span>" : nil,
           character.guild.present? ?
             link_to(character.guild.name, character.guild) : nil,
           "#{character.realm}-#{character.region.upcase}",

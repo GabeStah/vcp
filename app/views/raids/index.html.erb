@@ -1,7 +1,9 @@
 <% provide(:title, 'Raids') %>
 <h1>Raids</h1>
 
-<%= link_to "New Raid", new_raid_path, class: "btn btn-large btn-primary" %>
+<% if can?(:manage, Raid) %>
+  <%= link_to "New Raid", new_raid_path, class: "btn btn-large btn-primary" %>
+<% end %>
 
 <table class="raids table table-striped table-bordered table-white" id="raids-table" data-source="<%= raids_path(format: :json) %>">
   <thead>

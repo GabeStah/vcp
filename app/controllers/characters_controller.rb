@@ -14,24 +14,12 @@ class CharactersController < ApplicationController
     end
   end
 
-  def claim
-    if @character.key_match?(params[:key], current_user)
-      if @character.update(user: current_user)
-        flash[:success] = "Character #{@character.full_title} claimed!"
-      else
-        flash[:error] = 'Key matched but claim failed.'
-      end
-    else
-      flash[:error] = 'Claim Failed: Provided key does not match.'
-    end
-    redirect_to :back
-  end
-
   def destroy
     flash[:success] = "Character #{@character.full_title} deleted."
     @character.destroy
     redirect_to :back
   end
+
   def edit
   end
 
@@ -56,82 +44,17 @@ class CharactersController < ApplicationController
   def new
     @character = Character.new
   end
+
   def show
-    # Add key for basic testing
-    @generated_key = @character.process_key(current_user.secret_key) if signed_in? && current_user
-
-    # Standing
-    if @character.standing
-      # standing = @character.standing
-      # active_start_date, active_end_date = standing.active_between
-      # # Raids during activity
-      # active_raid_count = Raid.between(after: active_start_date, before: active_end_date).size
-      #
-      # # Get standing_events list
-      # standing_events = standing.standing_events
-
-      @standing_statistics = @character.standing.standing_statistic
-
-      # @data = Hash.new
-      # @data[:losses] = Hash.new
-      # @data[:gains] = Hash.new
-      # @data[:raids] = Hash.new
-      # @data[:raids][:absent] = Hash.new
-      # @data[:raids][:attended] = Hash.new
-      # @data[:raids][:delinquent] = Hash.new
-      # @data[:raids][:sat] = Hash.new
-      #
-      # @data[:gains][:delinquency] = standing.gains(:delinquency)
-      # @data[:gains][:infraction] = standing.gains(:infraction)
-      # @data[:gains][:sitting] = standing.gains(:sitting)
-      # @data[:gains][:total] = standing.gains(:total)
-      #
-      # @data[:losses][:attendance] = standing.losses(:attendance)
-      # @data[:losses][:absence] = standing.losses(:absence)
-      # @data[:losses][:delinquency] = standing.losses(:delinquency)
-      # @data[:losses][:infraction] = standing.losses(:infraction)
-      # @data[:losses][:total] = standing.losses(:total)
-      #
-      # @data[:raids][:absent][:three_month] = standing_events.between(type: :absent, after: 3.months.ago).size
-      # @data[:raids][:absent][:year]        = standing_events.between(type: :absent, after: 1.year.ago).size
-      # @data[:raids][:absent][:total]       = standing_events.between(type: :absent).size
-      # @data[:raids][:absent][:percent]     = standing_events.between(type: :absent, after: active_start_date, before: active_end_date).size / active_raid_count.to_f * 100
-      #
-      # @data[:raids][:attended][:three_month] = standing_events.between(type: :attended, after: 3.months.ago).size
-      # @data[:raids][:attended][:year]        = standing_events.between(type: :attended, after: 1.year.ago).size
-      # @data[:raids][:attended][:total]       = standing_events.between(type: :attended).size
-      # @data[:raids][:attended][:percent]     = standing_events.between(type: :attended, after: active_start_date, before: active_end_date).size / active_raid_count.to_f * 100
-      #
-      # @data[:raids][:delinquent][:three_month] = standing_events.between(type: :delinquent, after: 3.months.ago).size
-      # @data[:raids][:delinquent][:year]        = standing_events.between(type: :delinquent, after: 1.year.ago).size
-      # @data[:raids][:delinquent][:total]       = standing_events.between(type: :delinquent).size
-      # @data[:raids][:delinquent][:percent]     = standing_events.between(type: :delinquent, after: active_start_date, before: active_end_date).size / active_raid_count.to_f * 100
-      #
-      # @data[:raids][:sat][:three_month]  = standing_events.between(type: :sat, after: 3.months.ago).size
-      # @data[:raids][:sat][:year]         = standing_events.between(type: :sat, after: 1.year.ago).size
-      # @data[:raids][:sat][:total]        = standing_events.between(type: :sat).size
-      # @data[:raids][:sat][:percent]      = standing_events.between(type: :sat, after: active_start_date, before: active_end_date).size / active_raid_count.to_f * 100
-
-    end
+    # Statistics
+    @standing_statistics = @character.standing.standing_statistic if @character.standing
   end
 
   def sync
-    if @owned_character
-      BattleNetWorker.perform_async(id: @character.id,
-                                    type: 'character')
-      flash[:success] = "Sync requested, #{@character.full_title} will be updated shortly."
-    else
-      flash[:alert] = 'You cannot sync a character you do not own.'
-    end
-    redirect_to :back
-  end
-
-  def unclaim
-    if @character.update(user: nil)
-      flash[:success] = "Claim on #{@character.full_title} relinquished!"
-    else
-      flash[:error] = 'Unclaim failed.'
-    end
+    authorize! :sync, @character
+    BattleNetWorker.perform_async(id: @character.id,
+                                  type: 'character')
+    flash[:success] = "Sync requested, #{@character.full_title} will be updated shortly."
     redirect_to :back
   end
 

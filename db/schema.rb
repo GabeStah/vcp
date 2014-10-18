@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141017184703) do
+ActiveRecord::Schema.define(version: 20141018164804) do
 
   create_table "assignments", force: true do |t|
     t.integer "role_id", null: false
@@ -33,7 +33,6 @@ ActiveRecord::Schema.define(version: 20141017184703) do
     t.integer  "achievement_points"
     t.integer  "gender"
     t.integer  "level"
-    t.string   "portrait"
     t.string   "name"
     t.integer  "rank"
     t.datetime "created_at"
@@ -43,10 +42,20 @@ ActiveRecord::Schema.define(version: 20141017184703) do
     t.string   "realm"
     t.string   "region"
     t.integer  "guild_id"
-    t.boolean  "verified",           default: false
+    t.boolean  "verified",              default: false
     t.datetime "synced_at"
     t.string   "slug"
     t.integer  "user_id"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
+    t.string   "avatar_fingerprint"
+    t.string   "portrait_file_name"
+    t.string   "portrait_content_type"
+    t.integer  "portrait_file_size"
+    t.datetime "portrait_updated_at"
+    t.string   "portrait_fingerprint"
   end
 
   add_index "characters", ["guild_id"], name: "index_characters_on_guild_id", using: :btree

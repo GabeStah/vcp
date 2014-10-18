@@ -4,7 +4,6 @@ FactoryGirl.define do
     character_class
     gender 0
     level 90
-    portrait 'internal-record-3661/66/115044674-avatar.jpg'
     name { Faker::Name.first_name } # Brackets required to force Faker to create unique entries
     race
     rank 9

@@ -4,7 +4,6 @@ class CreateCharacters < ActiveRecord::Migration
       t.integer   :achievement_points
       t.integer   :gender
       t.integer   :level
-      t.string    :portrait
       t.string    :name
       t.integer   :rank
 

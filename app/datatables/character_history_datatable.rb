@@ -106,7 +106,9 @@ class CharacterHistoryDatatable < AjaxDatatablesRails::Base
   end
 
   def get_raw_records
-     Raid.joins(:standing_events).where('events.actor_id = ?', @standing).
-       eager_load(:participations, :zone)
+    if @standing
+      Raid.joins(:standing_events).where('events.actor_id = ?', @standing).
+        eager_load(:participations, :zone)
+    end
   end
 end

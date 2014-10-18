@@ -3,6 +3,7 @@
   <aside class="span4">
     <section>
       <h1>
+        <%= image_tag @character.avatar.url %>
         <%= link_to @character.name, edit_character_path(@character), id: 'character-name' %>
       </h1>
       <p>Achievement Points: <%= @character.achievement_points %></p>
@@ -13,7 +14,6 @@
       </p>
       <p>
         Claimed: <%= @owned_character ? 'Yes' : 'No' %>
-        <%= link_to 'Unclaim', unclaim_character_path(@character), method: :post, data: { confirm: "Relinquish claim on #{@character.full_title}?" } if @owned_character %>
       </p>
       <% if @character.has_standing? %>
         <p>VCP: <%= @character.standing.points || 0 %></p>
@@ -32,34 +32,19 @@
       <%= render 'modules/raids_module' %>
     </div>
   <% end %>
-  <% if !@owned_character && current_user %>
-    <div class="span6 offset3">
-      <%= label_tag :api_key, 'API Key:' %>
-      <%= text_field_tag :api_key, current_user.secret_key %>
-      <%= button_tag 'Copy', class: 'btn', id: 'api_key_copy_button', data: { clipboard_target: :api_key }, 'original-title' => 'Click to Copy' %>
-      <%= form_tag do %>
-        <%= label_tag :key, "Claim Key:" %>
-        <%= text_field_tag :key, @generated_key if Rails.env.development? %>
-        <%= submit_tag('Claim') %>
-      <% end %>
-    </div>
-  <% end %>
 </div>
 
-<div class="row">
-  <div class="col-md-8">.col-md-8</div>
-  <div class="col-md-4">.col-md-4</div>
-</div>
-
-<table class="character-history table table-striped table-bordered table-white" id="character-history-table" data-source="<%= character_history_path(format: :json) %>">
-  <thead>
-  <th>Raid</th>
-  <th>Date</th>
-  <th>Status</th>
-  <th>Change</th>
-  <th>Total Points</th>
-  <th>Details</th>
-  </thead>
-  <tbody>
-  </tbody>
-</table>
+<% if @character.standing %>
+  <table class="character-history table table-striped table-bordered table-white" id="character-history-table" data-source="<%= character_history_path(format: :json) %>">
+    <thead>
+    <th>Raid</th>
+    <th>Date</th>
+    <th>Status</th>
+    <th>Change</th>
+    <th>Total Points</th>
+    <th>Details</th>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+<% end %>

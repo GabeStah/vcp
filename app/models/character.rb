@@ -1,4 +1,6 @@
 class Character < ActiveRecord::Base
+  require "open-uri"
+
   include Errors
   include SessionsHelper
   belongs_to :character_class
@@ -14,10 +16,15 @@ class Character < ActiveRecord::Base
   before_validation :generate_slug
   after_create :generate_battle_net_worker
 
-  scope :claimed, ->(user) { where(user: user, verified: true) }
+  has_attached_file :avatar, default_url: "/images/:style/missing_avatar.png"
+  has_attached_file :portrait, default_url: "/images/:style/missing_portrait.png"
+  validates_attachment_content_type :avatar, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
+  validates_attachment_content_type :portrait, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
+
+  scope :claimed, ->(user) { where(user: user) }
   scope :unclaimed, ->(user) { where('user_id != ? OR user_id IS NULL', user).where(verified: true) }
 
-  normalize_attributes :name, :portrait, :region
+  normalize_attributes :name, :region
   normalize_attribute :realm, :with => :squish
 
   validates :achievement_points,
@@ -31,9 +38,6 @@ class Character < ActiveRecord::Base
             allow_blank: true,
             inclusion: 0..100,
             numericality: { only_integer: true }
-  validates :portrait,
-            allow_blank: true,
-            format: { with: /\A[\w+d+-]+\/\d+\/\d+-avatar\.((jpg)|(png))\z/ }
   validates :name,
             presence: true,
             uniqueness: { scope: [:region, :realm],
@@ -52,6 +56,12 @@ class Character < ActiveRecord::Base
             presence: true,
             uniqueness: { case_sensitive: false }
 
+  def download_file(url)
+    open(URI.parse(url))
+  rescue => e # catch url errors with validations instead of exceptions (Errno::ENOENT, OpenURI::HTTPError, etc...)
+    nil
+  end
+
   def self.find(input)
     input.to_i == 0 ? find_by(slug: input.downcase) : super
   end
@@ -68,10 +78,6 @@ class Character < ActiveRecord::Base
     created_at
   end
 
-  # def joined_guild_at_ago
-  #   time_ago_in_words(created_at)
-  # end
-
   # determine if passed key (user_key + character_key) = combined
   def key_match?(passed_key, user)
     return false unless passed_key
@@ -79,11 +85,11 @@ class Character < ActiveRecord::Base
   end
 
   # Retrieve the full portrait path
-  def portrait_url(full = false)
+  def portrait_url(id, full = false)
     if full
-      "http://#{self.region.downcase}.battle.net/static-render/#{self.region.downcase}/#{self.portrait.sub!('avatar', 'profilemain')}"
+      "http://#{self.region.downcase}.battle.net/static-render/#{self.region.downcase}/#{id.sub!('avatar', 'profilemain')}"
     else
-      "http://#{self.region.downcase}.battle.net/static-render/#{self.region.downcase}/#{self.portrait}"
+      "http://#{self.region.downcase}.battle.net/static-render/#{self.region.downcase}/#{id}"
     end
   end
 
@@ -129,13 +135,14 @@ class Character < ActiveRecord::Base
                                       realm:  self.realm,
                                       region: self.region.downcase) if @json['guild'] && @json['guild']['name']
       # Update record
-      self.update(
+      update_attributes(
           achievement_points: @json['achievementPoints'],
+          avatar:             download_file(portrait_url(@json['thumbnail'])),
           character_class:    CharacterClass.find_by(blizzard_id: @json['class']),
           gender:             @json['gender'],
           guild:              guild,
           level:              @json['level'],
-          portrait:           @json['thumbnail'],
+          portrait:           download_file(portrait_url(@json['thumbnail'], true)),
           race:               Race.find_by(blizzard_id: @json['race']),
           synced_at:          Time.zone.now,
           verified:           true
@@ -146,9 +153,7 @@ class Character < ActiveRecord::Base
   private
 
   def ensure_region_is_lowercase
-    unless self.region.nil?
-      self.region = self.region.downcase
-    end
+    self.region = self.region.downcase if self.region
   end
   def generate_battle_net_worker
     BattleNetWorker.perform_async(id: self.id, type: 'character')

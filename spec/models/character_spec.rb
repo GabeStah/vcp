@@ -7,7 +7,6 @@ describe Character, type: :model do
                                       guild: FactoryGirl.create(:guild),
                                       level: 90,
                                       region: 'us',
-                                      portrait: 'internal-record-3661/66/115044674-avatar.jpg',
                                       name: 'Kulldar',
                                       race: FactoryGirl.create(:race),
                                       rank: 9,
@@ -22,7 +21,6 @@ describe Character, type: :model do
                          :guild,
                          :level,
                          :region,
-                         :portrait,
                          :name,
                          :race,
                          :rank,
@@ -36,7 +34,6 @@ describe Character, type: :model do
   it { should normalize_attribute(:gender).from('  0  ').to(0) }
   it { should normalize_attribute(:level).from('  90  ').to(90) }
   it { should normalize_attribute(:region).from('  us  ').to('us') }
-  it { should normalize_attribute(:portrait).from('  internal-record-3661/66/115044674-avatar.jpg  ').to('internal-record-3661/66/115044674-avatar.jpg') }
   it { should normalize_attribute(:name).from('  Kulldar  ').to('Kulldar') }
   it { should normalize_attribute(:rank).from('  9  ').to(9) }
   it { should normalize_attribute(:realm).from('  Realm   Name  ').to('Realm Name') }
@@ -136,28 +133,6 @@ describe Character, type: :model do
     end
   end
 
-  describe 'portrait' do
-    describe 'as empty' do
-      before { @character.portrait = nil }
-      it { should be_valid }
-    end
-
-    describe 'as incorrect URI format' do
-      before { @character.portrait = 'internal-record-3661/extra/66/115044674-avatar.jpg' }
-      it { should_not be_valid }
-    end
-
-    describe 'as non-URI' do
-      before { @character.portrait = 'someplace' }
-      it { should_not be_valid }
-    end
-
-    describe 'as number' do
-      before { @character.portrait = 12345 }
-      it { should_not be_valid }
-    end
-  end
-
   describe 'name' do
     describe 'as empty' do
       before { @character.name = nil }
@@ -211,7 +186,6 @@ describe Character, type: :model do
                                          guild: FactoryGirl.create(:guild),
                                          level: 90,
                                          region: 'us',
-                                         portrait: 'internal-record-3661/66/115044674-avatar.jpg',
                                          name: "Kulldar1",
                                          race: FactoryGirl.create(:race),
                                          rank: 9,
@@ -224,7 +198,6 @@ describe Character, type: :model do
                                          guild: FactoryGirl.create(:guild),
                                          level: 90,
                                          region: 'us',
-                                         portrait: 'internal-record-3661/66/115044674-avatar.jpg',
                                          name: "Kulldar2",
                                          race: FactoryGirl.create(:race),
                                          rank: 9,
@@ -237,7 +210,6 @@ describe Character, type: :model do
                                            guild: FactoryGirl.create(:guild),
                                            level: 90,
                                            region: 'us',
-                                           portrait: 'internal-record-3661/66/115044674-avatar.jpg',
                                            name: "Kulldar3",
                                            race: FactoryGirl.create(:race),
                                            rank: 9,

@@ -37,13 +37,14 @@ class BattleNetWorker
           characters['characters'].each do |data|
             character = Character.find_or_create_by(name: data['name'], realm: data['realm'], region: Settings.region)
 
-            character.update(
+            character.update_attributes(
               achievement_points: data['achievementPoints'],
+              avatar:             character.download_file(character.portrait_url(data['thumbnail'])),
               character_class:    CharacterClass.find_by(blizzard_id: data['class']),
               gender:             data['gender'],
               guild:              data['guild'] ? Guild.find_by(name: data['guild'], realm: data['guildRealm'], region: Settings.region) : nil,
               level:              data['level'],
-              portrait:           data['thumbnail'],
+              portrait:           character.download_file(character.portrait_url(data['thumbnail'], true)),
               race:               Race.find_by(blizzard_id: data['race']),
               synced_at:          Time.zone.now,
               user:               user

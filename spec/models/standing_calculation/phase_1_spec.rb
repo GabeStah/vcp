@@ -10,7 +10,6 @@ RSpec.describe StandingEvent, :type => :model do
                                      guild: FactoryGirl.create(:guild),
                                      level: 90,
                                      region: 'us',
-                                     portrait: 'internal-record-3661/66/115044674-avatar.jpg',
                                      name: "Kulldar",
                                      race: FactoryGirl.create(:race),
                                      rank: 9,
