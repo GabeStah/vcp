@@ -15,18 +15,36 @@ class User < ActiveRecord::Base
 
   def self.from_omniauth(auth)
     logger.info 'BATTLE_NET_AUTH: User#from_omniauth'
-    new_user = where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+    # Initialize only
+    new_user = where(provider: auth.provider, uid: auth.uid).first_or_initialize do |user|
       user.provider = auth.provider
       user.uid = auth.uid
       user.password = Devise.friendly_token[0,20]
       user.battle_tag = auth['info']['battletag']
     end
-    # worker update
-    BattleNetWorker.perform_async(
-      access_token: auth['credentials']['token'],
-      type: 'characters',
-      user_id: new_user.id
-    )
+    # If new, check for role assignment from settings
+    if new_user.new_record?
+      # Add roles if necessary
+      Settings.roles.each do |role, tags|
+        if tags
+          tags.each do |tag|
+            if tag == new_user.battle_tag
+              role_record = Role.find_by(name: role.to_s.to_sym)
+              new_user.roles << role_record if role_record
+            end
+          end
+        end
+      end
+    end
+    # Now save record
+    if new_user.save
+      # worker update
+      BattleNetWorker.perform_async(
+        access_token: auth['credentials']['token'],
+        type: 'characters',
+        user_id: new_user.id
+      )
+    end
     new_user
   end
 

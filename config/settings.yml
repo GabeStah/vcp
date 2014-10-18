@@ -1,14 +1,17 @@
 defaults: &defaults
   api:
     domain: 'api.battle.net'
+
   cutoff:
     attendance: 15
     delinquent: 30
     tardy: 60
+
   guild:
     name: 'Vox Immortalis'
     realm: 'Hyjal'
     region: 'us'
+
   raid:
     end_time:
       hour: 22
@@ -17,9 +20,17 @@ defaults: &defaults
     start_time:
       hour: 18
       min: 30
+
   region: 'us'
+
+  roles:
+    admin:
+      - 'GabeStah#1631'
+    moderator:
+
   roster:
     size: 25
+
   standing:
     attendance_gain: 100.0
     delinquent_loss: -100.0
