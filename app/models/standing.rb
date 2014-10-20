@@ -49,7 +49,9 @@ class Standing < ActiveRecord::Base
         #self.standing_events.sum(:change)
         standing_events.gains.where(type: :delinquent).sum(:change)
       when :infraction
-        standing_events.gains.sum(:change)
+        standing_events.gains.where(type: :infraction).sum(:change)
+      when :initial
+        standing_events.gains.where(type: :initial).sum(:change)
       when :sitting
         standing_events.where(type: :attendance).where("#{StandingEvent.table_name}.change = ?", Settings.standing.attendance_gain).sum(:change)
       else # :total
@@ -67,6 +69,8 @@ class Standing < ActiveRecord::Base
         standing_events.losses.where(type: :delinquent).sum(:change)
       when :infraction
         standing_events.losses.where(type: :infraction).sum(:change)
+      when :initial
+        standing_events.losses.where(type: :initial).sum(:change)
       else # :total
         standing_events.losses.sum(:change)
     end

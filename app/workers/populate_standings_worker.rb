@@ -4,7 +4,7 @@ class PopulateStandingsWorker
 
   def perform
     # Get random characters with data
-    character_limit = 10
+    character_limit = 5
     characters = Character.where(verified: true).limit(character_limit)
     if characters.size == character_limit
       seed = 1

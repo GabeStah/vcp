@@ -14,16 +14,18 @@ class StandingStatistic < Statistic
       standing_events = self.standing.standing_events
 
       update_attributes(
-        gains_delinquency: self.standing.gains(:delinquency),
-        gains_infraction: self.standing.gains(:infraction),
-        gains_sitting: self.standing.gains(:sitting),
-        gains_total: self.standing.gains(:total),
+        gains_delinquency:  self.standing.gains(:delinquency),
+        gains_infraction:   self.standing.gains(:infraction),
+        gains_initial:      self.standing.gains(:initial),
+        gains_sitting:      self.standing.gains(:sitting),
+        gains_total:        self.standing.gains(:total),
 
-        losses_attendance: self.standing.losses(:attendance),
-        losses_absence: self.standing.losses(:absence),
+        losses_attendance:  self.standing.losses(:attendance),
+        losses_absence:     self.standing.losses(:absence),
         losses_delinquency: self.standing.losses(:delinquency),
-        losses_infraction: self.standing.losses(:infraction),
-        losses_total: self.standing.losses(:total),
+        losses_infraction:  self.standing.losses(:infraction),
+        losses_initial:     self.standing.losses(:initial),
+        losses_total:       self.standing.losses(:total),
 
         raids_absent_three_month: standing_events.between(type: :absent, after: 3.months.ago).size,
         raids_absent_year: standing_events.between(type: :absent, after: 1.year.ago).size,
