@@ -48,7 +48,7 @@ class StandingEvent < Event
       when :absent
         where(type: :delinquent).where("#{table_name}.change = ?", Settings.standing.delinquent_loss).joins(:raid).where('raids.started_at <= ?', before).where('raids.started_at >= ?', after)
       when :attended
-        where(type: :attendance).where("#{table_name}.change < ?", 0).joins(:raid).where('raids.started_at <= ?', before).where('raids.started_at >= ?', after)
+        where(type: :attendance).where("#{table_name}.change <= ?", 0).joins(:raid).where('raids.started_at <= ?', before).where('raids.started_at >= ?', after)
       when :delinquent
         where(type: :delinquent).where("#{table_name}.change < ?", 0).where("#{table_name}.change != ?", Settings.standing.delinquent_loss).joins(:raid).where('raids.started_at <= ?', before).where('raids.started_at >= ?', after)
       when :sat

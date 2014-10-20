@@ -139,7 +139,6 @@ class Raid < ActiveRecord::Base
     super(z)
   end
 
-
   private
 
   def dates_are_consecutive
