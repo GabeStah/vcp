@@ -70,10 +70,6 @@ class Character < ActiveRecord::Base
     "#{self.name} of #{self.realm}-#{self.region.upcase}"
   end
 
-  def has_standing?
-    self.standing.present?
-  end
-
   def joined_guild_at
     created_at
   end
