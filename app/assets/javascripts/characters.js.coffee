@@ -21,8 +21,8 @@ jQuery ->
     processing: true
     serverSide: true
 
-  $('#characters-unclaimed-table').dataTable
-    ajax: $('#characters-unclaimed-table').data('source')
+  $('#characters-table').dataTable
+    ajax: $('#characters-table').data('source')
     lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
     pagingType: 'full_numbers'
     processing: true

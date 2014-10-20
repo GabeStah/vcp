@@ -42,40 +42,22 @@ class CharacterDatatable < AjaxDatatablesRails::Base
   private
 
   def data
-    if current_user
-      case type.to_sym
-        when :claimed
-          records.map do |character|
-            [
-              link_to(character.name, character),
-              character.character_class ?
-                "<span class=#{character.character_class.short_name}>#{character.character_class.name}</span>" : nil,
-              character.guild.present? ?
-                link_to(character.guild.name, character.guild) : nil,
-              "#{character.realm}-#{character.region.upcase}",
-              character.raids.distinct.size > 0 ?
-                character.raids.distinct.size : nil,
-              character.achievement_points,
-              l(character.created_at.in_time_zone, format: :short),
-              can?(:update, character) ?
-                "#{link_to('Sync', sync_character_path(character), method: :post)}" : nil,
-            ]
-          end
-        when :unclaimed
-          records.map do |character|
-            [
-              link_to(character.name, character),
-              character.character_class ?
-                "<span class=#{character.character_class.short_name}>#{character.character_class.name}</span>" : nil,
-              character.guild.present? ?
-                link_to(character.guild.name, character.guild) : nil,
-              "#{character.realm}-#{character.region.upcase}",
-              character.raids.distinct.size > 0 ?
-                character.raids.distinct.size : nil,
-              character.achievement_points,
-              l(character.created_at.in_time_zone, format: :short),
-            ]
-          end
+    if current_user && type.to_sym == :claimed
+      records.map do |character|
+        [
+          link_to(character.name, character),
+          character.character_class ?
+            "<span class=#{character.character_class.short_name}>#{character.character_class.name}</span>" : nil,
+          character.guild.present? ?
+            link_to(character.guild.name, character.guild) : nil,
+          "#{character.realm}-#{character.region.upcase}",
+          character.raids.distinct.size > 0 ?
+            character.raids.distinct.size : nil,
+          character.achievement_points,
+          l(character.created_at.in_time_zone, format: :short),
+          can?(:update, character) ?
+            "#{link_to('Sync', sync_character_path(character), method: :post)}" : nil,
+        ]
       end
     else
       records.map do |character|

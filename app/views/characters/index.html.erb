@@ -1,9 +1,7 @@
 <% provide(:title, 'Characters') %>
 <h1 class="center">Characters</h1>
 
-<%= link_to "New Character", new_character_path, class: "btn btn-large btn-primary" %>
-
-<table class="characters table table-striped table-bordered table-white" id="characters-table" data-source="<%= characters_path(format: :json, type: current_user ? :unclaimed : :all) %>">
+<table class="characters table table-striped table-bordered table-white" id="characters-table" data-source="<%= characters_path(format: :json, type: :all) %>">
   <thead>
   <th>Name</th>
   <th>Class</th>
