@@ -15,3 +15,7 @@
   <tbody>
   </tbody>
 </table>
+
+<% if Rails.env.development? %>
+  <%= "Total Points: #{Standing.where(active: true).sum(:points)}" %>
+<% end %>
