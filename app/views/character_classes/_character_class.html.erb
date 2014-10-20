@@ -1,8 +1,0 @@
-<li>
-  <%= best_in_place character_class, :name, :type => :input, :path => class_path(character_class) %>
-  <%= best_in_place character_class, :blizzard_id, :type => :input, :path => class_path(character_class) %>
-  <% if can? :destroy, character_class %>
-    | <%= link_to "delete", class_path(character_class), method: :delete,
-                  data: { confirm: "You sure?" } %>
-  <% end %>
-</li>

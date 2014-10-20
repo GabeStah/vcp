@@ -3,3 +3,10 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 jQuery ->
   $('.best_in_place').best_in_place()
+  $('#character-class-table').dataTable
+    ajax: $('#character-class-table').data('source')
+    lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
+    order: [[0, 'asc']]
+    pagingType: 'full_numbers'
+    processing: true
+    serverSide: true

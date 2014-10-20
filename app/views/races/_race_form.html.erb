@@ -1,9 +1,15 @@
 <%= form_for(@race) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
-  <div class="field">
-    <%= f.text_field :name, placeholder: "Add a new Race..." %>
-    <%= f.text_field :blizzard_id, placeholder: "Blizzard ID" %>
-    <%= f.select :side, WOW_FACTION_HASH, placeholder: "Faction" %>
+  <div class="form-group">
+    <%= f.text_field :name, placeholder: "Name", class: 'form-control' %>
   </div>
-  <%= f.submit "Add", class: "btn btn-large btn-primary" %>
+  <div class="form-group">
+    <%= f.text_field :blizzard_id, placeholder: "Blizzard ID", class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.select :side, WOW_FACTION_HASH, {}, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-large btn-primary">Add Race</button>
+  </div>
 <% end %>

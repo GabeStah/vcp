@@ -1,9 +1,0 @@
-<li>
-  <%= best_in_place race, :name, :type => :input %>
-  <%= best_in_place race, :blizzard_id, :type => :input %>
-  <%= best_in_place race, :side, :type => :select, :collection => WOW_FACTION_HASH %>
-  <% if can? :destroy, race %>
-    | <%= link_to "delete", race, method: :delete,
-                  data: { confirm: "You sure?" } %>
-  <% end %>
-</li>

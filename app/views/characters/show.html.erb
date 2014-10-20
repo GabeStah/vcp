@@ -1,34 +1,32 @@
 <% provide(:title, @character.name) %>
 <div class="row">
-  <aside class="span4">
-    <section>
-      <h1>
-        <%= image_tag @character.avatar.url %>
-        <%= link_to @character.name, edit_character_path(@character), id: 'character-name' %>
-      </h1>
-      <p>Achievement Points: <%= @character.achievement_points %></p>
-      <p>Verified: <%= @character.verified? ? 'Yes' : 'No' %></p>
-      <p>
-        Last Synced: <%= @character.synced_at ? "#{distance_of_time_in_words_to_now(@character.synced_at, include_sections: true).camelize} ago" : 'Never' %>
-        <%= link_to 'Sync', sync_character_path(@character), method: :post if @owned_character %>
-      </p>
-      <p>
-        Claimed: <%= @owned_character ? 'Yes' : 'No' %>
-      </p>
-      <% if @character.standing %>
-        <p>VCP: <%= @character.standing.points || 0 %></p>
+  <div class="col-md-12">
+    <h1>
+      <%= image_tag @character.avatar.url %>
+      <%= link_to @character.name, edit_character_path(@character), id: 'character-name' %>
+    </h1>
+    <p>Achievement Points: <%= @character.achievement_points %></p>
+    <p>Verified: <%= @character.verified? ? 'Yes' : 'No' %></p>
+    <p>
+      Last Synced: <%= @character.synced_at ? "#{distance_of_time_in_words_to_now(@character.synced_at, include_sections: true).camelize} ago" : 'Never' %>
+      <%= link_to 'Sync', sync_character_path(@character), method: :post if @owned_character %>
+    </p>
+    <p>
+      Claimed: <%= @owned_character ? 'Yes' : 'No' %>
+    </p>
+    <% if @character.standing %>
+      <p>VCP: <%= @character.standing.points || 0 %></p>
+    <% end %>
+    <% if @character.standing && !@character.standing.active %>
+      <% if can? :update, @character %>
+        <%= button_to 'Resume VCP Standing', resume_standing_path(@character.standing), :method => :post %>
       <% end %>
-      <% if @character.standing && !@character.standing.active %>
-        <% if can? :update, @character %>
-          <%= button_to 'Resume VCP Standing', resume_standing_path(@character.standing), :method => :post %>
-        <% end %>
-      <% elsif !@character.standing %>
-        <% if can? :update, @character %>
-          <%= button_to 'Add to VCP', standings_path(standing: {character: @character}), :method => :post %>
-        <% end %>
+    <% elsif !@character.standing %>
+      <% if can? :update, @character %>
+        <%= button_to 'Add to VCP', standings_path(standing: {character: @character}), :method => :post %>
       <% end %>
-    </section>
-  </aside>
+    <% end %>
+  </div>
   <% if @character.standing && @character.standing.standing_statistic %>
     <div class="col-md-4">
       <%= render 'modules/vcp_module' %>
@@ -37,19 +35,21 @@
       <%= render 'modules/raids_module' %>
     </div>
   <% end %>
-</div>
 
-<% if @character.standing %>
-  <table class="character-history table table-striped table-bordered table-white" id="character-history-table" data-source="<%= character_history_path(format: :json) %>">
-    <thead>
-    <th>Raid</th>
-    <th>Date</th>
-    <th>Status</th>
-    <th>Change</th>
-    <th>Total Points</th>
-    <th>Details</th>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
-<% end %>
+  <div class="col-md-12">
+    <% if @character.standing %>
+      <table class="character-history table table-striped table-bordered table-white" id="character-history-table" data-source="<%= character_history_path(format: :json) %>">
+        <thead>
+        <th>Raid</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Change</th>
+        <th>Total Points</th>
+        <th>Details</th>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+</div>

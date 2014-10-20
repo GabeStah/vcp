@@ -20,8 +20,14 @@ class CharacterClassesController < ApplicationController
   end
 
   def index
-    @character_classes = CharacterClass.all.order(:name)
-    @character_class = CharacterClass.new
+    respond_to do |format|
+      format.html do
+        @character_class = CharacterClass.new
+      end
+      format.json do
+        render json: CharacterClassDatatable.new(view_context)
+      end
+    end
   end
 
   def update

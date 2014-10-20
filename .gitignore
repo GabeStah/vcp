@@ -22,3 +22,5 @@ doc/
 .secret
 
 # Ignore application configuration
+
+public/system

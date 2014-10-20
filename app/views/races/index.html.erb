@@ -1,8 +1,23 @@
-<% provide(:title, 'All races') %>
-<h1>All races</h1>
+<% provide(:title, 'Races') %>
+<div class="row">
+  <h1 class="center">Races</h1>
 
-<ul class="races">
-  <%= render @races %>
-</ul>
+  <div class="col-md-3">
+    <h1>
+      <small>Add Race</small>
+    </h1>
+    <%= render 'race_form' %>
+  </div>
 
-<%= render 'race_form' %>
+  <div class="col-md-9">
+    <table class="race table table-striped table-bordered table-white" id="race-table" data-source="<%= races_path(format: :json) %>">
+      <thead>
+      <th>Name</th>
+      <th>Blizzard ID</th>
+      <th>Faction</th>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>

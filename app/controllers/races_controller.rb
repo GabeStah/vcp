@@ -20,8 +20,14 @@ class RacesController < ApplicationController
   end
 
   def index
-    @races = Race.all.order(:name)
-    @race = Race.new
+    respond_to do |format|
+      format.html do
+        @race = Race.new
+      end
+      format.json do
+        render json: RaceDatatable.new(view_context)
+      end
+    end
   end
 
   def update

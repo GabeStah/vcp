@@ -1,6 +1,7 @@
 class Race < ActiveRecord::Base
   has_many :characters
   validates :blizzard_id,
+            numericality: { only_integer: true },
             presence: true,
             uniqueness: { scope: :name,
                           message: "plus Name combination already exists" }

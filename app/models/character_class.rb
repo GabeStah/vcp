@@ -1,6 +1,7 @@
 class CharacterClass < ActiveRecord::Base
   has_many :characters
   validates :blizzard_id,
+            numericality: { only_integer: true },
             presence: true,
             uniqueness: true
   validates :name,

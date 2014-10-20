@@ -1,20 +1,27 @@
 <% provide(:title, 'Add Character') %>
-<h1>Add Character</h1>
-
 <div class="row">
-  <div class="span6 offset3">
-    <%= form_for(@character) do |f| %>
+  <div class="col-md-12">
+    <h1>Add Character</h1>
+  </div>
+  <div class="col-md-4">
+    <%= form_for(@character, role: 'form') do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
-      <%= f.label :name %>
-      <%= f.text_field :name, placeholder: "Kulldar" %>
 
-      <%= f.label :realm %>
-      <%= f.text_field :realm, placeholder: "Hyjal" %>
+      <div class="form-group">
+        <%= f.label :name %>
+        <%= f.text_field :name, class: 'form-control' %>
+      </div>
 
-      <%= f.label :region %>
-      <%= f.select :region, WOW_REGION_HASH %>
+      <div class="form-group">
+        <%= f.label :realm %>
+        <%= f.text_field :realm, class: 'form-control' %>
+      </div>
 
-      <%= f.submit "Add Character", class: "btn btn-large btn-primary" %>
+      <div class="form-group">
+        <%= f.label :region %>
+        <%= f.select :region, WOW_REGION_HASH, {}, class: 'form-control' %>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Character</button>
     <% end %>
   </div>
 </div>
