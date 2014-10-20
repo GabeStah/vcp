@@ -1,8 +1,4 @@
 <h1>
-  <%= link_to image_tag(character.avatar_url), character %>
+  <%= link_to_if character.avatar, image_tag(character.avatar), character %>
   <%= link_to character.name, character %>
 </h1>
-<h2>
-  <%= link_to "Delete",  character_path(character, source: 'user-profile'),         method: :delete, data: { confirm: "You sure?" } %>
-  <%= link_to "Unclaim", unclaim_character_path(character, source: 'user-profile'), method: :post,   data: { confirm: "You sure?" } %>
-</h2>

@@ -12,15 +12,19 @@ class User < ActiveRecord::Base
   validates :battle_tag,
             presence: true,
             length: { maximum: 50 }
+  validates :name,
+            presence: true,
+            length: { minimum: 2, maximum: 100}
 
   def self.from_omniauth(auth)
     logger.info 'BATTLE_NET_AUTH: User#from_omniauth'
     # Initialize only
     new_user = where(provider: auth.provider, uid: auth.uid).first_or_initialize do |user|
+      user.battle_tag = auth['info']['battletag']
+      user.name = auth['info']['battletag'].split('#').first
+      user.password = Devise.friendly_token[0,20]
       user.provider = auth.provider
       user.uid = auth.uid
-      user.password = Devise.friendly_token[0,20]
-      user.battle_tag = auth['info']['battletag']
     end
     # If new, check for role assignment from settings
     if new_user.new_record?

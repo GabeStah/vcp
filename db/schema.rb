@@ -227,6 +227,7 @@ ActiveRecord::Schema.define(version: 20141018164804) do
 
   create_table "users", force: true do |t|
     t.string   "battle_tag"
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "secret_key"
