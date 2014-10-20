@@ -17,6 +17,8 @@ class StandingStatistic < Statistic
         gains_delinquency:  self.standing.gains(:delinquency),
         gains_infraction:   self.standing.gains(:infraction),
         gains_initial:      self.standing.gains(:initial),
+        gains_resume:       self.standing.gains(:resume),
+        gains_retire:       self.standing.gains(:retire),
         gains_sitting:      self.standing.gains(:sitting),
         gains_total:        self.standing.gains(:total),
 
@@ -25,6 +27,8 @@ class StandingStatistic < Statistic
         losses_delinquency: self.standing.losses(:delinquency),
         losses_infraction:  self.standing.losses(:infraction),
         losses_initial:     self.standing.losses(:initial),
+        losses_resume:      self.standing.losses(:resume),
+        losses_retire:      self.standing.losses(:retire),
         losses_total:       self.standing.losses(:total),
 
         raids_absent_three_month: standing_events.between(type: :absent, after: 3.months.ago).size,

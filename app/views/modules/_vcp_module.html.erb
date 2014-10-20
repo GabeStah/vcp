@@ -24,8 +24,8 @@
         <span class="clear"><!-- --></span>
       </li>
       <li class="list-group-item">
-        <span class="name">Initial</span>
-        <span class="value"><%= @standing_statistics.gains_initial %></span>
+        <span class="name">Initial/Resume/Retire</span>
+        <span class="value"><%= @standing_statistics.gains_initial + @standing_statistics.gains_resume + @standing_statistics.gains_retire %></span>
         <span class="clear"><!-- --></span>
       </li>
     </ul>
@@ -56,8 +56,8 @@
         <span class="clear"><!-- --></span>
       </li>
       <li class="list-group-item">
-        <span class="name">Infraction</span>
-        <span class="value"><%= @standing_statistics.losses_initial %></span>
+        <span class="name">Initial/Resume/Retire</span>
+        <span class="value"><%= @standing_statistics.losses_initial + @standing_statistics.losses_resume + @standing_statistics.losses_retire %></span>
         <span class="clear"><!-- --></span>
       </li>
     </ul>

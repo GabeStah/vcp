@@ -18,7 +18,7 @@ class StandingEvent < Event
   validates :standing,
             presence: true
   validates :type,
-            inclusion: %w(adjustment attendance delinquent infraction initial resume retirement)
+            inclusion: %w(adjustment attendance delinquent infraction initial resume retire)
 
   def self.absent
     where(type: :delinquent).where("#{table_name}.change = ?", Settings.standing.delinquent_loss)
@@ -244,7 +244,7 @@ class StandingEvent < Event
           end
         end
       end
-    elsif self.type.to_sym == :retirement
+    elsif self.type.to_sym == :retire
       if self.change == 0 && self.standing.points != 0
         # Distribute points among remaining Standing
         standings = Standing.where(active: true)

@@ -3,6 +3,8 @@ class AddGainsLossesToStatistics < ActiveRecord::Migration
     add_column :statistics, :gains_delinquency, :decimal, precision: 10, scale: 6, default: 0
     add_column :statistics, :gains_infraction, :decimal, precision: 10, scale: 6, default: 0
     add_column :statistics, :gains_initial, :decimal, precision: 10, scale: 6, default: 0
+    add_column :statistics, :gains_resume, :decimal, precision: 10, scale: 6, default: 0
+    add_column :statistics, :gains_retire, :decimal, precision: 10, scale: 6, default: 0
     add_column :statistics, :gains_sitting, :decimal, precision: 10, scale: 6, default: 0
     add_column :statistics, :gains_total, :decimal, precision: 10, scale: 6, default: 0
 
@@ -11,6 +13,8 @@ class AddGainsLossesToStatistics < ActiveRecord::Migration
     add_column :statistics, :losses_delinquency, :decimal, precision: 10, scale: 6, default: 0
     add_column :statistics, :losses_infraction, :decimal, precision: 10, scale: 6, default: 0
     add_column :statistics, :losses_initial, :decimal, precision: 10, scale: 6, default: 0
+    add_column :statistics, :losses_resume, :decimal, precision: 10, scale: 6, default: 0
+    add_column :statistics, :losses_retire, :decimal, precision: 10, scale: 6, default: 0
     add_column :statistics, :losses_total, :decimal, precision: 10, scale: 6, default: 0
   end
 end

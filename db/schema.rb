@@ -187,6 +187,8 @@ ActiveRecord::Schema.define(version: 20141018164804) do
     t.decimal  "gains_delinquency",            precision: 10, scale: 6, default: 0.0
     t.decimal  "gains_infraction",             precision: 10, scale: 6, default: 0.0
     t.decimal  "gains_initial",                precision: 10, scale: 6, default: 0.0
+    t.decimal  "gains_resume",                 precision: 10, scale: 6, default: 0.0
+    t.decimal  "gains_retire",                 precision: 10, scale: 6, default: 0.0
     t.decimal  "gains_sitting",                precision: 10, scale: 6, default: 0.0
     t.decimal  "gains_total",                  precision: 10, scale: 6, default: 0.0
     t.decimal  "losses_attendance",            precision: 10, scale: 6, default: 0.0
@@ -194,6 +196,8 @@ ActiveRecord::Schema.define(version: 20141018164804) do
     t.decimal  "losses_delinquency",           precision: 10, scale: 6, default: 0.0
     t.decimal  "losses_infraction",            precision: 10, scale: 6, default: 0.0
     t.decimal  "losses_initial",               precision: 10, scale: 6, default: 0.0
+    t.decimal  "losses_resume",                precision: 10, scale: 6, default: 0.0
+    t.decimal  "losses_retire",                precision: 10, scale: 6, default: 0.0
     t.decimal  "losses_total",                 precision: 10, scale: 6, default: 0.0
     t.integer  "raids_absent_three_month"
     t.integer  "raids_absent_year"

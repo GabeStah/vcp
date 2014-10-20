@@ -52,6 +52,10 @@ class Standing < ActiveRecord::Base
         standing_events.gains.where(type: :infraction).sum(:change)
       when :initial
         standing_events.gains.where(type: :initial).sum(:change)
+      when :resume
+        standing_events.gains.where(type: :resume).sum(:change)
+      when :retire
+        standing_events.gains.where(type: :retire).sum(:change)
       when :sitting
         standing_events.where(type: :attendance).where("#{StandingEvent.table_name}.change = ?", Settings.standing.attendance_gain).sum(:change)
       else # :total
@@ -71,6 +75,10 @@ class Standing < ActiveRecord::Base
         standing_events.losses.where(type: :infraction).sum(:change)
       when :initial
         standing_events.losses.where(type: :initial).sum(:change)
+      when :resume
+        standing_events.losses.where(type: :resume).sum(:change)
+      when :retire
+        standing_events.losses.where(type: :retire).sum(:change)
       else # :total
         standing_events.losses.sum(:change)
     end
@@ -96,10 +104,10 @@ class Standing < ActiveRecord::Base
     unless !self.active
       # 1. Set active = false
       update(active: false)
-      # 2. StandingEvent for retirement
+      # 2. StandingEvent for retire
       StandingEvent.create(change: 0,
                            standing: self,
-                           type: :retirement)
+                           type: :retire)
       return true
     end
     false
