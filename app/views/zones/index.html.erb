@@ -1,23 +1,28 @@
-<% provide(:title, 'All zones') %>
-<h1>All zones</h1>
+<% provide(:title, 'Zones') %>
 
-<%= link_to "New Zone", new_zone_path, class: "btn btn-large btn-primary" %>
+<div class="row">
+  <h1 class="center">Zones</h1>
 
-<% if records?(@zones) %>
-  <table class="zones table table-striped table-bordered table-white">
-    <thead>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Level</th>
-      <th>Blizzard ID</th>
-      <% if can? :update, Zone %>
-        <th>Edit</th>
-      <% end %>
-    </thead>
-    <tbody>
-      <%= render @zones %>
-    </tbody>
-  </table>
-<% else %>
-  <%= render_no_records %>
-<% end %>
+  <div class="col-md-3">
+    <h1>
+      <small>Add Zone</small>
+    </h1>
+    <%= render 'zone_form' %>
+  </div>
+
+  <div class="col-md-9">
+    <table class="zone table table-striped table-bordered table-white" id="zone-table" data-source="<%= zones_path(format: :json) %>">
+      <thead>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Level</th>
+        <th>Blizzard ID</th>
+        <% if can? :manage, Zone %>
+          <th>Edit</th>
+        <% end %>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>

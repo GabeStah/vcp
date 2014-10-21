@@ -32,11 +32,11 @@ WOW_FACTION_HASH = [["horde", "Horde"], ["alliance", "Alliance"], ["neutral", "N
 WOW_REGION_HASH = [["US", "us"], ["EU", "eu"], ["KR", "kr"], ["TW", "tw"]]
 WOW_REGION_LIST = ["us", "eu", "kr", "tw", "US", "EU", "KR", "TW"]
 WOW_ZONE_TYPE_HASH = [
-  ['Arena', 'arena'],
-  ['Dungeon', 'dungeon'],
-  ['Raid', 'raid'],
-  ['Scenario', 'scenario'],
-  ['Outdoor', 'outdoor']
+  ['arena', 'Arena'],
+  ['dungeon', 'Dungeon'],
+  ['raid', 'Raid'],
+  ['scenario', 'Scenario'],
+  ['outdoor', 'Outdoor']
 ]
 WOW_ZONE_TYPE_LIST = [
   'arena',

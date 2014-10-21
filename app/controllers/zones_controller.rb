@@ -1,39 +1,36 @@
 class ZonesController < ApplicationController
   load_and_authorize_resource
-
-  before_action :set_zone, only: [:edit, :update, :destroy]
-
-  def index
-    @zones = Zone.all.order('level desc', :name)
-  end
-
-  def new
-    @zone = Zone.new
-  end
-
-  def edit
-  end
+  before_action :set_zone, only: [:destroy, :update]
 
   def create
     @zone = Zone.new(zone_params)
     if @zone.save
       redirect_to zones_path, notice: "#{@zone.name} was successfully created."
     else
-      render action: 'new'
-    end
-  end
-
-  def update
-    if @zone.update(zone_params)
-      redirect_to zones_path, notice: "#{@zone.name} was successfully updated."
-    else
-      render action: 'edit'
+      render :index
     end
   end
 
   def destroy
     @zone.destroy
-    redirect_to zones_url
+    flash[:success] = "Zone deleted."
+    redirect_to zones_path
+  end
+
+  def index
+    respond_to do |format|
+      format.html do
+        @zone = Zone.new
+      end
+      format.json do
+        render json: ZoneDatatable.new(view_context)
+      end
+    end
+  end
+
+  def update
+    @zone.update(zone_params)
+    respond_with_bip(@zone)
   end
 
   private

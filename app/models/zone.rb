@@ -3,8 +3,8 @@ class Zone < ActiveRecord::Base
   before_validation :ensure_zone_type_is_lowercase
 
   validates :blizzard_id,
-            allow_blank: true,
-            numericality: true
+            presence: true,
+            numericality: { only_integer: true }
   validates :name,
             presence: true,
             uniqueness: true
@@ -13,8 +13,6 @@ class Zone < ActiveRecord::Base
             inclusion: WOW_ZONE_TYPE_LIST
 
   def ensure_zone_type_is_lowercase
-    unless self.zone_type.nil?
-      self.zone_type = self.zone_type.downcase
-    end
+    self.zone_type = self.zone_type.downcase if self.zone_type
   end
 end

@@ -1,21 +1,24 @@
 <% provide(:title, 'Standings') %>
-<h1>Standings</h1>
+<div class="row">
+  <div class="col-md-12">
+    <table class="standings table table-striped table-bordered table-white" id="standing-table" data-source="<%= standings_path(format: :json, type: :standings) %>">
+      <thead>
+      <th>Name</th>
+      <th>Class</th>
+      <th>Guild</th>
+      <th>Realm</th>
+      <th>Points</th>
+      <% if can? :update, Standing %>
+        <th>Edit</th>
+      <% end %>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
 
-<table class="standings table table-striped table-bordered table-white" id="standing-table" data-source="<%= standings_path(format: :json, type: :standings) %>">
-  <thead>
-    <th>Name</th>
-    <th>Class</th>
-    <th>Guild</th>
-    <th>Realm</th>
-    <th>Points</th>
-    <% if can? :update, Standing %>
-      <th>Edit</th>
+    <% if Rails.env.development? %>
+      <%= "Total Points: #{Standing.where(active: true).sum(:points)}" %>
     <% end %>
-  </thead>
-  <tbody>
-  </tbody>
-</table>
-
-<% if Rails.env.development? %>
-  <%= "Total Points: #{Standing.where(active: true).sum(:points)}" %>
-<% end %>
+  </div>
+</div>
+<h1>Standings</h1>

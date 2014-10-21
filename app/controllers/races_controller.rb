@@ -8,7 +8,6 @@ class RacesController < ApplicationController
       flash[:success] = "Race added!"
       redirect_to races_path
     else
-      @races = Race.all.order(:name)
       render :index
     end
   end

@@ -1,10 +1,14 @@
-<div class="center hero-unit">
-  <h1>VCP</h1>
-  <h2>
-    Welcome to the  <a href="#">VCP</a> application!
-  </h2>
+<div class="row">
+  <div class="col-md-12">
+    <div class="jumbotron">
+      <h1>VCP</h1>
+      <h2>
+        Welcome to the <a href="#">VCP</a> application!
+      </h2>
 
-  <% if !current_user %>
-    <%= link_to "Sign in with Battle.net!", user_omniauth_authorize_path(:bnet), class: "btn btn-large btn-primary" %>
-  <% end %>
+      <% if !current_user %>
+        <%= link_to "Sign in with Battle.net!", user_omniauth_authorize_path(:bnet), class: "btn btn-large btn-primary" %>
+      <% end %>
+    </div>
+  </div>
 </div>

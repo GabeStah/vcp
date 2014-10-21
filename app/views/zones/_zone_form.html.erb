@@ -1,0 +1,19 @@
+<%= form_for(@zone) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <div class="form-group">
+    <%= f.text_field :name, placeholder: 'Name', class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.select :zone_type, WOW_ZONE_TYPE_HASH, {}, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.text_field :level, placeholder: 'Level', class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.text_field :blizzard_id, placeholder: 'Blizzard ID', class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-large btn-primary">Add Zone</button>
+  </div>
+<% end %>
