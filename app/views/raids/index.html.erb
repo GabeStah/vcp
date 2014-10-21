@@ -3,10 +3,6 @@
 <div class="row">
   <h1>Raids</h1>
 
-  <% if can?(:manage, Raid) %>
-    <%= link_to "New Raid", new_raid_path, class: "btn btn-large btn-primary" %>
-  <% end %>
-
   <div class="col-md-12">
     <table class="raids table table-striped table-bordered table-white" id="raids-table" data-source="<%= raids_path(format: :json) %>">
       <thead>

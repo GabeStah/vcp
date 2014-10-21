@@ -86,3 +86,17 @@ jQuery ->
     pagingType: 'full_numbers'
     processing: true
     serverSide: true
+
+  $('#raid-participation-table').dataTable
+    ajax: $('#raid-participation-table').data('source')
+    columnDefs: [
+      {
+        sorting: false
+        targets: [5]
+      },
+    ]
+    lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
+    order: [[0, 'asc']]
+    pagingType: 'full_numbers'
+    processing: true
+    serverSide: true

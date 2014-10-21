@@ -33,7 +33,12 @@ class RaidsController < ApplicationController
     @default_end = TimeManagement.raid_end(format: DATETIME_FORMAT_PICKER)
   end
   def show
-    @participations = @raid.participations.includes(:character)
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: RaidParticipationDatatable.new(view_context, raid: @raid)
+      end
+    end
   end
   def update
     if @raid.update(raid_params)

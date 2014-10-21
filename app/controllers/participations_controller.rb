@@ -3,7 +3,7 @@ class ParticipationsController < ApplicationController
   before_action :set_participation
 
   def destroy
-    flash[:success] = "Participation for #{@participation.character.name} deleted."
+    flash[:success] = "Participation for #{@participation.character.full_title} deleted."
     @participation.destroy
     redirect_to @participation.raid
   end
@@ -12,7 +12,7 @@ class ParticipationsController < ApplicationController
     respond_to do |format|
       if @participation.update(participation_params)
         format.html {
-          flash[:success] = "Participation for #{@participation.character.name} updated."
+          flash[:success] = "Participation for #{@participation.character.full_title} updated."
           render @participation.raid
         }
         format.json { respond_with_bip(@participation) }

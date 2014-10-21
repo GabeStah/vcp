@@ -5,22 +5,19 @@
       <%= "#{@raid.full_title}" %>
     </h1>
 
-    <table>
+    <table class="raid-participation table table-striped table-bordered table-white" id="raid-participation-table" data-source="<%= raid_path(@raid, format: :json) %>">
       <thead>
         <th>Character</th>
         <th>Realm</th>
-        <th>Timestamp</th>
         <th>Online</th>
         <th>In Raid</th>
+        <th>Timestamp</th>
         <th>Event</th>
-        <% if can? :manage, @raid %>
-          <th>Edit</th>
+        <% if can? :manage, Participation %>
+          <th>Online</th>
         <% end %>
       </thead>
       <tbody>
-        <% @raid.participations.each do |participation| %>
-          <%= render partial: 'raid_participation', object: participation, as: 'participation' %>
-        <% end %>
       </tbody>
     </table>
   </div>
