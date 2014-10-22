@@ -38,16 +38,33 @@ class RaidParticipationDatatable < AjaxDatatablesRails::Base
   private
 
   def data
-    records.map do |participation|
-      [
-        link_to(participation.character.name, participation.character),
-        "#{participation.character.realm}-#{participation.character.region.upcase}",
-        best_in_place_if(can?(:manage, participation), participation, :online, type: :checkbox, path: participation_path(participation)),
-        best_in_place_if(can?(:manage, participation), participation, :in_raid, type: :checkbox, path: participation_path(participation)),
-        best_in_place_if(can?(:manage, participation), participation, :timestamp, type: :input, path: participation_path(participation), display_with: lambda { |p| l(p) }),
-        participation.event(participation.previous(@raid.participations)),
-        link_to_if(can?(:destroy, participation), 'Delete', participation, method: :delete, data: { confirm: "You sure?" })
-      ]
+    if can? :manage, Participation
+      records.map do |participation|
+        search_icon = "<span class='glyphicon glyphicon-search raid-participation-event-tooltip' data-tip='#{participation.event(participation.previous(@raid.participations))}'></span>"
+        [
+          link_to(participation.character.name, participation.character),
+          "#{participation.character.realm}-#{participation.character.region.upcase}",
+          best_in_place_if(can?(:manage, participation), participation, :online, type: :checkbox, path: participation_path(participation)),
+          best_in_place_if(can?(:manage, participation), participation, :in_raid, type: :checkbox, path: participation_path(participation)),
+          best_in_place_if(can?(:manage, participation), participation, :timestamp, type: :input, path: participation_path(participation), display_with: lambda { |p| l(p) }),
+          search_icon,
+          link_to_if(can?(:destroy, participation), 'Delete', participation, method: :delete, data: { confirm: "You sure?" })
+        ]
+      end
+    else
+      records.map do |participation|
+
+        search_icon = "<span class='glyphicon glyphicon-search raid-participation-event-tooltip' data-tip='#{participation.event(participation.previous(@raid.participations))}'></span>"
+        [
+          link_to(participation.character.name, participation.character),
+          "#{participation.character.realm}-#{participation.character.region.upcase}",
+          "<span class='glyphicon glyphicon-#{participation.online ? 'ok green' : 'remove red'}'></span>",
+          "<span class='glyphicon glyphicon-#{participation.in_raid ? 'ok green' : 'remove red'}'></span>",
+          best_in_place_if(can?(:manage, participation), participation, :timestamp, type: :input, path: participation_path(participation), display_with: lambda { |p| l(p) }),
+          search_icon,
+          link_to_if(can?(:destroy, participation), 'Delete', participation, method: :delete, data: { confirm: "You sure?" })
+        ]
+      end
     end
   end
 

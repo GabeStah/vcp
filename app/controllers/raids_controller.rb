@@ -8,16 +8,16 @@ class RaidsController < ApplicationController
     @raid = Raid.new(raid_params)
     if @raid.save
       @raid.add_participations_from_params(params)
-      flash[:success] = "Raid for #{@raid.zone.name} Added!"
+      flash[:success] = "#{@raid.full_title} added!"
       redirect_to raid_path(@raid)
     else
       render :new
     end
   end
   def destroy
-    flash[:success] = "Raid #{@raid.full_title} deleted."
+    flash[:success] = "#{@raid.full_title} deleted."
     @raid.destroy
-    redirect_to :back
+    redirect_to raids_path
   end
   def edit
   end
@@ -34,7 +34,10 @@ class RaidsController < ApplicationController
   end
   def show
     respond_to do |format|
-      format.html
+      format.html do
+        @start_time = TimeManagement.local(@raid.started_at.localtime).strftime(DATETIME_FORMAT_PICKER)
+        @end_time   = TimeManagement.local(@raid.ended_at.localtime).strftime(DATETIME_FORMAT_PICKER)
+      end
       format.json do
         render json: RaidParticipationDatatable.new(view_context, raid: @raid)
       end
@@ -54,7 +57,7 @@ class RaidsController < ApplicationController
   def raid_params
     params.require(:raid).permit(:ended_at,
                                  :started_at,
-                                 :zone)
+                                 :zone_id)
   end
 
   def set_raid

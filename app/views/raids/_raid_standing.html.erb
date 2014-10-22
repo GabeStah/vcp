@@ -1,18 +1,15 @@
-<%= 1.times do |count| %>
-  <tr id="<%= "participation[#{standing.character.slug}][#{count+1}]" %>"
-      data-id="1"
-      data-slug="<%= standing.character.slug %>">
-    <td><%= check_box_tag "selected[#{standing.character.slug}][#{count+1}]" %></td>
-    <td><%= link_to standing.character.name, standing.character %></td>
-    <td><%= "#{standing.character.realm}-#{standing.character.region.upcase}" %></td>
-    <td><%= standing.points || 0 %></td>
-    <td><%= check_box_tag "online[#{standing.character.slug}][#{count+1}]" %></td>
-    <td><%= check_box_tag "in_raid[#{standing.character.slug}][#{count+1}]" %></td>
-    <td><%= check_box_tag "unexcused[#{standing.character.slug}][#{count+1}]" %></td>
-    <td><%= text_field_tag "timestamp[#{standing.character.slug}][#{count+1}]", @default_start ? @default_start : l(@raid.started_at) %></td>
-    <td>
-      <a id="<%= "add_participation[#{standing.character.slug}][#{count+1}]" %>" href="javascript:;">Add</a>
-      <a id="<%= "delete_participation[#{standing.character.slug}][#{count+1}]" %>" href="javascript:;">Del</a>
-    </td>
-  </tr>
-<% end %>
+<tr id="<%= "participation[#{standing.character.slug}][1]" %>"
+    data-id="1"
+    data-slug="<%= standing.character.slug %>">
+  <td><%= link_to standing.character.name, standing.character %></td>
+  <td><%= "#{standing.character.realm}-#{standing.character.region.upcase}" %></td>
+  <td><%= standing.points || 0 %></td>
+  <td><%= check_box_tag "online[#{standing.character.slug}][1]" %></td>
+  <td><%= check_box_tag "in_raid[#{standing.character.slug}][1]" %></td>
+  <td><%= check_box_tag "unexcused[#{standing.character.slug}][1]" %></td>
+  <td><%= text_field_tag "timestamp[#{standing.character.slug}][1]", @default_start ? @default_start : l(@raid.started_at) %></td>
+  <td>
+    <a id="<%= "add_participation[#{standing.character.slug}][1]" %>" href="javascript:;">Add</a>
+    <a id="<%= "delete_participation[#{standing.character.slug}][1]" %>" href="javascript:;">Del</a>
+  </td>
+</tr>

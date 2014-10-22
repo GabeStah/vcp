@@ -44,35 +44,42 @@ jQuery ->
     columnDefs: [
       {
         sorting: false
-        targets: 0
+        targets: 3
+        title: "Online <span id='select-all-online' class='glyphicon glyphicon-ok' data-tip='Mark All Online'></span>"
       },
       {
         sorting: false
         targets: 4
-        title: "<input type='checkbox' id='select_all_online' /> Online"
-      },
-      {
-        sorting: false
-        targets: 5
-        title: "<input type='checkbox' id='select_all_in_raid' /> In Raid"
+        title: "In Raid <span id='select-all-in-raid' class='glyphicon glyphicon-ok' data-tip='Mark All In Raid'></span>"
       }
       {
         sorting: false
-        targets: 6
+        targets: 5
       },
     ]
     lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
-    order: [[3, "desc" ]]
+    order: [[2, "desc" ]]
     pagingType: 'full_numbers'
 
   # select_all checkbox in top column for Online
-  $("#select_all_online").click ->
-    #$('input[id^=online_').trigger('change')
-    $('input[id^=online_').prop("checked", this.checked)
+  $("#select-all-online").click ->
+    $('input[id^=online_').prop("checked", !this.checked)
 
   # select_all checkbox in top column for In Raid
-  $("#select_all_in_raid").click ->
-    $('input[id^=in_raid_').prop("checked", this.checked)
+  $("#select-all-in-raid").click ->
+    $('input[id^=in_raid_').prop("checked", !this.checked)
+
+  # Tooltips
+  $("#select-all-online").each ->
+    $(this).tipsy({html: true, title: 'data-tip'})
+  $("#select-all-in-raid").each ->
+    $(this).tipsy({html: true, title: 'data-tip'})
+
+  $('#new-raid-standings').on 'draw.dt', ->
+    $("#select-all-online").each ->
+      $(this).tipsy({html: true, title: 'data-tip'})
+    $("#select-all-in-raid").each ->
+      $(this).tipsy({html: true, title: 'data-tip'})
 
 #  # Add new row to participation table
 #  $("[id^=online_]").on('change', ->
@@ -91,6 +98,10 @@ jQuery ->
     ajax: $('#raid-participation-table').data('source')
     columnDefs: [
       {
+        className: 'center',
+        targets: [2,3,5]
+      },
+      {
         sorting: false
         targets: [5]
       },
@@ -100,3 +111,8 @@ jQuery ->
     pagingType: 'full_numbers'
     processing: true
     serverSide: true
+
+  # Points tooltips
+  $('#raid-participation-table').on 'draw.dt', ->
+    $(".raid-participation-event-tooltip").each ->
+      $(this).tipsy({html: true, title: 'data-tip'})

@@ -6,20 +6,19 @@
     <%= form_for(@raid) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       <%= f.label :zone %>
-      <%= f.select :zone, Zone.where(zone_type: 'raid').order(:name).collect { |z| [z.name, z.id] } %>
+      <%= f.select :zone_id, Zone.where(zone_type: 'raid').order(:name).collect { |z| [z.name, z.id] }, {}, class: 'form-control' %>
 
       <%= f.label :started_at %>
-      <%= f.datetime_local_field :started_at, value: @default_start %>
+      <%= f.datetime_local_field :started_at, value: @default_start, class: 'form-control' %>
 
       <%= f.label :ended_at %>
-      <%= f.datetime_local_field :ended_at, value: @default_end %>
+      <%= f.datetime_local_field :ended_at, value: @default_end, class: 'form-control' %>
 
       <%= f.submit "Add Raid", class: "btn btn-large btn-primary" %>
 
       <% if records?(@standings) %>
         <table class="new-raid-standings table table-striped table-bordered table-white" id="new-raid-standings">
           <thead>
-            <td><%= check_box_tag 'select_all', 'select_all' %></td>
             <th>Name</th>
             <th>Realm</th>
             <th>Points</th>
