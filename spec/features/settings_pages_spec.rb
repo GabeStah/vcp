@@ -8,7 +8,7 @@ describe "Settings pages", type: :feature do
     let(:admin) { FactoryGirl.create(:admin) }
     before do
       FactoryGirl.create(:setting)
-      sign_in admin
+      sign_in_test admin
       visit settings_path
     end
 

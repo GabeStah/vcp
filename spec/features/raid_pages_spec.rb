@@ -32,7 +32,7 @@ describe 'Raid pages', type: :feature do
   describe 'new page' do
     let(:admin) { FactoryGirl.create(:admin) }
     before(:each) do
-      sign_in admin
+      sign_in_test admin
       visit new_raid_path
     end
 

@@ -8,7 +8,7 @@ def full_title(page_title)
 end
 
 # Signs in a test user with options
-def sign_in(user, options={})
+def sign_in_test(user, options={})
   if options[:no_capybara]
     # Sign in when not using Capybara.
     remember_token = User.new_remember_token

@@ -66,15 +66,30 @@ FactoryGirl.define do
     type :delinquent
   end
 
+  factory :admin_role, class: Role do
+    name :admin
+  end
+
   factory :user do
     sequence(:name)  { |n| "Person #{n}" }
-    sequence(:email) { |n| "person_#{n}@example.com"}
+    sequence(:battle_tag)  { |n| "BattleTag##{n}" }
     password 'foobar'
     password_confirmation 'foobar'
 
+    # user_with_posts will create post data after the user has been created
     factory :admin do
-      admin true
+      # the after(:create) yields two values; the user instance itself and the
+      # evaluator, which stores all values from the factory, including transient
+      # attributes; `create_list`'s second argument is the number of records
+      # to create and we make sure the user is associated properly to the post
+      after(:create) do |user|
+        user.roles << create(:admin_role)
+      end
     end
+
+    # factory :admin do
+    #   admin true
+    # end
   end
 
   factory :zone do

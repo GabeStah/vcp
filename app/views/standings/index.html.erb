@@ -1,6 +1,7 @@
 <% provide(:title, 'Standings') %>
 <div class="row">
   <div class="col-md-12">
+    <h1 class="center">Standings</h1>
     <table class="standings table table-striped table-bordered table-white" id="standing-table" data-source="<%= standings_path(format: :json, type: :standings) %>">
       <thead>
       <th>Name</th>
@@ -21,4 +22,3 @@
     <% end %>
   </div>
 </div>
-<h1>Standings</h1>

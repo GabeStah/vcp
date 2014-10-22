@@ -1,13 +1,14 @@
 class Raid < ActiveRecord::Base
   belongs_to :zone
-  has_many :participations, dependent: :destroy
+  has_many :participations, dependent: :delete_all
   # Destroy participations associated with Raid
   has_many :characters, -> { uniq }, through: :participations, dependent: :delete_all
-  has_many :standing_events, dependent: :destroy
+  has_many :standing_events
 
   before_update :destroy_standing_events
   before_update :reset_processed
   after_update :process_standing_events
+  after_destroy :destroy_standing_events
 
   # ended_at
   validate :ended_at_is_valid_datetime
