@@ -1,10 +1,20 @@
 <% provide(:title, 'Users') %>
 <div class="row">
-  <div class="col-md-16">
+  <div class="col-md-12">
     <h1>Users</h1>
 
-    <ul class="users">
-      <%= render @users %>
-    </ul>
+    <table class="users table table-striped table-bordered table-white" id="users-table" data-source="<%= users_path(format: :json) %>">
+      <thead>
+        <th>Name</th>
+        <th>Popular Characters</th>
+        <th>All Characters</th>
+        <th>Joined</th>
+        <% if can? :manage, User %>
+          <th class="nosort">Edit</th>
+        <% end %>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
   </div>
 </div>

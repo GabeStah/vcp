@@ -21,7 +21,7 @@
         <th>Achievement Points</th>
         <th>Joined</th>
         <% if current_user && current_user == @user %>
-          <th>Edit</th>
+          <th class="nosort">Edit</th>
         <% end %>
         </thead>
         <tbody>
@@ -46,7 +46,7 @@
               <% if can?(:manage, role) && can?(:manage, @user) %>
                 <%= link_to(@user.roles.include?(role) ? raw('Yes <span class="glyphicon glyphicon-edit"></span>') : raw('No <span class="glyphicon glyphicon-edit"></span>'), user_toggle_role_path(@user, role), method: 'post')  %>
               <% else %>
-                @user.roles.include?(role) ? 'Yes' : 'No'
+                <%= @user.roles.include?(role) ? 'Yes' : 'No' %>
               <% end %>
             </td>
           </tr>

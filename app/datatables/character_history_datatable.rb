@@ -75,7 +75,6 @@ class CharacterHistoryDatatable < AjaxDatatablesRails::Base
         events_output,
         points,
         total_points,
-        link_to('more', '#'),
       ]
     end
   end

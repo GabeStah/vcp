@@ -37,6 +37,12 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all.order(:battle_tag)
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: UserDatatable.new(view_context)
+      end
+    end
   end
 
   def new

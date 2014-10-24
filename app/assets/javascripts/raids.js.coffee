@@ -43,18 +43,16 @@ jQuery ->
   $('#new-raid-standings').dataTable
     columnDefs: [
       {
-        sorting: false
         targets: 3
         title: "Online <span id='select-all-online' class='glyphicon glyphicon-ok' data-tip='Mark All Online'></span>"
       },
       {
-        sorting: false
         targets: 4
         title: "In Raid <span id='select-all-in-raid' class='glyphicon glyphicon-ok' data-tip='Mark All In Raid'></span>"
       }
       {
         sorting: false
-        targets: 5
+        targets: ['nosort']
       },
     ]
     lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
@@ -89,6 +87,12 @@ jQuery ->
   # Create Raids datatable
   $('#raids-table').dataTable
     ajax: $('#raids-table').data('source')
+    columnDefs: [
+      {
+        sorting: false
+        targets: ['nosort']
+      },
+    ]
     lengthMenu: [ [10, 25, 50, 9223372036854775807], [10, 25, 50, "All"] ]
     pagingType: 'full_numbers'
     processing: true
@@ -103,7 +107,7 @@ jQuery ->
       },
       {
         sorting: false
-        targets: [5]
+        targets: ['nosort']
       },
     ]
     lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]

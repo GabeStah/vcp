@@ -6,6 +6,12 @@
 jQuery ->
   $('#characters-claimed-table').dataTable
     ajax: $('#characters-claimed-table').data('source')
+    columnDefs: [
+      {
+        sorting: false
+        targets: ['nosort']
+      },
+    ]
     lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
     pagingType: 'full_numbers'
     processing: true
@@ -13,6 +19,12 @@ jQuery ->
 
   $('#characters-table').dataTable
     ajax: $('#characters-table').data('source')
+    columnDefs: [
+      {
+        sorting: false
+        targets: ['nosort']
+      },
+    ]
     lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
     pagingType: 'full_numbers'
     processing: true
@@ -24,7 +36,7 @@ jQuery ->
     columnDefs: [
       {
         sorting: false
-        targets: [4, 5]
+        targets: ['nosort']
       },
     ]
     lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
