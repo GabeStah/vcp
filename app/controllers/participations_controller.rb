@@ -10,7 +10,7 @@ class ParticipationsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @participation.update(participation_params)
+      if @participation.update_attributes(participation_params)
         format.html {
           flash[:success] = "Participation for #{@participation.character.full_title} updated."
           render @participation.raid

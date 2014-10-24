@@ -30,7 +30,7 @@ class RacesController < ApplicationController
   end
 
   def update
-    @race.update(race_params)
+    @race.update_attributes(race_params)
     respond_with_bip(@race)
   end
 

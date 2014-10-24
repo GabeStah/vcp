@@ -1,8 +1,12 @@
-<% provide(:title, 'All guilds') %>
-<h1>All guilds</h1>
+<% provide(:title, 'Guilds') %>
+<div class="row">
+  <div class="col-md-12">
+    <h1>Guilds</h1>
 
-<%= link_to "New Guild", new_guild_path, class: "btn btn-large btn-primary" %>
+    <%= link_to "New Guild", new_guild_path, class: "btn btn-large btn-primary" %>
 
-<ul class="guilds">
-  <%= render @guilds %>
-</ul>
+    <ul class="guilds">
+      <%= render @guilds %>
+    </ul>
+  </div>
+</div>

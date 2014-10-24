@@ -1,31 +1,42 @@
 <% provide(:title, "Edit guild") %>
-<h1>Update guild</h1>
-
 <div class="row">
-  <div class="span6 offset3">
-    <%= form_for(@guild) do |f| %>
-      <%= render 'shared/error_messages', object: f.object %>
+  <div class="col-md-12">
+    <h1>Update guild</h1>
 
-      <%= f.label :name %>
-      <%= f.text_field :name %>
+    <div class="col-md-4">
+      <%= form_for(@guild) do |f| %>
+        <%= render 'shared/error_messages', object: f.object %>
 
-      <%= f.label :realm %>
-      <%= f.text_field :realm %>
+        <div class="form-group">
+          <%= f.label :name %>
+          <%= f.text_field :name, class: 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :realm %>
+          <%= f.text_field :realm, class: 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :region %>
+          <%= f.select :region, WOW_REGION_HASH, {}, class: 'form-control' %>
+        </div>
+        <div class="checkbox">
+          <label>
+            <%= f.check_box :active %> Active
+          </label>
+        </div>
+        <div class="checkbox" title="Only one Guild may be Primary at a time." data-toggle="tooltip">
+          <label>
+            <%= f.check_box :primary %> Primary
+          </label>
+        </div>
+        <div class="checkbox" title="Update Guild info and Character data from Battle.net?" data-toggle="tooltip">
+          <label>
+            <%= check_box_tag 'battle_net_update', 1 %> Sync?
+          </label>
+        </div>
 
-      <%= f.label :region %>
-      <%= f.select :region, WOW_REGION_HASH %>
-
-      <%= f.label :active %>
-      <%= f.check_box :active %>
-
-      <%= f.label :primary %>
-      <%= f.check_box :primary %>
-
-      <%= label_tag 'Update from Battle.net?' %>
-      <%= check_box_tag 'battle_net_update', 1 %>
-
-      <%= f.submit "Save changes", class: "btn btn-large btn-primary" %>
-    <% end %>
-    <%=  %>
+        <%= f.submit "Save changes", class: "btn btn-large btn-primary form-control" %>
+      <% end %>
+    </div>
   </div>
 </div>

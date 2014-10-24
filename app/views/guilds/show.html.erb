@@ -1,16 +1,16 @@
 <% provide(:title, @guild.name) %>
 <div class="row">
-  <aside class="span4">
+  <aside class="col-md-4">
     <section>
       <h1>
         <%= link_to @guild.name, edit_guild_path(@guild) %>
       </h1>
-      <p>Realm: <%= @guild.realm %></p>
-      <p>Region: <%= @guild.region.upcase %></p>
-      <p>Achievement Points: <%= @guild.achievement_points %></p>
-      <p>Battlegroup: <%= @guild.battlegroup %></p>
-      <p>Level: <%= @guild.level %></p>
-      <p>Side: <%= @guild.side %></p>
+      <span>Realm: <%= @guild.realm %></span>
+      <span>Region: <%= @guild.region.upcase %></span>
+      <span>Achievement Points: <%= @guild.achievement_points %></span>
+      <span>Battlegroup: <%= @guild.battlegroup %></span>
+      <span>Level: <%= @guild.level %></span>
+      <span>Side: <%= @guild.side %></span>
     </section>
   </aside>
 </div>

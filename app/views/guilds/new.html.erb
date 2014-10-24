@@ -2,26 +2,34 @@
 <h1>Add Guild</h1>
 
 <div class="row">
-  <div class="span6 offset3">
+  <div class="col-md-4">
     <%= form_for(@guild) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
 
-      <%= f.label :name %>
-      <%= f.text_field :name, placeholder: "Vox Immortalis" %>
+      <div class="form-group">
+        <%= f.label :name %>
+        <%= f.text_field :name, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= f.label :realm %>
+        <%= f.text_field :realm, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= f.label :region %>
+        <%= f.select :region, WOW_REGION_HASH, {}, class: 'form-control' %>
+      </div>
+      <div class="checkbox">
+        <label>
+          <%= f.check_box :active %> Active
+        </label>
+      </div>
+      <div class="checkbox" title="Flag as Primary Guild.  Only one Guild may be Primary at a time." data-toggle="tooltip">
+        <label>
+          <%= f.check_box :primary %> Primary
+        </label>
+      </div>
 
-      <%= f.label :realm %>
-      <%= f.text_field :realm, placeholder: "Hyjal" %>
-
-      <%= f.label :region %>
-      <%= f.select :region, WOW_REGION_HASH %>
-
-      <%= f.label :active %>
-      <%= f.check_box :active %>
-
-      <%= f.label :primary %>
-      <%= f.check_box :primary %>
-
-      <%= f.submit "Add Guild", class: "btn btn-large btn-primary" %>
+      <%= f.submit "Add Guild", class: "btn btn-large btn-primary form-control" %>
     <% end %>
   </div>
 </div>

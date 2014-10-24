@@ -29,7 +29,7 @@ class ZonesController < ApplicationController
   end
 
   def update
-    @zone.update(zone_params)
+    @zone.update_attributes(zone_params)
     respond_with_bip(@zone)
   end
 
