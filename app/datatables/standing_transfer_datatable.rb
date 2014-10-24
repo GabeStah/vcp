@@ -39,7 +39,7 @@ class StandingTransferDatatable < AjaxDatatablesRails::Base
         character.character_class.present? ? class_name : nil,
         "#{character.realm}-#{character.region.upcase}",
         l(character.created_at.in_time_zone, format: :short),
-        link_to('Transfer', transfer_standing_path(@standing, character: character), method: :post, data: { confirm: "Transfer Standing from #{@standing.character.full_title} to #{character.full_title}?" })
+        link_to('Transfer', transfer_standing_path(@standing, character: character), method: :post, data: { confirm: "Transfer Standing from #{@standing.character.full_title} to #{character.full_title}?", toggle: 'tooltip' }, title: "Transfer all Standing associations from #{@standing.character.full_title} to #{character.full_title}")
       ]
     end
   end
