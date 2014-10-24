@@ -43,7 +43,11 @@
               <%= "#{role.name.titleize}" %>
             </td>
             <td>
-              <%= link_to_if(can?(:manage, role) && can?(:manage, @user), @user.roles.include?(role) ? 'Yes' : 'No', user_toggle_role_path(@user, role), method: 'post')  %>
+              <% if can?(:manage, role) && can?(:manage, @user) %>
+                <%= link_to(@user.roles.include?(role) ? raw('Yes <span class="glyphicon glyphicon-edit"></span>') : raw('No <span class="glyphicon glyphicon-edit"></span>'), user_toggle_role_path(@user, role), method: 'post')  %>
+              <% else %>
+                @user.roles.include?(role) ? 'Yes' : 'No'
+              <% end %>
             </td>
           </tr>
         <% end %>
