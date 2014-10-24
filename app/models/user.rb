@@ -64,6 +64,21 @@ class User < ActiveRecord::Base
     roles.any? { |r| r.name.underscore.to_sym == role_sym }
   end
 
+  def has_role_from_settings?(role)
+    # Add roles if necessary
+    Settings.roles.each do |setting_role, tags|
+      if tags
+        tags.each do |tag|
+          if tag.downcase == self.battle_tag.downcase
+            role_record = Role.find_by(name: setting_role.to_s.to_sym)
+            return true if role_record && role_record == role
+          end
+        end
+      end
+    end
+    false
+  end
+
   def create_secret_key
     self.secret_key = Digest::SHA2.hexdigest(battle_tag)
   end

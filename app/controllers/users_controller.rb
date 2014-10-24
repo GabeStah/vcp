@@ -30,7 +30,7 @@ class UsersController < ApplicationController
       flash[:success] = "Successfully ghosting as #{@user.name}."
       redirect_to user_path(@user)
     else
-      flash[:warning] = "Unable to ghost as #{@user.name}."
+      flash[:error] = "Unable to ghost as #{@user.name}."
       redirect_to :back
     end
   end
@@ -44,6 +44,31 @@ class UsersController < ApplicationController
   end
 
   def show
+    @roles = Role.all.order(:name)
+  end
+
+  def toggle_role
+    @role = Role.find(params[:role_id])
+    if @role
+      if @user.roles.include?(@role)
+        # Ensure not a settings role for user
+        if @user.has_role_from_settings?(@role)
+          flash[:error] = "#{@role.name.titleize} role assigned to #{@user.name} in configuration file.  Unable to revoke access."
+        else
+          # remove
+          @user.roles.delete(@role)
+          flash[:success] = "#{@role.name.titleize} access removed from #{@user.name}."
+        end
+      else
+        # add
+        @user.roles << @role
+        @user.save
+        flash[:success] = "#{@role.name.titleize} access granted to #{@user.name}."
+      end
+    else
+      flash[:error] = "Role not found."
+    end
+    redirect_to user_path(@user)
   end
 
   def update

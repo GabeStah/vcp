@@ -37,6 +37,8 @@ Vcp::Application.routes.draw do
 
   match '/users/:id/ghost', to: 'users#ghost', via: 'get', as: 'ghost_user'
 
+  match '/users/:id/toggle_role/:role_id', to: 'users#toggle_role', via: 'post', as: 'user_toggle_role'
+
   # get '/auth/:provider/callback' => 'omniauth#callback'
   # get '/auth/failure' => 'omniauth#failure'
   # get '/doit' => 'omniauth#signin'

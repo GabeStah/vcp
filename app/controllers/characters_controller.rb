@@ -36,7 +36,7 @@ class CharactersController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        render json: CharacterDatatable.new(view_context, type: params[:type])
+        render json: CharacterDatatable.new(view_context, type: params[:type], user: params[:user])
       end
     end
   end

@@ -11,7 +11,7 @@
   </div>
   <div class="col-md-12">
     <% if @user.characters.size > 0 %>
-      <table class="characters table table-striped table-bordered table-white" id="characters-claimed-table" data-source="<%= characters_path(format: :json, type: :claimed) %>">
+      <table class="characters table table-striped table-bordered table-white" id="characters-claimed-table" data-source="<%= characters_path(format: :json, type: :claimed, user: @user) %>">
         <thead>
         <th>Name</th>
         <th>Class</th>
@@ -29,4 +29,25 @@
       </table>
     <% end %>
   </div>
+  <% if @roles.size > 0 %>
+    <div class="col-md-3">
+      <h2><small>Roles</small></h2>
+      <table class="table table-bordered">
+        <thead>
+          <th>Role</th>
+          <th>Assigned</th>
+        </thead>
+        <% @roles.each do |role| %>
+          <tr>
+            <td>
+              <%= "#{role.name.titleize}" %>
+            </td>
+            <td>
+              <%= link_to_if(can?(:manage, role) && can?(:manage, @user), @user.roles.include?(role) ? 'Yes' : 'No', user_toggle_role_path(@user, role), method: 'post')  %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  <% end %>
 </div>

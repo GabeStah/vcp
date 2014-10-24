@@ -15,7 +15,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
     @view = view
     @options = options
     @type = options[:type]
-    @current_user = current_user
+    @user = options[:user]
     super(@view, @options)
   end
 
@@ -80,18 +80,12 @@ class CharacterDatatable < AjaxDatatablesRails::Base
   def get_raw_records
     case type.to_sym
       when :claimed
-        if current_user
-          Character.claimed(current_user).
-            eager_load(:character_class, :guild, :raids, :user)
-        end
+        return Character.claimed(@user).eager_load(:character_class, :guild, :raids, :user) if @user
       when :unclaimed
-        if current_user
-          Character.unclaimed(current_user).
-            eager_load(:character_class, :guild, :raids, :user)
-        end
+        return Character.unclaimed(@user).eager_load(:character_class, :guild, :raids, :user) if @user
       when :all
-        Character.where(verified: true).
-          eager_load(:character_class, :guild, :raids, :user)
+        return Character.where(verified: true).eager_load(:character_class, :guild, :raids, :user)
     end
+    Character.none
   end
 end
