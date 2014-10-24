@@ -13,7 +13,7 @@ class ZonesController < ApplicationController
 
   def destroy
     @zone.destroy
-    flash[:success] = "Zone deleted."
+    flash[:success] = "#{@zone.name} deleted."
     redirect_to zones_path
   end
 

@@ -5,7 +5,8 @@ class RaceDatatable < AjaxDatatablesRails::Base
                  :best_in_place,
                  :current_user,
                  :l,
-                 :link_to
+                 :link_to,
+                 :race_path
 
   def initialize(view)
     @view = view
@@ -31,7 +32,8 @@ class RaceDatatable < AjaxDatatablesRails::Base
       [
         best_in_place(race, :name, type: :input),
         best_in_place(race, :blizzard_id, type: :input),
-        best_in_place(race, :side, type: :select, collection: WOW_FACTION_HASH)
+        best_in_place(race, :side, type: :select, collection: WOW_FACTION_HASH),
+        link_to('Delete', race_path(race), method: :delete, data: { confirm: "Confirm deletion of #{race.name}?"})
       ]
     end
   end

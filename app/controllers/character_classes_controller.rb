@@ -15,7 +15,7 @@ class CharacterClassesController < ApplicationController
 
   def destroy
     @character_class.destroy
-    flash[:success] = "Class deleted."
+    flash[:success] = "#{@character_class.name} deleted."
     redirect_to classes_path
   end
 

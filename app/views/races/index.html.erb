@@ -15,6 +15,9 @@
       <th>Name</th>
       <th>Blizzard ID</th>
       <th>Faction</th>
+      <% if can? :manage, Race %>
+        <th class="nosort">Edit</th>
+      <% end %>
       </thead>
       <tbody>
       </tbody>

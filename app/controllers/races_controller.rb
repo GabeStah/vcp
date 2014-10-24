@@ -14,7 +14,7 @@ class RacesController < ApplicationController
 
   def destroy
     @race.destroy
-    flash[:success] = "Race deleted."
+    flash[:success] = "#{@race.name} deleted."
     redirect_to races_path
   end
 

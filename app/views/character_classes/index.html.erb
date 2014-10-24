@@ -15,6 +15,9 @@
       <thead>
         <th>Name</th>
         <th>Blizzard ID</th>
+        <% if can? :manage, CharacterClass %>
+          <th class="nosort">Edit</th>
+        <% end %>
       </thead>
       <tbody>
       </tbody>
