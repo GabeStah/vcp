@@ -35,6 +35,8 @@ Vcp::Application.routes.draw do
   match '/contact',       to: 'static_pages#contact', via: 'get'
   match '/help',          to: 'static_pages#help',    via: 'get'
 
+  match '/users/:id/ghost', to: 'users#ghost', via: 'get', as: 'ghost_user'
+
   # get '/auth/:provider/callback' => 'omniauth#callback'
   # get '/auth/failure' => 'omniauth#failure'
   # get '/doit' => 'omniauth#signin'

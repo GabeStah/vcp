@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
 
-  before_action :set_user,       only: [:destroy, :edit, :show, :update]
+  before_action :set_user,       only: [:destroy, :edit, :manual_sign_in, :show, :update]
 
   def create
     @user = User.new(user_params)
@@ -21,6 +21,18 @@ class UsersController < ApplicationController
   end
 
   def edit
+  end
+
+  def ghost
+    authorize! :ghost, @user
+    if Rails.env.development?
+      sign_in(:user, @user)
+      flash[:success] = "Successfully ghosting as #{@user.name}."
+      redirect_to user_path(@user)
+    else
+      flash[:warning] = "Unable to ghost as #{@user.name}."
+      redirect_to :back
+    end
   end
 
   def index

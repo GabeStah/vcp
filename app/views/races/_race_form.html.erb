@@ -1,12 +1,15 @@
 <%= form_for(@race) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
   <div class="form-group">
-    <%= f.text_field :name, placeholder: "Name", class: 'form-control' %>
+    <%= f.label :name %>
+    <%= f.text_field :name, class: 'form-control' %>
   </div>
   <div class="form-group">
-    <%= f.text_field :blizzard_id, placeholder: "Blizzard ID", class: 'form-control' %>
+    <%= f.label :blizzard_id, 'Blizzard ID' %>
+    <%= f.text_field :blizzard_id, class: 'form-control' %>
   </div>
   <div class="form-group">
+    <%= f.label :side, 'Faction' %>
     <%= f.select :side, WOW_FACTION_HASH, {}, class: 'form-control' %>
   </div>
   <div class="form-group">

@@ -6,24 +6,37 @@ end
 
 User.delete_all
 # Initial user
-# user = User.new(battle_tag: "Gabe Wyatt",
-#                 password: "hobbes",
-#                 password_confirmation: "hobbes")
+# user = User.new(battle_tag: "Gabe Wyatt", password: "hobbes", password_confirmation: "hobbes")
 # user.roles << role_admin
 # #user.skip_confirmation!
 # user.save!
 #
-# # Add test users
-# 99.times do |n|
-#   name  = Faker::Name.name
-#   email = Faker::Internet.email
-#   password  = "password"
-#   user = User.create!(battle_tag: name,
-#                       password: password,
-#                       password_confirmation: password)
-#   #user.skip_confirmation!
-#   user.save!
-# end
+
+role_moderator = Role.find_by(name: :moderator)
+
+# Add users
+10.times do |n|
+  if n >= 5
+    name  = Faker::Name.name + " Mod"
+    password  = "password"
+    user = User.create!(battle_tag: "#{name}##{n}",
+                        name: name,
+                        password: password,
+                        password_confirmation: password)
+    user.roles << role_moderator
+  else
+
+    name  = Faker::Name.name
+    password  = "password"
+    user = User.create!(battle_tag: "#{name}##{n}",
+                        name: name,
+                        password: password,
+                        password_confirmation: password)
+  end
+
+  #user.skip_confirmation!
+  user.save!
+end
 
 Setting.delete_all
 # Create basic settings

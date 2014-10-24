@@ -12,17 +12,22 @@ class Ability
     @user.roles.each { |role| send(role.name) }
 
     if @user.roles.size == 0
-      can :read, [Character, Raid, Standing, User]
-      #can :manage, :all
+      guest
     end
   end
 
-  def manager
-    can :manage, :all
+  def guest
+    can :ghost, [User] if Rails.env.development?
+    can :read, [Character, Raid, Standing, User]
+  end
+
+  def moderator
+    guest
+    can :manage, [Character, Guild, Raid]
   end
 
   def admin
-    manager
+    moderator
     can :manage, :all
   end
 end

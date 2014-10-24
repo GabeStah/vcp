@@ -1,6 +1,9 @@
 <% provide(:title, @user.name) %>
 <div class="row">
   <div class="col-md-12">
+    <% if Rails.env.development? %>
+      <%= link_to "Ghost as #{@user.name}", ghost_user_path(@user) %>
+    <% end %>
     <h1>
       <%= @user.name %>
     </h1>
