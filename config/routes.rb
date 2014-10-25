@@ -11,7 +11,6 @@ Vcp::Application.routes.draw do
     resources :zones,   only: [:create, :destroy, :index, :update]
     resources :guilds
     resources :participations, only: [:destroy, :update]
-    resources :settings, only: [:index, :update]
     mount Sidekiq::Web => '/sidekiq', as: 'sidekiq'
     mount Sidekiq::Monitor::Engine => '/sidekiqmonitor'
   end

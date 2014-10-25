@@ -47,12 +47,6 @@ FactoryGirl.define do
     zone
   end
 
-  factory :setting do
-    raid_start_time '6:30 PM'
-    raid_end_time '10:30 PM'
-    tardiness_cutoff_time 60
-  end
-
   factory :standing do
     active true
     character

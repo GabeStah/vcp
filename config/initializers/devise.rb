@@ -236,7 +236,7 @@ Devise.setup do |config|
 
   # config.omniauth :bnet, ENV['battle_net_api_key'], ENV['battle_net_api_secret'], scope: "wow.profile"
 
-  config.omniauth :bnet, 'zkknhcmzz834sge3uvathm9q6u88vnbt', 'cdzvXUrW86qD29FvkygrjvzyFEGyq4aS', scope: "wow.profile sc2.profile"
+  config.omniauth :bnet, 'zkknhcmzz834sge3uvathm9q6u88vnbt', 'cdzvXUrW86qD29FvkygrjvzyFEGyq4aS', scope: "wow.profile"
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

@@ -94,7 +94,6 @@ class Raid < ActiveRecord::Base
   end
 
   def process_standing_events
-    #settings = Setting.first
     unless processed
       # Set attendance_loss
       update_attendance_loss

@@ -16,7 +16,6 @@ RSpec.describe Standing, :type => :model do
                                    verified: true)
     @standing = Standing.new(active: true, character: @character)
     #@zone = create(:zone)
-    #@setting = create(:setting)
     @character_alice = create(:character, name: 'Alice')
     @character_dick = create(:character, name: 'Dick')
     @standing_alice = create(:standing, character: @character_alice)

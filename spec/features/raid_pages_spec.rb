@@ -3,7 +3,6 @@ require 'spec_helper'
 describe 'Raid pages', type: :feature do
   before do
     @zone = create(:zone)
-    @setting = create(:setting)
     @character_alice = create(:character, name: 'Alice')
     @character_dick = create(:character, name: 'Dick')
     @character_harry = create(:character, name: 'Harry')

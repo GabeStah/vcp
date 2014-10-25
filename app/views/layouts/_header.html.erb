@@ -51,7 +51,6 @@
         <% if can?(:manage, CharacterClass) ||
               can?(:manage, Guild) ||
               can?(:manage, Race) ||
-              can?(:manage, Settings) ||
               can?(:manage, Zone) %>
           <li id="fat-menu" class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -66,9 +65,6 @@
               <% end %>
               <% if can?(:manage, Race) %>
                 <li><%= link_to "Races", races_path %></li>
-              <% end %>
-              <% if can?(:manage, Settings) %>
-                <li><%= link_to "Settings", settings_path %></li>
               <% end %>
               <li><%= link_to "Sidekiq", sidekiq_path %></li>
               <% if can?(:manage, Zone) %>

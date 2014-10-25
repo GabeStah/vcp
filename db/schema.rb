@@ -140,14 +140,6 @@ ActiveRecord::Schema.define(version: 20141018164804) do
     t.datetime "updated_at"
   end
 
-  create_table "settings", force: true do |t|
-    t.string   "raid_start_time"
-    t.string   "raid_end_time"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "tardiness_cutoff_time", default: 60
-  end
-
   create_table "sidekiq_jobs", force: true do |t|
     t.string   "jid"
     t.string   "queue"

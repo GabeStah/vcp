@@ -38,11 +38,6 @@ role_moderator = Role.find_by(name: :moderator)
   user.save!
 end
 
-Setting.delete_all
-# Create basic settings
-Setting.create!(raid_start_time: TimeManagement.raid_start,
-                raid_end_time: TimeManagement.raid_start)
-
 CharacterClass.delete_all
 # Class populate
 BattleNetWorker.perform_async(type: 'class-population')

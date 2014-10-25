@@ -13,10 +13,10 @@ class StandingCalculation
   validates :raid,
             presence: true
 
-  attr_accessor :character, :participations, :raid, :settings
+  attr_accessor :character, :participations, :raid
 
   def calculate(args = {})
-    tardiness_cutoff_time  = Rails.env.production? ? settings.tardiness_cutoff_time : Settings.cutoff.tardy
+    tardiness_cutoff_time = Settings.cutoff.tardy
     case args[:type]
       when :attendance_loss
         # Character was online and in_raid between start and start+settings.tardiness_cutoff_time
