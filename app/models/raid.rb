@@ -47,14 +47,14 @@ class Raid < ActiveRecord::Base
           unless params['unexcused'].nil? || params['unexcused'][id].nil?
             unexcused_absence = true if params['unexcused'][id][count] && params['unexcused'][id][count] == '1'
           end
-          self.participations.create(character: Character.find(id), in_raid: in_raid, online: online, timestamp: timestamp)
-          # Unexcused Absence
-          if unexcused_absence && !online && !in_raid
-            StandingEvent.create!(change: Settings.standing.unexcused_absence_loss,
-                                  raid: self,
-                                  standing: Standing.where(character: Character.find(id)).first,
-                                  type: :infraction)
-          end
+          self.participations.create(character: Character.find(id), in_raid: in_raid, online: online, timestamp: timestamp, unexcused: unexcused_absence)
+          # # Unexcused Absence
+          # if unexcused_absence && !online && !in_raid
+          #   StandingEvent.create!(change: Settings.standing.unexcused_absence_loss,
+          #                         raid: self,
+          #                         standing: Standing.where(character: Character.find(id)).first,
+          #                         type: :infraction)
+          # end
         end
       end
       # Calculate standing_events

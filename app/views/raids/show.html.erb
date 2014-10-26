@@ -1,6 +1,6 @@
 <% provide(:title, "#{@raid.full_title}") %>
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-16">
     <h1 class="center">
       <%= "#{@raid.full_title}" %>
     </h1>
@@ -31,6 +31,7 @@
           <th>Realm</th>
           <th>Online</th>
           <th>In Raid</th>
+          <th>Unexcused</th>
           <th>Timestamp</th>
           <th class="nosort">Event</th>
           <% if can? :manage, Participation %>

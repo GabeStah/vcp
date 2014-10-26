@@ -23,6 +23,7 @@ class RaidParticipationDatatable < AjaxDatatablesRails::Base
                            'characters.realm',
                            'participations.online',
                            'participations.in_raid',
+                           'participations.unexcused',
                            'participations.timestamp']
   end
 
@@ -31,6 +32,7 @@ class RaidParticipationDatatable < AjaxDatatablesRails::Base
                              'characters.realm',
                              'participations.online',
                              'participations.in_raid',
+                             'participations.unexcused',
                              'participations.timestamp',
                              'participations.event']
   end
@@ -46,6 +48,7 @@ class RaidParticipationDatatable < AjaxDatatablesRails::Base
           "#{participation.character.realm}-#{participation.character.region.upcase}",
           best_in_place_if(can?(:manage, participation), participation, :online, type: :checkbox, path: participation_path(participation)),
           best_in_place_if(can?(:manage, participation), participation, :in_raid, type: :checkbox, path: participation_path(participation)),
+          best_in_place_if(can?(:manage, participation), participation, :unexcused, type: :checkbox, path: participation_path(participation)),
           best_in_place_if(can?(:manage, participation), participation, :timestamp, type: :input, path: participation_path(participation), display_with: lambda { |p| l(p) }),
           search_icon,
           link_to_if(can?(:destroy, participation), 'Delete', participation, method: :delete, data: { confirm: "You sure?" })
@@ -60,7 +63,8 @@ class RaidParticipationDatatable < AjaxDatatablesRails::Base
           "#{participation.character.realm}-#{participation.character.region.upcase}",
           "<span class='glyphicon glyphicon-#{participation.online ? 'ok green' : 'remove red'}'></span>",
           "<span class='glyphicon glyphicon-#{participation.in_raid ? 'ok green' : 'remove red'}'></span>",
-          best_in_place_if(can?(:manage, participation), participation, :timestamp, type: :input, path: participation_path(participation), display_with: lambda { |p| l(p) }),
+          "<span class='glyphicon glyphicon-#{participation.unexcused ? 'ok green' : 'remove red'}'></span>",
+          l(participation.timestamp),
           search_icon,
           link_to_if(can?(:destroy, participation), 'Delete', participation, method: :delete, data: { confirm: "You sure?" })
         ]

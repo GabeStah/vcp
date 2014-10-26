@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141026015043) do
+ActiveRecord::Schema.define(version: 20141026035848) do
 
   create_table "assignments", force: true do |t|
     t.integer "role_id", null: false
@@ -108,6 +108,7 @@ ActiveRecord::Schema.define(version: 20141026015043) do
     t.boolean  "in_raid",      default: false
     t.boolean  "online",       default: false
     t.datetime "timestamp"
+    t.boolean  "unexcused",    default: false
   end
 
   add_index "participations", ["character_id", "raid_id", "timestamp"], name: "index_participations_on_character_id_and_raid_id_and_timestamp", unique: true, using: :btree

@@ -26,7 +26,7 @@ class ParticipationsController < ApplicationController
   private
 
   def participation_params
-    params.require(:participation).permit(:character, :in_raid, :online, :raid, :timestamp)
+    params.require(:participation).permit(:character, :in_raid, :online, :raid, :timestamp, :unexcused)
   end
   def set_participation
     @participation = Participation.find(params[:id])

@@ -25,6 +25,9 @@ class Participation < ActiveRecord::Base
   validates :timestamp,
             presence: true
   validate :timestamp_is_valid_datetime
+  # unexcused
+  validates :unexcused,
+            inclusion: [true, false]
 
   # Counters
   update_counter_cache :character, :raids_count
