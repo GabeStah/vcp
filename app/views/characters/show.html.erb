@@ -23,7 +23,7 @@
       <% end %>
     <% elsif !@character.standing %>
       <% if can? :update, @character %>
-        <%= button_to 'Add to VCP', standings_path(standing: {character: @character}), :method => :post %>
+        <%= button_to 'Add to VCP', add_to_standing_path(@character), :method => :post %>
       <% end %>
     <% end %>
   </div>

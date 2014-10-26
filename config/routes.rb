@@ -16,11 +16,12 @@ Vcp::Application.routes.draw do
   end
 
   resources :characters
-  match '/characters/:id',              to: 'characters#claim',         via: 'post'
-  #match '/characters/:id/addstanding',  to: 'characters#add_standing',  via: 'post',  as: 'add_standing_character'
-  match '/characters/:id/history',      to: 'characters#history',       via: 'get',   as: 'character_history'
-  match '/characters/:id/sync',         to: 'characters#sync',          via: 'post',  as: 'sync_character'
-  match '/characters/:id/unclaim',      to: 'characters#unclaim',       via: 'post',  as: 'unclaim_character'
+  match '/characters/:id',                to: 'characters#claim',           via: 'post'
+  #match '/characters/:id/addstanding',   to: 'characters#add_standing',    via: 'post',  as: 'add_standing_character'
+  match '/characters/:id/history',        to: 'characters#history',         via: 'get',   as: 'character_history'
+  match '/characters/:id/sync',           to: 'characters#sync',            via: 'post',  as: 'sync_character'
+  match '/characters/:id/unclaim',        to: 'characters#unclaim',         via: 'post',  as: 'unclaim_character'
+  match '/characters/:id/add_to_standing',to: 'characters#add_to_standing', via: 'post',  as: 'add_to_standing'
 
   resources :standings
   match '/standings/:id/retire',              to: 'standings#retire',           via: 'post',  as: 'retire_standing'

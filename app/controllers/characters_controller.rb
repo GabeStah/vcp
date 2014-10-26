@@ -1,8 +1,19 @@
 class CharactersController < ApplicationController
   load_and_authorize_resource
-  before_action :set_character,               only: [:claim, :destroy, :edit, :history, :show, :sync, :unclaim, :update]
+  before_action :set_character,               only: [:add_to_standing, :claim, :destroy, :edit, :history, :show, :sync, :unclaim, :update]
   before_action :require_user_owns_character, only: [:sync]
   before_action :user_owns_character?
+
+  def add_to_standing
+    @standing = Standing.new(active: true, character: @character)
+    if @standing.save
+      flash[:success] = 'Standing Added!'
+      redirect_to :back
+    else
+      flash[:error] = 'Standing could not be created!'
+      redirect_to :back
+    end
+  end
 
   def create
     @character = Character.new(character_params)
