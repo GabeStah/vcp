@@ -94,6 +94,7 @@ jQuery ->
       },
     ]
     lengthMenu: [ [10, 25, 50, 9223372036854775807], [10, 25, 50, "All"] ]
+    order: [[2, 'desc']]
     pagingType: 'full_numbers'
     processing: true
     serverSide: true
