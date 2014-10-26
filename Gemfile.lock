@@ -114,6 +114,8 @@ GEM
       cucumber (>= 1.2.0)
       nokogiri (>= 1.5.0)
       rails (>= 3.0.0)
+    custom_counter_cache (0.1.2)
+      rails (>= 3.1)
     daemons (1.1.9)
     devise (3.3.0)
       bcrypt (~> 3.0)
@@ -387,6 +389,7 @@ DEPENDENCIES
   chronic
   coffee-rails (= 4.0.1)
   cucumber-rails (= 1.4.0)
+  custom_counter_cache
   database_cleaner!
   devise
   dotiw

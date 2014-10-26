@@ -16,6 +16,14 @@ class User < ActiveRecord::Base
             presence: true,
             length: { minimum: 2, maximum: 100}
 
+  # Counters
+  define_counter_cache :characters_count do |user|
+    user.characters.count
+  end
+  define_counter_cache :characters_verified_count do |user|
+    user.characters.where(verified: true).count
+  end
+
   def self.from_omniauth(auth)
     logger.info 'BATTLE_NET_AUTH: User#from_omniauth'
     # Initialize only

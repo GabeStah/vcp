@@ -7,6 +7,10 @@ class Character < ActiveRecord::Base
   belongs_to :guild
   belongs_to :race
   belongs_to :user
+
+  update_counter_cache :user, :characters_count
+  update_counter_cache :user, :characters_verified_count
+
   has_many :participations
   # Delete participations associated with Character
   has_many :raids, through: :participations, dependent: :delete_all

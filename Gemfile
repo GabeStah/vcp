@@ -73,6 +73,9 @@ gem 'httplog'
 # Manage attachments
 gem 'paperclip'
 
+# counter_cache
+gem 'custom_counter_cache'
+
 group :development, :test do
   gem 'rspec-rails'
   # The following optional lines are part of the advanced setup.

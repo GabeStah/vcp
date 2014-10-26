@@ -16,15 +16,15 @@ class UserDatatable < AjaxDatatablesRails::Base
 
   def sortable_columns
     @sortable_columns ||= ['users.name',
-                           'characters.id',
-                           'characters.id',
+                           'users.characters_verified_count',
+                           'users.characters_count',
                            'users.created_at']
   end
 
   def searchable_columns
     @searchable_columns ||= ['users.name',
-                             'characters.id',
-                             'characters.id',
+                             'users.characters_verified_count',
+                             'users.characters_count',
                              'users.created_at']
   end
 
@@ -34,8 +34,8 @@ class UserDatatable < AjaxDatatablesRails::Base
     records.map do |user|
       [
         link_to(user.name, user),
-        user.characters.where(verified: true).size > 0 ? user.characters.where(verified: true).size : nil,
-        user.characters.size > 0 ? user.characters.size : nil,
+        user.characters_verified_count > 0 ? user.characters_verified_count : nil,
+        user.characters_count > 0 ? user.characters_count : nil,
         l(user.created_at.in_time_zone, format: :short),
         can?(:destroy, user) && current_user != user ? link_to("delete", user, method: :delete, data: { confirm: "Are you sure you wish to delete #{user.name} [#{user.id}]?" }) : nil
       ]
