@@ -8,12 +8,10 @@ class Character < ActiveRecord::Base
   belongs_to :race
   belongs_to :user
 
-  update_counter_cache :user, :characters_count
-  update_counter_cache :user, :characters_verified_count
-
   has_many :participations
   # Delete participations associated with Character
-  has_many :raids, through: :participations, dependent: :delete_all
+  # Unique raids only
+  has_many :raids, -> {uniq}, through: :participations, dependent: :delete_all
   # Delete standing associated with Character
   has_one :standing, dependent: :restrict_with_error
   before_validation :ensure_region_is_lowercase
@@ -59,6 +57,13 @@ class Character < ActiveRecord::Base
   validates :slug,
             presence: true,
             uniqueness: { case_sensitive: false }
+
+  # Counters
+  define_counter_cache :raids_count do |character|
+    character.raids.count
+  end
+  update_counter_cache :user, :characters_count
+  update_counter_cache :user, :characters_verified_count
 
   def download_file(url)
     open(URI.parse(url))

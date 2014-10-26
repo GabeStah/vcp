@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141026005725) do
+ActiveRecord::Schema.define(version: 20141026015043) do
 
   create_table "assignments", force: true do |t|
     t.integer "role_id", null: false
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20141026005725) do
     t.integer  "portrait_file_size"
     t.datetime "portrait_updated_at"
     t.string   "portrait_fingerprint"
+    t.integer  "raids_count",           default: 0,     null: false
   end
 
   add_index "characters", ["guild_id"], name: "index_characters_on_guild_id", using: :btree

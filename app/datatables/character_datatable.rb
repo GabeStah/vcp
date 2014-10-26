@@ -24,7 +24,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
                            'character_classes.name',
                            'guilds.name',
                            'characters.realm',
-                           'raids.id',
+                           'characters.raids_count',
                            'characters.achievement_points',
                            'characters.created_at']
   end
@@ -34,7 +34,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
                              'character_classes.name',
                              'guilds.name',
                              'characters.realm',
-                             'raids.id',
+                             'characters.raids_count',
                              'characters.achievement_points',
                              'characters.created_at']
   end
@@ -51,8 +51,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
           character.guild.present? ?
             link_to(character.guild.name, character.guild) : nil,
           "#{character.realm}-#{character.region.upcase}",
-          character.raids.distinct.size > 0 ?
-            character.raids.distinct.size : nil,
+          character.raids_count > 0 ? character.raids_count : nil,
           character.achievement_points,
           l(character.created_at.in_time_zone, format: :short),
           can?(:update, character) ?
@@ -68,8 +67,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
           character.guild.present? ?
             link_to(character.guild.name, character.guild) : nil,
           "#{character.realm}-#{character.region.upcase}",
-          character.raids.distinct.size > 0 ?
-            character.raids.distinct.size : nil,
+          character.raids_count > 0 ? character.raids_count : nil,
           character.achievement_points,
           l(character.created_at.in_time_zone, format: :short),
         ]

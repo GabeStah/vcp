@@ -2,6 +2,7 @@ class Raid < ActiveRecord::Base
   belongs_to :zone
   has_many :participations, dependent: :delete_all
   # Destroy participations associated with Raid
+  # Unique records only
   has_many :characters, -> { uniq }, through: :participations, dependent: :delete_all
   has_many :standing_events
 

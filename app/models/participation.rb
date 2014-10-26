@@ -26,6 +26,9 @@ class Participation < ActiveRecord::Base
             presence: true
   validate :timestamp_is_valid_datetime
 
+  # Counters
+  update_counter_cache :character, :raids_count
+
   # Get appropriate event(s) tags based on current and previous participation flags
   def event(previous)
     previous_symbol = :nil_nil      if previous.nil?
