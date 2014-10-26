@@ -15,7 +15,7 @@
       Claimed: <%= @owned_character ? 'Yes' : 'No' %>
     </p>
     <% if @character.standing %>
-      <p>VCP: <%= @character.standing.points || 0 %></p>
+      <p>VCP: <%= number_with_precision(@character.standing.points, precision: 2) || 0 %></p>
     <% end %>
     <% if @character.standing && !@character.standing.active %>
       <% if can? :update, @character %>

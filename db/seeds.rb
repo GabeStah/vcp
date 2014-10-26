@@ -76,7 +76,7 @@ Guild.delete_all
 #end
 
 # Create a new raid
-PopulateRaidsWorker.perform_in(5.seconds)
+#PopulateRaidsWorker.perform_in(5.seconds)
 
 # Populate standings
 PopulateStandingsWorker.perform_in(90.seconds)

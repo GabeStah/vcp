@@ -7,6 +7,7 @@ class StandingDatatable < AjaxDatatablesRails::Base
                  :edit_standing_path,
                  :l,
                  :link_to,
+                 :number_with_precision,
                  :retire_standing_path
 
   def initialize(view, options = {})
@@ -45,7 +46,7 @@ class StandingDatatable < AjaxDatatablesRails::Base
       character_class = standing.character.character_class.present? ? standing.character.character_class.name : nil
       guild = link_to(standing.character.guild.name, standing.character.guild) if can?(:update, Guild) && standing.character.guild
       realm = "#{standing.character.realm}-#{standing.character.region.upcase}"
-      points = standing.points || 0
+      points = number_with_precision(standing.points, precision: 2) || 0
       if can?(:update, standing)
         retire = link_to("Retire", retire_standing_path(standing), method: :post, data: { confirm: "Retire #{standing.character.full_title} from Standings?" }) if can?(:update, standing)
         edit = link_to('Edit', edit_standing_path(standing))
