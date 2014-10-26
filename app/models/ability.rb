@@ -23,7 +23,7 @@ class Ability
 
   def moderator
     guest
-    can :manage, [Character, Guild, Raid]
+    can :manage, [Character, Guild, Participation, Raid]
   end
 
   def admin
