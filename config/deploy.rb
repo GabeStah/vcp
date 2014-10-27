@@ -1,87 +1,41 @@
-require 'mina/bundler'
-require 'mina/rails'
-require 'mina/git'
-require 'mina_sidekiq/tasks'
-# require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
-# require 'mina/rvm'    # for rvm support. (http://rvm.io)
+lock '3.2.1'
 
-set :domain, 'gabestah.com'
-set :deploy_to, '/var/www/vcp'
-set :repository, 'https://github.com/GabeStah/vcp.git'
-set :branch, 'master'
+set :application, 'phindee'
+set :repo_url, 'git@github.com:GabeStah/vcp.git'
 
-# Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
-# They will be linked in the 'deploy:link_shared_paths' step.
-set :shared_paths, ['config/database.yml', 'log', 'pids']
+set :deploy_to, "/var/www/#{fetch(:application)}"
+set :deploy_user, "bob"
 
-# Optional settings:
-set :user, 'vcp'    # Username in the server to SSH to.
-#   set :port, '30000'     # SSH port number.
+set :rbenv_type, :user
+set :rbenv_ruby, '2.1.0'
+set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+set :rbenv_map_bins, %w{rake gem bundle ruby rails}
+set :rbenv_roles, :all
 
-# This task is the environment that is loaded for most commands, such as
-# `mina deploy` or `mina rake`.
-task :environment do
-  # If you're using rbenv, use this to load the rbenv environment.
-  # Be sure to commit your .rbenv-version to your repository.
-  # invoke :'rbenv:load'
+set :linked_files, %w{config/database.yml config/application.yml}
+set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
-  # For those using RVM, use this to load an RVM version@gemset.
-  # invoke :'rvm:use[ruby-1.9.3-p125@default]'
-end
+set :keep_releases, 5
 
-# Put any custom mkdir's in here for when `mina setup` is ran.
-# For Rails apps, we'll make some of the shared paths that are shared between
-# all releases.
-task :setup => :environment do
-  queue! %[mkdir -p "#{deploy_to}/shared/log"]
-  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/log"]
+namespace :deploy do
 
-  queue! %[mkdir -p "#{deploy_to}/shared/config"]
-  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/config"]
-
-  queue! %[mkdir -p "#{deploy_to}/shared/pids"]
-  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/pids"]
-
-  queue! %[touch "#{deploy_to}/shared/config/database.yml"]
-  queue  %[echo "-----> Be sure to edit 'shared/config/database.yml'."]
-end
-
-desc "Deploys the current version to the server."
-task :deploy => :environment do
-  deploy do
-    # Put things that will set up an empty directory into a fully set-up
-    # instance of your project.
-    # stop accepting new workers
-    invoke :'sidekiq:quiet'
-    invoke :'git:clone'
-    invoke :'deploy:link_shared_paths'
-    invoke :'bundle:install'
-    invoke :'rails:db_migrate'
-    invoke :'rails:assets_precompile'
-    invoke :reset_db
-
-    to :launch do
-      invoke :restart_rails
-      invoke :'sidekiq:restart'
+  desc 'Restart application'
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      # Your restart mechanism here, for example:
+      # execute :touch, release_path.join('tmp/restart.txt')
     end
   end
-end
 
-desc "Resetting Database"
-task :reset_db do
-  queue 'rake app:reset_production RAILS_ENV=production'
-end
+  after :publishing, :restart
 
-desc "Restart Rails"
-task :restart_rails do
-  queue! %[mkdir -p "#{deploy_to}/#{current_path}/tmp"]
-  queue! %[chmod g+rx,u+rwx "#{deploy_to}/#{current_path}/tmp"]
-  queue "touch #{deploy_to}/#{current_path}/tmp/restart.txt"
-end
+  after :restart, :clear_cache do
+    on roles(:web), in: :groups, limit: 3, wait: 10 do
+      # Here we can do anything such as:
+      # within release_path do
+      #   execute :rake, 'cache:clear'
+      # end
+    end
+  end
 
-# For help in making your deploy script, see the Mina documentation:
-#
-#  - http://nadarei.co/mina
-#  - http://nadarei.co/mina/tasks
-#  - http://nadarei.co/mina/settings
-#  - http://nadarei.co/mina/helpers
+end

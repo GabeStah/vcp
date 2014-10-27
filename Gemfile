@@ -75,14 +75,14 @@ gem 'paperclip'
 # counter_cache
 gem 'custom_counter_cache'
 
-# gem 'capistrano'
+gem 'capistrano'
 # # rails specific capistrano funcitons
-# gem 'capistrano-rails'
+gem 'capistrano-rails'
 # gem 'capistrano-rvm'
 # # integrate bundler with capistrano
-# gem 'capistrano-bundler'
+gem 'capistrano-bundler'
 # if you are using RBENV
-#gem 'capistrano-rbenv'
+gem 'capistrano-rbenv'
 
 group :development, :test do
   gem 'rspec-rails'
