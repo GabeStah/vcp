@@ -13,6 +13,14 @@ execute "mkdir -p #{path}" do
   creates path
 end
 
+# create application.yml file
+template "#{path}/database.yml" do
+  source "application.yml.erb"
+  mode 0640
+  owner node['user']['name']
+  group node['group']
+end
+
 # create database.yml file
 template "#{path}/database.yml" do
   source "database.yml.erb"
