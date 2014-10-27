@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 #ruby '2.1.1'
 
 gem 'rails', '4.1.1'
-gem 'mysql2'
+#gem 'mysql2'
 gem 'bootstrap-sass'
 gem 'sass-rails'
 gem 'autoprefixer-rails'
