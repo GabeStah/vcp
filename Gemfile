@@ -88,7 +88,7 @@ group :development, :test do
   gem 'rspec-rails'
   # The following optional lines are part of the advanced setup.
   # gem 'guard-rspec'
-  gem 'spork-rails'
+  #gem 'spork-rails'
   # gem 'guard-spork'
   gem 'childprocess'
 
@@ -96,6 +96,8 @@ group :development, :test do
   gem 'quiet_assets'
   # Help with n+1
   gem 'bullet'
+
+  gem 'knife-solo', '~> 0.4.2'
 end
 
 group :test do
@@ -124,10 +126,6 @@ gem 'jquery-rails', '3.0.4'
 gem 'turbolinks', '1.1.1'
 gem 'jbuilder', '1.0.2'
 gem 'best_in_place', github: 'bernat/best_in_place'
-
-group :doc do
-  gem 'sdoc', '0.3.20', require: false
-end
 
 group :production do
   gem 'rails_12factor'

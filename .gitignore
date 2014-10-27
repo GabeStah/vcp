@@ -24,3 +24,5 @@ doc/
 # Ignore application configuration
 
 public/system
+
+/config/chef/nodes/104.131.149.93.json
