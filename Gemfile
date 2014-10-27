@@ -13,7 +13,6 @@ gem 'sidekiq', github: 'mperham/sidekiq'
 gem 'sidekiq-failures'
 gem 'sidetiq'
 gem 'sidekiq_monitor'
-gem 'mina-sidekiq'
 gem 'unicorn'
 
 # Enabled for Sidekiq frontend
@@ -76,6 +75,15 @@ gem 'paperclip'
 # counter_cache
 gem 'custom_counter_cache'
 
+# gem 'capistrano'
+# # rails specific capistrano funcitons
+# gem 'capistrano-rails'
+# gem 'capistrano-rvm'
+# # integrate bundler with capistrano
+# gem 'capistrano-bundler'
+# if you are using RBENV
+#gem 'capistrano-rbenv'
+
 group :development, :test do
   gem 'rspec-rails'
   # The following optional lines are part of the advanced setup.
@@ -83,9 +91,6 @@ group :development, :test do
   gem 'spork-rails'
   # gem 'guard-spork'
   gem 'childprocess'
-
-  # Deployment
-  gem 'mina'
 
   gem 'launchy'
   gem 'quiet_assets'
@@ -126,4 +131,5 @@ end
 
 group :production do
   gem 'rails_12factor'
+  gem 'pg'
 end
