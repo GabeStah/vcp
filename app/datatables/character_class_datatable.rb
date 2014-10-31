@@ -28,8 +28,8 @@ class CharacterClassDatatable < AjaxDatatablesRails::Base
   def data
     records.map do |character_class|
       [
-        best_in_place(character_class, :name, type: :input, path: class_path(character_class)),
-        best_in_place(character_class, :blizzard_id, type: :input, path: class_path(character_class)),
+        best_in_place(character_class, :name, as: :input, url: class_path(character_class)),
+        best_in_place(character_class, :blizzard_id, as: :input, url: class_path(character_class)),
         link_to('Delete', class_path(character_class), method: :delete, data: { confirm: "Confirm deletion of #{character_class.name}?"})
       ]
     end

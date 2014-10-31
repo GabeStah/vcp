@@ -6,6 +6,7 @@ class CharacterHistoryDatatable < AjaxDatatablesRails::Base
   def_delegators :@view,
                  :current_user,
                  :distance_of_time_in_words,
+                 :format_points,
                  :l,
                  :link_to
 
@@ -63,7 +64,7 @@ class CharacterHistoryDatatable < AjaxDatatablesRails::Base
       unexcused_absence = standing_events.unexcused_absence?
       events_output = "#{absent && unexcused_absence ? 'Unexcused Absence' : absent ? absent : nil} #{attended ? 'Attended' : nil} #{sat ? 'Sat' : nil} #{tardy ? tardy : nil}"
 
-      points = "<span class='character-history-tooltip' data-tip='#{standing_events_summary(standing_events)}'>#{standing_events.sum(:change)}</span>"
+      points = "<span class='character-history-tooltip' data-tip='#{standing_events_summary(standing_events)}'>#{format_points(standing_events.sum(:change))}</span>"
       # Sums all earned points from raids up to and including this raid
       # Also adds non-raid point totals occuring prior to this raid date (initial/resume/retire/etc)
       total_points = StandingEvent.where(standing: @standing).where.any_of({raid: Raid.where('started_at <= ?', raid.started_at)}, ['created_at <= ?', raid.started_at]).sum(:change)
@@ -74,7 +75,7 @@ class CharacterHistoryDatatable < AjaxDatatablesRails::Base
         link_to(l(raid.started_at.in_time_zone), raid),
         events_output,
         points,
-        total_points,
+        format_points(total_points),
       ]
     end
   end
@@ -87,7 +88,7 @@ class CharacterHistoryDatatable < AjaxDatatablesRails::Base
       else
         from = "<i>self</i>"
       end
-      "<tr><td><span class=#{event.change > 0 ? 'green' : 'red'}>#{event.change}</span></td><td>#{event.type.camelize} #{gain_loss}</td><td>#{from}</td></tr>"
+      "<tr><td><span class=#{event.change > 0 ? 'green' : 'red'}>#{format_points(event.change)}</span></td><td>#{event.type.camelize} #{gain_loss}</td><td>#{from}</td></tr>"
     end.join
   end
 

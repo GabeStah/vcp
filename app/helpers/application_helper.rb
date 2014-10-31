@@ -24,6 +24,10 @@ module ApplicationHelper
     end
   end
 
+  def format_points(value)
+    number_with_precision(value, precision: 2, strip_insignificant_zeros: true) || 0
+  end
+
   # Check if records exist
   def records?(collection)
     return false if collection.nil?

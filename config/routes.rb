@@ -13,11 +13,11 @@ Vcp::Application.routes.draw do
     resources :participations, only: [:destroy, :update]
     mount Sidekiq::Web => '/sidekiq', as: 'sidekiq'
     mount Sidekiq::Monitor::Engine => '/sidekiqmonitor'
+    #mount Sidetiq::Web => '/sidekiq/sidetiq'
   end
 
   resources :characters
   match '/characters/:id',                to: 'characters#claim',           via: 'post'
-  #match '/characters/:id/addstanding',   to: 'characters#add_standing',    via: 'post',  as: 'add_standing_character'
   match '/characters/:id/history',        to: 'characters#history',         via: 'get',   as: 'character_history'
   match '/characters/:id/sync',           to: 'characters#sync',            via: 'post',  as: 'sync_character'
   match '/characters/:id/unclaim',        to: 'characters#unclaim',         via: 'post',  as: 'unclaim_character'
@@ -38,13 +38,5 @@ Vcp::Application.routes.draw do
   match '/users/:id/ghost', to: 'users#ghost', via: 'get', as: 'ghost_user'
 
   match '/users/:id/toggle_role/:role_id', to: 'users#toggle_role', via: 'post', as: 'user_toggle_role'
-
-  # get '/auth/:provider/callback' => 'omniauth#callback'
-  # get '/auth/failure' => 'omniauth#failure'
-  # get '/doit' => 'omniauth#signin'
-
-  # match '/users/sign_in', to: 'sessions#new',         via: 'get'
-  # match '/signout',       to: 'sessions#destroy',     via: 'delete'
-  # match '/signup',        to: 'users#new',            via: 'get'
 
 end

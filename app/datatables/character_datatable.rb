@@ -8,6 +8,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
                  :current_user,
                  :l,
                  :link_to,
+                 :number_with_delimiter,
                  :sync_character_path,
                  :unclaim_character_path
 
@@ -52,7 +53,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
             link_to(character.guild.name, character.guild) : nil,
           "#{character.realm}-#{character.region.upcase}",
           character.raids_count > 0 ? character.raids_count : nil,
-          character.achievement_points,
+          number_with_delimiter(character.achievement_points),
           l(character.created_at.in_time_zone, format: :short),
           can?(:update, character) ?
             "#{link_to('Sync', sync_character_path(character), method: :post)}" : nil,
@@ -68,7 +69,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
             link_to(character.guild.name, character.guild) : nil,
           "#{character.realm}-#{character.region.upcase}",
           character.raids_count > 0 ? character.raids_count : nil,
-          character.achievement_points,
+          number_with_delimiter(character.achievement_points),
           l(character.created_at.in_time_zone, format: :short),
         ]
       end

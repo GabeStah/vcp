@@ -2,9 +2,9 @@
   <td><%= check_box_tag "selected[#{participation.character.slug}][1]" %></td>
   <td><%= link_to participation.character.name, participation.character %></td>
   <td><%= "#{participation.character.realm}-#{participation.character.region.upcase}" %></td>
-  <td><%= best_in_place_if can?(:manage, participation), participation, :online, type: :checkbox, path: participation_path(participation) %></td>
-  <td><%= best_in_place_if can?(:manage, participation), participation, :in_raid, type: :checkbox, path: participation_path(participation) %></td>
-  <td><%= best_in_place_if can?(:manage, participation), participation, :timestamp, type: :date, path: participation_path(participation),
+  <td><%= best_in_place_if can?(:manage, participation), participation, :online, as: :checkbox, url: participation_path(participation) %></td>
+  <td><%= best_in_place_if can?(:manage, participation), participation, :in_raid, as: :checkbox, url: participation_path(participation) %></td>
+  <td><%= best_in_place_if can?(:manage, participation), participation, :timestamp, as: :date, url: participation_path(participation),
                            display_with: lambda { |p| l(p) } %></td>
   <td><%= participation.event(participation.previous(@raid.participations)) %></td>
   <% if can?(:destroy, participation) %>
