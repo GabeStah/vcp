@@ -1,4 +1,5 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+
   def bnet
     @user = User.from_omniauth(request.env["omniauth.auth"])
 
@@ -15,5 +16,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def failure
     set_flash_message :alert, :failure, kind: OmniAuth::Utils.camelize(failed_strategy.name), reason: failure_message
     redirect_to new_user_registration_url
+  end
+
+  def force_ssl
+    true
   end
 end

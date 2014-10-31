@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 #ruby '2.1.1'
 
 gem 'rails', '4.1.1'
-#gem 'mysql2'
+gem 'mysql2'
 gem 'bootstrap-sass'
 gem 'sass-rails'
 gem 'autoprefixer-rails'
@@ -75,14 +75,23 @@ gem 'paperclip'
 # counter_cache
 gem 'custom_counter_cache'
 
+# gem 'capistrano'
+# # # rails specific capistrano funcitons
+# gem 'capistrano-rails'
+# # gem 'capistrano-rvm'
+# # # integrate bundler with capistrano
+# gem 'capistrano-bundler'
+# # if you are using RBENV
+# gem 'capistrano-rbenv'
+
 gem 'capistrano'
-# # rails specific capistrano funcitons
 gem 'capistrano-rails'
-# gem 'capistrano-rvm'
-# # integrate bundler with capistrano
-gem 'capistrano-bundler'
-# if you are using RBENV
-gem 'capistrano-rbenv'
+gem 'capistrano-rvm'
+gem 'sepastian-capistrano3-unicorn', require: false
+#gem 'capistrano-rbenv', '~> 2.0', require: false
+
+# gem 'mina'
+# gem 'mina-sidekiq'
 
 group :development, :test do
   gem 'rspec-rails'
@@ -129,5 +138,4 @@ gem 'best_in_place', github: 'bernat/best_in_place'
 
 group :production do
   gem 'rails_12factor'
-  gem 'pg'
 end

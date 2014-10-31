@@ -1,4 +1,1 @@
-set :stage, :production
-set :rails_env, :production
-
-server "#{fetch(:deploy_user)}@104.131.149.93", roles: %w{web app db}, primary: true
+server '104.131.148.182', user: 'rails', roles: %w{web app}

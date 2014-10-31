@@ -8,7 +8,7 @@
     <p>Achievement Points: <%= @character.achievement_points %></p>
     <p>Verified: <%= @character.verified? ? 'Yes' : 'No' %></p>
     <p>
-      Last Synced: <%= @character.synced_at ? "#{distance_of_time_in_words_to_now(@character.synced_at, include_sections: true).camelize} ago" : 'Never' %>
+      Last Synced: <%= @character.synced_at ? "#{distance_of_time_in_words_to_now(@character.synced_at, include_seconds: true).camelize} ago" : 'Never' %>
       <%= link_to 'Sync', sync_character_path(@character), method: :post if @owned_character %>
     </p>
     <p>
