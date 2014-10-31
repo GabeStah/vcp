@@ -12,6 +12,8 @@ defaults: &defaults
     realm: 'Hyjal'
     region: 'us'
 
+  locale: 'en'
+
   raid:
     end_time:
       hour: 22

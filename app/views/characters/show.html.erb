@@ -1,32 +1,74 @@
 <% provide(:title, @character.name) %>
 <div class="row">
-  <div class="col-md-12">
-    <h1>
+  <div class="character-info col-md-6">
+    <div class="avatar">
       <%= image_tag @character.avatar.url %>
-      <%= link_to @character.name, edit_character_path(@character), id: 'character-name' %>
-    </h1>
-    <p>Achievement Points: <%= @character.achievement_points %></p>
-    <p>Verified: <%= @character.verified? ? 'Yes' : 'No' %></p>
-    <p>
-      Last Synced: <%= @character.synced_at ? "#{distance_of_time_in_words_to_now(@character.synced_at, include_seconds: true).camelize} ago" : 'Never' %>
-      <%= link_to 'Sync', sync_character_path(@character), method: :post if @owned_character %>
-    </p>
-    <p>
-      Claimed: <%= @owned_character ? 'Yes' : 'No' %>
-    </p>
-    <% if @character.standing %>
-      <p>VCP: <%= format_points(@character.standing.points) %></p>
-    <% end %>
-    <% if @character.standing && !@character.standing.active %>
-      <% if can? :update, @character %>
-        <%= button_to 'Resume VCP Standing', resume_standing_path(@character.standing), :method => :post %>
+    </div>
+    <div class="name-realm-guild">
+      <div class="name">
+        <span>
+          <%= link_to @character.name, @character.battle_net_profile, id: 'character-name' %>
+        </span>
+      </div>
+      <div class="realm">
+        <%= "#{@character.realm}-#{@character.region.upcase}" %>
+      </div>
+      <% if @character.guild %>
+        <div class="guild">
+          <%= @character.guild.name %>
+        </div>
       <% end %>
-    <% elsif !@character.standing %>
-      <% if can? :update, @character %>
-        <%= button_to 'Add to VCP', add_to_standing_path(@character), :method => :post %>
+    </div>
+
+    <span class="clear"><!-- --></span>
+
+    <div class="level-race-class <%= @character.character_class.short_name %>">
+      <span class="level">
+        <%= @character.level %>
+      </span>
+      <% if @character.race %>
+        <span class="race">
+          <%= @character.race.name.titleize %>
+        </span>
       <% end %>
-    <% end %>
+      <% if @character.character_class %>
+        <span class="class">
+          <%= @character.character_class.name.titleize %>
+        </span>
+      <% end %>
+    </div>
+
+    <span class="clear"><!-- --></span>
+
+    <div class="achievement-points">
+      <span title="Achievement Points" data-toggle="tooltip">
+        <%= fa_icon "shield", text: number_with_delimiter(@character.achievement_points) %>
+      </span>
+      <% if @character.verified? %>
+        <span class="green" title="Verified" data-toggle="tooltip">
+          <%= fa_icon "check-circle" %>
+        </span>
+      <% else %>
+        <span class="red" title="Unverified" data-toggle="tooltip">
+          <%= fa_icon "question-circle" %>
+        </span>
+      <% end %>
+      <% if @owned_character || can?(:update, @character) %>
+        <%= link_to(fa_icon("refresh"), sync_character_path(@character), method: :post, title: "Refresh from Battle.net", data: {toggle: 'tooltip'}) %>
+      <% end %>
+    </div>
   </div>
+  <% if @character.standing %>
+  <div class="character-data col-md-6">
+    <div class="points">
+      <span><%= format_points(@character.standing.points)%></span>
+      <%= fa_icon("rub", title: "Points", data: {toggle: 'tooltip'}) %>
+    </div>
+  </div>
+  <% end %>
+
+  <span class="clear"><!-- --></span>
+
   <% if @character.standing && @character.standing.standing_statistic %>
     <div class="col-md-4">
       <%= render 'modules/vcp_module' %>
@@ -35,6 +77,8 @@
       <%= render 'modules/raids_module' %>
     </div>
   <% end %>
+
+  <span class="clear"><!-- --></span>
 
   <div class="col-md-12">
     <% if @character.standing %>

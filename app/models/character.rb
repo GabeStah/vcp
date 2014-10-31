@@ -65,6 +65,10 @@ class Character < ActiveRecord::Base
   update_counter_cache :user, :characters_count
   update_counter_cache :user, :characters_verified_count
 
+  def battle_net_profile
+    "http://#{self.region.downcase}.battle.net/wow/#{Settings.locale}/character/#{self.realm.downcase}/#{self.name}/"
+  end
+
   def download_file(url)
     open(URI.parse(url))
   rescue => e # catch url errors with validations instead of exceptions (Errno::ENOENT, OpenURI::HTTPError, etc...)
