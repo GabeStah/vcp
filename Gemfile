@@ -87,7 +87,7 @@ gem 'custom_counter_cache'
 gem 'capistrano'
 gem 'capistrano-rails'
 gem 'capistrano-rvm'
-gem 'sepastian-capistrano3-unicorn', require: false
+gem 'capistrano3-unicorn'
 gem 'capistrano-sidekiq' , github: 'seuros/capistrano-sidekiq'
 #gem 'capistrano-rbenv', '~> 2.0', require: false
 

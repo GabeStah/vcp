@@ -100,6 +100,8 @@ GEM
     capistrano-rvm (0.1.1)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
+    capistrano3-unicorn (0.2.1)
+      capistrano (~> 3.1, >= 3.1.0)
     capybara (2.4.4)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -368,8 +370,6 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
-    sepastian-capistrano3-unicorn (0.5.1)
-      capistrano (~> 3.0)
     settingslogic (2.0.9)
     sidekiq-failures (0.4.3)
       sidekiq (>= 2.16.0)
@@ -464,6 +464,7 @@ DEPENDENCIES
   capistrano-rails
   capistrano-rvm
   capistrano-sidekiq!
+  capistrano3-unicorn
   capybara
   childprocess
   chronic
@@ -498,7 +499,6 @@ DEPENDENCIES
   rspec-rails
   sass-rails
   selenium-webdriver
-  sepastian-capistrano3-unicorn
   settingslogic
   sidekiq!
   sidekiq-failures
