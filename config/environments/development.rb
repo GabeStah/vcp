@@ -42,6 +42,4 @@ Vcp::Application.configure do
     Bullet.console = true
     Bullet.add_footer = true
   end
-
-  config.relative_url_root = "/vcp"
 end

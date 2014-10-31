@@ -80,4 +80,6 @@ Vcp::Application.configure do
 
   # Host
   config.action_mailer.default_url_options = { host: 'vcp.gabestah.com' }
+
+  config.relative_url_root = "/vcp"
 end
