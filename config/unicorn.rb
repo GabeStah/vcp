@@ -4,6 +4,7 @@
 
 # Set your full path to application.
 app_path = "/var/www/vcp/current"
+shared_path = "/var/www/vcp/shared"
 
 # Set unicorn options
 worker_processes 1
@@ -21,11 +22,11 @@ working_directory app_path
 rails_env = ENV['RAILS_ENV'] || 'production'
 
 # Log everything to one file
-stderr_path "log/unicorn.log"
-stdout_path "log/unicorn.log"
+stderr_path "#{shared_path}/log/unicorn.log"
+stdout_path "#{shared_path}/log/unicorn.log"
 
 # Set master PID location
-pid "#{app_path}/tmp/pids/unicorn.pid"
+pid "#{shared_path}/tmp/pids/unicorn.pid"
 
 before_fork do |server, worker|
   ActiveRecord::Base.connection.disconnect!

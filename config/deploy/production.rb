@@ -1,1 +1,1 @@
-server '104.131.148.182', user: 'rails', roles: %w{web app}
+server 'contributionpoints.com', user: 'rails', roles: %w{web app}
