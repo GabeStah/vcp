@@ -22,7 +22,7 @@
 
     <span class="clear"><!-- --></span>
 
-    <div class="level-race-class <%= @character.character_class.short_name %>">
+    <div class="level-race-class <%= @character.character_class ? @character.character_class.short_name : '' %>">
       <span class="level">
         <%= @character.level %>
       </span>
