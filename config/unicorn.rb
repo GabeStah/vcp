@@ -8,7 +8,7 @@ shared_path = "/var/www/vcp/shared"
 
 # Set unicorn options
 worker_processes 1
-preload_app true
+preload_app false
 timeout 180
 #listen "127.0.0.1:9000"
 listen "#{shared_path}/tmp/sockets/unicorn.sock"

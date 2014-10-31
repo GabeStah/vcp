@@ -36,7 +36,9 @@ set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-set :unicorn_config_path, "config/unicorn.rb"
+set :unicorn_config_path, "/var/www/vcp/current/config/unicorn.rb"
+set :unicorn_pid, "/var/www/vcp/shared/tmp/pids/unicorn.pid"
+
 
 namespace :deploy do
 
@@ -45,9 +47,15 @@ namespace :deploy do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
       # execute :touch, release_path.join('tmp/restart.txt')
-      invoke 'unicorn:restart'
+
     end
   end
+
+  task :restart_unicorn do
+    invoke 'unicorn:reload'
+  end
+
+  after 'deploy:publishing', 'deploy:restart_unicorn'
 
   after :publishing, :restart
 
