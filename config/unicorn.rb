@@ -10,8 +10,8 @@ shared_path = "/var/www/vcp/shared"
 worker_processes 1
 preload_app true
 timeout 180
-listen "127.0.0.1:9000"
 #listen "127.0.0.1:9000"
+listen "#{shared_path}/tmp/sockets/unicorn.sock"
 
 # Spawn unicorn master worker for user apps (group: apps)
 user 'rails', 'www-data'
