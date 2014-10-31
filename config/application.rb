@@ -32,5 +32,7 @@ module Vcp
 
     # Sass settings
     config.sass.preferred_syntax = :sass
+
+    config.assets.prefix = "/vcp/assets"
   end
 end
