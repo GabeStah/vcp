@@ -13,7 +13,7 @@ timeout 180
 listen "#{shared_path}/tmp/sockets/unicorn.sock"
 
 # Spawn unicorn master worker for user apps (group: apps)
-user 'rails', 'www-data'
+user 'rails', 'rails'
 
 # Fill path to your app
 working_directory app_path

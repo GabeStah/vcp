@@ -52,7 +52,7 @@ namespace :deploy do
   end
 
   task :restart_unicorn do
-    invoke 'unicorn:reload'
+    invoke 'unicorn:legacy_restart'
   end
 
   after 'deploy:publishing', 'deploy:restart_unicorn'
