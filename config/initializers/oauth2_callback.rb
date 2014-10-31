@@ -6,7 +6,7 @@ module OmniAuth
   module Strategy
 
     def full_host
-      "https://104.131.149.93"
+      "https://#{Settings.domain}"
     end
   end
 end

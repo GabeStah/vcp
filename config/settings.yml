@@ -7,6 +7,8 @@ defaults: &defaults
     delinquent: 30
     tardy: 60
 
+  domain: 104.131.148.182
+
   guild:
     name: 'Vox Immortalis'
     realm: 'Hyjal'
