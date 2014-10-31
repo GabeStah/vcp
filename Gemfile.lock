@@ -30,6 +30,14 @@ GIT
       redis (>= 3.0.6)
       redis-namespace (>= 1.3.1)
 
+GIT
+  remote: git://github.com/seuros/capistrano-sidekiq.git
+  revision: 101ef76b9b95baae502fc10c3f90461d3f832a41
+  specs:
+    capistrano-sidekiq (0.3.8)
+      capistrano
+      sidekiq
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -455,6 +463,7 @@ DEPENDENCIES
   capistrano
   capistrano-rails
   capistrano-rvm
+  capistrano-sidekiq!
   capybara
   childprocess
   chronic

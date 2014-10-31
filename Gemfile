@@ -88,6 +88,7 @@ gem 'capistrano'
 gem 'capistrano-rails'
 gem 'capistrano-rvm'
 gem 'sepastian-capistrano3-unicorn', require: false
+gem 'capistrano-sidekiq' , github: 'seuros/capistrano-sidekiq'
 #gem 'capistrano-rbenv', '~> 2.0', require: false
 
 # gem 'mina'

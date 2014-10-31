@@ -25,9 +25,10 @@ set :rbenv_ruby, '2.1.3'
 
 # Default value for :linked_files is []
 # set :linked_files, %w{config/database.yml}
+set :linked_files, %w{config/application.yml config/database.yml config/secrets.yml}
 
 # Default value for linked_dirs is []
-# set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -53,9 +54,16 @@ namespace :deploy do
       # within release_path do
       #   execute :rake, 'cache:clear'
       # end
+
+      within release_path do
+        execute :rake, "db:drop RAILS_ENV=production"
+        execute :rake, "db:create RAILS_ENV=production"
+        execute :rake, "db:migrate RAILS_ENV=production"
+        execute :rake, "db:seed RAILS_ENV=production"
+      end
     end
   end
 
-  #after 'deploy:restart', 'unicorn:reload'    # app IS NOT preloaded
+  #after 'deploy:restart', 'unicorn:restart'    # app IS NOT preloaded
 
 end
