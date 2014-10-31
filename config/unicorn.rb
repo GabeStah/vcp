@@ -30,7 +30,7 @@ stdout_path "#{shared_path}/log/unicorn.log"
 pid "#{shared_path}/tmp/pids/unicorn.pid"
 
 before_fork do |server, worker|
-  ActiveRecord::Base.connection.disconnect!
+  ActiveRecord::Base.connection.disconnect
 
   old_pid = "#{server.config[:pid]}.oldbin"
   if File.exists?(old_pid) && server.pid != old_pid
