@@ -30,9 +30,9 @@ class RaceDatatable < AjaxDatatablesRails::Base
   def data
     records.map do |race|
       [
-        best_in_place(race, :name, type: :input),
-        best_in_place(race, :blizzard_id, type: :input),
-        best_in_place(race, :side, type: :select, collection: WOW_FACTION_HASH),
+        best_in_place(race, :name, as: :input),
+        best_in_place(race, :blizzard_id, as: :input),
+        best_in_place(race, :side, as: :select, collection: WOW_FACTION_HASH),
         link_to('Delete', race_path(race), method: :delete, data: { confirm: "Confirm deletion of #{race.name}?"})
       ]
     end

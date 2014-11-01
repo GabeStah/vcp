@@ -33,10 +33,10 @@ class ZoneDatatable < AjaxDatatablesRails::Base
   def data
     records.map do |zone|
       [
-        best_in_place(zone, :name, type: :input),
-        best_in_place(zone, :zone_type, type: :select, collection: WOW_ZONE_TYPE_HASH),
-        best_in_place(zone, :level, type: :input),
-        best_in_place(zone, :blizzard_id, type: :input),
+        best_in_place(zone, :name, as: :input),
+        best_in_place(zone, :zone_type, as: :select, collection: WOW_ZONE_TYPE_HASH),
+        best_in_place(zone, :level, as: :input),
+        best_in_place(zone, :blizzard_id, as: :input),
         can?(:destroy, zone) ? link_to('Delete', zone_path(zone), method: :delete, data: { confirm: "Delete #{zone.name}?" }) : nil
       ]
     end

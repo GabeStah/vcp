@@ -28,16 +28,20 @@ PARTICIPATION_STATUS = {
   online: 'online',
   unexcused: 'absent_unexcused'
 }
-WOW_FACTION_HASH = [["horde", "Horde"], ["alliance", "Alliance"], ["neutral", "Neutral"]]
+WOW_FACTION_HASH = {
+  alliance: 'Alliance',
+  horde: 'Horde',
+  neutral: 'Neutral'
+}
 WOW_REGION_HASH = [["US", "us"], ["EU", "eu"], ["KR", "kr"], ["TW", "tw"]]
 WOW_REGION_LIST = ["us", "eu", "kr", "tw", "US", "EU", "KR", "TW"]
-WOW_ZONE_TYPE_HASH = [
-  ['arena', 'Arena'],
-  ['dungeon', 'Dungeon'],
-  ['raid', 'Raid'],
-  ['scenario', 'Scenario'],
-  ['outdoor', 'Outdoor']
-]
+WOW_ZONE_TYPE_HASH = {
+  arena: 'Arena',
+  dungeon: 'Dungeon',
+  raid: 'Raid',
+  scenario: 'Scenario',
+  outdoor: 'Outdoor'
+}
 WOW_ZONE_TYPE_LIST = [
   'arena',
   'dungeon',
