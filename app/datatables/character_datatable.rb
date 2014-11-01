@@ -9,6 +9,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
                  :fa_icon,
                  :l,
                  :link_to,
+                 :link_to_if,
                  :number_with_delimiter,
                  :sync_character_path,
                  :unclaim_character_path
@@ -51,7 +52,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
           character.character_class ?
             "<span class=#{character.character_class.short_name}>#{character.character_class.name}</span>" : nil,
           character.guild.present? ?
-            link_to(character.guild.name, character.guild) : nil,
+            link_to_if(can?(:manage, character.guild), character.guild.name, character.guild) : nil,
           "#{character.realm}-#{character.region.upcase}",
           character.raids_count > 0 ? character.raids_count : nil,
           number_with_delimiter(character.achievement_points),
@@ -67,7 +68,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
           character.character_class ?
             "<span class=#{character.character_class.short_name}>#{character.character_class.name}</span>" : nil,
           character.guild.present? ?
-            link_to(character.guild.name, character.guild) : nil,
+            link_to_if(can?(:manage, character.guild), character.guild.name, character.guild) : nil,
           "#{character.realm}-#{character.region.upcase}",
           character.raids_count > 0 ? character.raids_count : nil,
           number_with_delimiter(character.achievement_points),

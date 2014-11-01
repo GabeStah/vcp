@@ -7,6 +7,7 @@ class StandingDatatable < AjaxDatatablesRails::Base
                  :edit_standing_path,
                  :l,
                  :link_to,
+                 :link_to_if,
                  :format_points,
                  :retire_standing_path
 
@@ -43,8 +44,8 @@ class StandingDatatable < AjaxDatatablesRails::Base
   def data
     records.map do |standing|
       name = link_to(standing.character.name, standing.character)
-      character_class = standing.character.character_class.present? ? standing.character.character_class.name : nil
-      guild = link_to(standing.character.guild.name, standing.character.guild) if can?(:update, Guild) && standing.character.guild
+      character_class = standing.character.character_class.present? ? "<span class=#{standing.character.character_class.short_name}>#{standing.character.character_class.name}</span>" : nil
+      guild = link_to_if(can?(:manage, standing.character.guild), standing.character.guild.name, standing.character.guild) if standing.character.guild
       realm = "#{standing.character.realm}-#{standing.character.region.upcase}"
       points = format_points(standing.points)
       if can?(:update, standing)
