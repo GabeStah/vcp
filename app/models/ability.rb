@@ -23,6 +23,9 @@ class Ability
 
   def moderator
     guest
+    # Allow sync for Classes/Races
+    can :sync, CharacterClass
+    can :sync, Race
     can :manage, [Character, Guild, Participation, Raid]
   end
 

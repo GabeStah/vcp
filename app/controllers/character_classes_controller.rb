@@ -30,6 +30,13 @@ class CharacterClassesController < ApplicationController
     end
   end
 
+  def sync
+    authorize! :sync, CharacterClass
+    BattleNetWorker.perform_async(type: 'class-population')
+    flash[:success] = "Sync requested, Classes will be updated shortly."
+    redirect_to :back
+  end
+
   def update
     @character_class.update_attributes(character_class_params)
     respond_with_bip(@character_class)

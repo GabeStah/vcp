@@ -28,7 +28,7 @@
 
   <div class="col-md-12">
 
-    <h2><small>Characters</small></h2>
+    <h2><small>Characters<%= " (#{@user.characters.size})" %></small></h2>
     <% if @user.characters.size > 0 %>
       <table class="characters table table-striped table-bordered table-white" id="characters-claimed-table" data-source="<%= characters_path(format: :json, type: :claimed, user: @user) %>">
         <thead>

@@ -29,6 +29,13 @@ class RacesController < ApplicationController
     end
   end
 
+  def sync
+    authorize! :sync, Race
+    BattleNetWorker.perform_async(type: 'race-population')
+    flash[:success] = "Sync requested, Races will be updated shortly."
+    redirect_to :back
+  end
+
   def update
     @race.update_attributes(race_params)
     respond_with_bip(@race)

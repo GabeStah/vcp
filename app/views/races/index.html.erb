@@ -4,7 +4,12 @@
 
   <div class="col-md-3">
     <h1>
-      <small>Add Race</small>
+      <small>
+        Add Race
+        <% if can?(:sync, Race) %>
+          <%= link_to(fa_icon("refresh"), sync_races_path, method: :post, title: "Sync all Races from Battle.net", data: {toggle: 'tooltip'}) %>
+        <% end %>
+      </small>
     </h1>
     <%= render 'race_form' %>
   </div>

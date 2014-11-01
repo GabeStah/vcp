@@ -6,8 +6,10 @@ Vcp::Application.routes.draw do
   require 'sidetiq/web'
 
   scope '/admin' do
-    resources :classes, only: [:create, :destroy, :index, :update], controller: :character_classes
-    resources :races,   only: [:create, :destroy, :index, :update]
+    resources :classes,   only: [:create, :destroy, :index, :update], controller: :character_classes
+    match '/classes/sync',  to: 'character_classes#sync', via: 'post',  as: 'sync_classes'
+    resources :races,     only: [:create, :destroy, :index, :update]
+    match '/races/sync',  to: 'races#sync', via: 'post',  as: 'sync_races'
     resources :zones,   only: [:create, :destroy, :index, :update]
     resources :guilds
     resources :participations, only: [:destroy, :update]

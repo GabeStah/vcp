@@ -5,7 +5,12 @@
 
   <div class="col-md-3">
     <h1>
-      <small>Add Class</small>
+      <small>
+        Add Class
+        <% if can?(:sync, CharacterClass) %>
+          <%= link_to(fa_icon("refresh"), sync_classes_path, method: :post, title: "Sync all Classes from Battle.net", data: {toggle: 'tooltip'}) %>
+        <% end %>
+      </small>
     </h1>
     <%= render 'character_class_form' %>
   </div>
