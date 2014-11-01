@@ -78,17 +78,31 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @user.update(user_params)
-      flash[:success] = "Profile updated"
-      redirect_to @user
-    else
-      render :edit
+    respond_to do |format|
+      if @user.update(user_params)
+        format.html {
+          flash[:success] = "Profile updated"
+          redirect_to @user
+        }
+        format.json do
+          # Update all characters created_at if changed
+          if user_params['created_at']
+            @user.characters.update_all(created_at: @user.created_at)
+          end
+          respond_with_bip(@user)
+        end
+      else
+        format.html { render :edit }
+        format.json { respond_with_bip(@user) }
+      end
     end
   end
 
   private
     def user_params
-      params.require(:user).permit(:battle_tag, :password,
+      params.require(:user).permit(:battle_tag,
+                                   :created_at,
+                                   :password,
                                    :password_confirmation)
     end
     def set_user

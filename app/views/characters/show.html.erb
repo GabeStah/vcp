@@ -74,7 +74,7 @@
     <% end %>
 
     <div class="joined">
-      <span class="joined-label">Member for</span>
+      <%= fa_icon("clock-o", title: "Member for", data: {toggle: 'tooltip'}) %>
       <span class="time"><%= time_ago_in_words(@character.created_at, highest_measures: 2) %></span>
     </div>
 
@@ -92,8 +92,8 @@
       <span class="clear"><!-- --></span>
 
       <div class="owner">
+        <%= link_to(fa_icon("user", title: "Owner", data: {toggle: 'tooltip'}), @character.user) %>
         <%= link_to(@character.user.name, @character.user) %>
-        <%= fa_icon("user", title: "Owner", data: {toggle: 'tooltip'}) %>
       </div>
     <% end %>
   </div>

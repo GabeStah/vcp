@@ -6,6 +6,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
   def_delegators :@view,
                  :can?,
                  :current_user,
+                 :fa_icon,
                  :l,
                  :link_to,
                  :number_with_delimiter,
@@ -56,7 +57,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
           number_with_delimiter(character.achievement_points),
           l(character.created_at.in_time_zone, format: :short),
           can?(:update, character) ?
-            "#{link_to('Sync', sync_character_path(character), method: :post)}" : nil,
+            link_to(fa_icon("refresh"), sync_character_path(character), method: :post, title: "Refresh from Battle.net", data: {toggle: 'tooltip'}) : nil,
         ]
       end
     else

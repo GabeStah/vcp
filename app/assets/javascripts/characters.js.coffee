@@ -8,6 +8,10 @@ jQuery ->
     ajax: $('#characters-claimed-table').data('source')
     columnDefs: [
       {
+        className: 'center',
+        targets: [1,4,6,7]
+      },
+      {
         sorting: false
         targets: ['nosort']
       },
@@ -20,6 +24,10 @@ jQuery ->
   $('#characters-table').dataTable
     ajax: $('#characters-table').data('source')
     columnDefs: [
+      {
+        className: 'center',
+        targets: [1,4,6]
+      },
       {
         sorting: false
         targets: ['nosort']
