@@ -86,6 +86,16 @@
         <%= best_in_place(@character, :created_at, as: :input, url: character_path(@character), display_with: lambda { |p| l(p) }) %>
       </div>
     <% end %>
+
+    <% if @character.user %>
+
+      <span class="clear"><!-- --></span>
+
+      <div class="owner">
+        <%= link_to(@character.user.name, @character.user) %>
+        <%= fa_icon("user", title: "Owner", data: {toggle: 'tooltip'}) %>
+      </div>
+    <% end %>
   </div>
 
   <span class="clear"><!-- --></span>
