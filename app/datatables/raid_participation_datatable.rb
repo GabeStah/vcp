@@ -33,8 +33,7 @@ class RaidParticipationDatatable < AjaxDatatablesRails::Base
                              'participations.online',
                              'participations.in_raid',
                              'participations.unexcused',
-                             'participations.timestamp',
-                             'participations.event']
+                             'participations.timestamp']
   end
 
   private
@@ -73,6 +72,6 @@ class RaidParticipationDatatable < AjaxDatatablesRails::Base
   end
 
   def get_raw_records
-    @raid.participations.includes(:character)
+    @raid.participations.joins(:character)
   end
 end
