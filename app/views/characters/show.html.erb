@@ -68,17 +68,23 @@
           <span><%= format_points(@character.standing.points)%></span>
           <%= fa_icon("rub", title: "Points", data: {toggle: 'tooltip'}) %>
         </div>
-    <% end %>
 
-    <span class="clear"><!-- --></span>
+        <span class="clear"><!-- --></span>
+
+    <% end %>
 
     <div class="joined">
       <span class="joined-label">Member for</span>
-      <span class="time"><%= time_ago_in_words(@character.created_at, except: [:seconds, :minutes, :hours], highest_measures: 2) %></span>
+      <span class="time"><%= time_ago_in_words(@character.created_at, highest_measures: 2) %></span>
     </div>
 
     <% if can? :manage, @character %>
-      <%= best_in_place(@character, :created_at, as: :input, url: character_path(@character), display_with: lambda { |p| l(p) }) %>
+
+      <span class="clear"><!-- --></span>
+
+      <div class="created_at">
+        <%= best_in_place(@character, :created_at, as: :input, url: character_path(@character), display_with: lambda { |p| l(p) }) %>
+      </div>
     <% end %>
   </div>
 

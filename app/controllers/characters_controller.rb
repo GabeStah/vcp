@@ -70,19 +70,26 @@ class CharactersController < ApplicationController
   end
 
   def update
-    if @character.update(character_params)
-      @character.update(verified: false)
-      BattleNetWorker.perform_async(id: @character.id, type: 'character')
-      flash[:success] = "#{@character.full_title} updated & Battle.net sync added to queue."
-      redirect_to @character
-    else
-      render :edit
+    respond_to do |format|
+      if @character.update(character_params)
+        format.html {
+          @character.update(verified: false)
+          BattleNetWorker.perform_async(id: @character.id, type: 'character')
+          flash[:success] = "#{@character.full_title} updated & Battle.net sync added to queue."
+          redirect_to @character
+        }
+        format.json { respond_with_bip(@character) }
+      else
+        format.html { render :edit }
+        format.json { respond_with_bip(@character) }
+      end
     end
   end
 
   private
     def character_params
-      params.require(:character).permit(:name,
+      params.require(:character).permit(:created_at,
+                                        :name,
                                         :realm,
                                         :region)
     end
