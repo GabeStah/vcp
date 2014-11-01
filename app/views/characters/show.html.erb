@@ -1,5 +1,5 @@
 <% provide(:title, @character.name) %>
-<div class="row">
+<div class="character row">
   <div class="character-info col-md-6">
     <div class="avatar">
       <%= image_tag @character.avatar.url %>
@@ -56,16 +56,31 @@
       <% if @owned_character || can?(:update, @character) %>
         <%= link_to(fa_icon("refresh"), sync_character_path(@character), method: :post, title: "Refresh from Battle.net", data: {toggle: 'tooltip'}) %>
       <% end %>
+      <% if can? :manage, @character %>
+        <%= link_to(fa_icon("edit"), edit_character_path(@character), title: "Edit #{@character.full_title}", data: {toggle: 'tooltip'}, class: 'edit') %>
+      <% end %>
     </div>
   </div>
-  <% if @character.standing %>
+
   <div class="character-data col-md-6">
-    <div class="points">
-      <span><%= format_points(@character.standing.points)%></span>
-      <%= fa_icon("rub", title: "Points", data: {toggle: 'tooltip'}) %>
+    <% if @character.standing %>
+        <div class="points">
+          <span><%= format_points(@character.standing.points)%></span>
+          <%= fa_icon("rub", title: "Points", data: {toggle: 'tooltip'}) %>
+        </div>
+    <% end %>
+
+    <span class="clear"><!-- --></span>
+
+    <div class="joined">
+      <span class="joined-label">Member for</span>
+      <span class="time"><%= time_ago_in_words(@character.created_at, except: [:seconds, :minutes, :hours], highest_measures: 2) %></span>
     </div>
+
+    <% if can? :manage, @character %>
+      <%= best_in_place(@character, :created_at, as: :input, url: character_path(@character), display_with: lambda { |p| l(p) }) %>
+    <% end %>
   </div>
-  <% end %>
 
   <span class="clear"><!-- --></span>
 
