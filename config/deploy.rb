@@ -39,8 +39,26 @@ set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public
 set :unicorn_config_path, "/var/www/vcp/current/config/unicorn.rb"
 set :unicorn_pid, "/var/www/vcp/shared/tmp/pids/unicorn.pid"
 
-
 namespace :deploy do
+
+  after 'deploy:publishing', 'deploy:restart_server'
+
+  task :restart_server do
+    invoke 'deploy:destroy_socket'
+    invoke 'deploy:restart_unicorn'
+  end
+
+  task :destroy_socket do
+    on roles(:app) do
+      execute :rm, '-f /var/www/vcp/shared/tmp/sockets/unicorn.sock'
+    end
+  end
+
+  task :restart_unicorn do
+    invoke 'unicorn:legacy_restart'
+  end
+
+  after :publishing, :restart
 
   desc 'Restart application'
   task :restart do
@@ -50,14 +68,6 @@ namespace :deploy do
 
     end
   end
-
-  task :restart_unicorn do
-    invoke 'unicorn:legacy_restart'
-  end
-
-  after 'deploy:publishing', 'deploy:restart_unicorn'
-
-  after :publishing, :restart
 
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
