@@ -57,7 +57,14 @@
         <%= link_to(fa_icon("refresh"), sync_character_path(@character), method: :post, title: "Refresh from Battle.net", data: {toggle: 'tooltip'}) %>
       <% end %>
       <% if can? :manage, @character %>
-        <%= link_to(fa_icon("edit"), edit_character_path(@character), title: "Edit #{@character.full_title}", data: {toggle: 'tooltip'}, class: 'edit') %>
+        <%= link_to(fa_icon("edit"), edit_character_path(@character), title: "Edit", data: {toggle: 'tooltip'}, class: 'edit') %>
+      <% end %>
+      <% if @character.standing && can?(:update, @character) %>
+        <% if @character.standing.active %>
+          <%= link_to(fa_icon("minus-square"), retire_standing_path(@character.standing), :method => :post, title: "Retire from Standing participation", data: {toggle: 'tooltip'}, class: 'red') %>
+        <% else %>
+          <%= link_to(fa_icon("plus-square"), resume_standing_path(@character.standing), :method => :post, title: "Resume Standing participation", data: {toggle: 'tooltip'}, class: 'green') %>
+        <% end %>
       <% end %>
     </div>
   </div>
@@ -96,9 +103,26 @@
         <%= link_to(@character.user.name, @character.user) %>
       </div>
     <% end %>
+
+    <% if !@character.standing %>
+      <% if can? :update, @character %>
+
+        <span class="clear"><!-- --></span>
+
+        <div class="add-to-standing">
+          <%= form_for(@character, url: add_to_standing_path(@character)) do |f| %>
+            <button type="submit" class="btn btn-success add-btn" title="Add to Standings" data-toggle="tooltip">
+              <%= fa_icon("plus-square") %>
+            </button>
+            <%= text_field_tag('initial-points', nil, placeholder: 'initial points') %>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
   </div>
 
   <span class="clear"><!-- --></span>
+
 
   <% if @character.standing && @character.standing.standing_statistic %>
     <div class="col-md-4">

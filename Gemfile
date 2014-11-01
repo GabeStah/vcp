@@ -40,7 +40,7 @@ gem 'jquery-ui-rails'
 # DataTables
 gem 'jquery-datatables-rails', '~> 2.2.1'
 # Ajax DataTables integration
-gem 'ajax-datatables-rails', github: 'GabeStah/ajax-datatables-rails'
+gem 'ajax-datatables-rails'
 # Settings
 gem 'settingslogic'
 # Fonts!

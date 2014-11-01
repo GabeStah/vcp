@@ -1,11 +1,4 @@
 GIT
-  remote: git://github.com/GabeStah/ajax-datatables-rails.git
-  revision: 075707b81923a1b0b5dd599526151d30fc81aba7
-  specs:
-    ajax-datatables-rails (0.2.1)
-      railties (>= 3.1)
-
-GIT
   remote: git://github.com/bernat/best_in_place.git
   revision: 4684df577e5b4d40a4a42cc8e6470d3c739b2fd7
   specs:
@@ -70,6 +63,8 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     addressable (2.3.6)
+    ajax-datatables-rails (0.2.0)
+      railties (>= 3.1)
     arel (5.0.1.20140414130214)
     attribute_normalizer (1.2.0)
     autoprefixer-rails (3.1.2.20141016)
@@ -450,7 +445,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord_any_of
-  ajax-datatables-rails!
+  ajax-datatables-rails
   attribute_normalizer
   autoprefixer-rails
   bcrypt-ruby (= 3.1.2)
