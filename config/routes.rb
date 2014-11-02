@@ -35,10 +35,12 @@ Vcp::Application.routes.draw do
   root 'static_pages#home'
   match '/about',         to: 'static_pages#about',   via: 'get'
   match '/contact',       to: 'static_pages#contact', via: 'get'
-  match '/help',          to: 'static_pages#help',    via: 'get'
 
   match '/users/:id/ghost', to: 'users#ghost', via: 'get', as: 'ghost_user'
 
   match '/users/:id/toggle_role/:role_id', to: 'users#toggle_role', via: 'post', as: 'user_toggle_role'
+
+  # Help
+  match '/help', to: 'high_voltage/pages#show', via: 'get', id: 'help'
 
 end

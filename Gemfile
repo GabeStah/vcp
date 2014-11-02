@@ -96,6 +96,9 @@ gem 'capistrano-sidekiq' , github: 'seuros/capistrano-sidekiq'
 
 gem 'merit'
 
+gem 'high_voltage'
+gem 'redcarpet'
+
 group :development, :test do
   gem 'rspec-rails'
   # The following optional lines are part of the advanced setup.
