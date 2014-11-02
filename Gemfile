@@ -94,6 +94,8 @@ gem 'capistrano-sidekiq' , github: 'seuros/capistrano-sidekiq'
 # gem 'mina'
 # gem 'mina-sidekiq'
 
+gem 'merit'
+
 group :development, :test do
   gem 'rspec-rails'
   # The following optional lines are part of the advanced setup.

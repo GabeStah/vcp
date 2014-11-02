@@ -13,6 +13,9 @@ class StandingStatistic < Statistic
       # Get standing_events list
       standing_events = self.standing.standing_events
 
+      # Sum of total raid time while sitting
+      # standing_events.between(type: :sat).collect { |e| e.raid.ended_at - e.raid.started_at }.inject(:+)
+
       update_attributes(
         gains_delinquency:  self.standing.gains(:delinquency),
         gains_infraction:   self.standing.gains(:infraction),
