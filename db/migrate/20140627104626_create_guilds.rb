@@ -1,6 +1,7 @@
 class CreateGuilds < ActiveRecord::Migration
   def change
-    create_table :guilds, options: "DEFAULT CHARSET=utf8 COLLATE=utf8_bin ENGINE=InnoDB" do |t|
+    #create_table :guilds, options: "DEFAULT CHARSET=utf8 COLLATE=utf8_bin ENGINE=InnoDB" do |t|
+    create_table :guilds do |t|
       t.integer :achievement_points
       t.boolean :active
       t.string :battlegroup

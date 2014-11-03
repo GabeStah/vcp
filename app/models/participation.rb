@@ -62,12 +62,12 @@ class Participation < ActiveRecord::Base
     online = args[:online]
 
     if after.nil? == false
-      if self.timestamp < after
+      if self.timestamp.to_i < after.to_i
         return false
       end
     end
     if before.nil? == false
-      if self.timestamp > before
+      if self.timestamp.to_i > before.to_i
         return false
       end
     end
