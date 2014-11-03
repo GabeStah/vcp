@@ -17,7 +17,7 @@ role_moderator = Role.find_by(name: :moderator)
 # Add users
 10.times do |n|
   if n >= 5
-    name  = Faker::Name.name + " Mod"
+    name  = Faker::Name.first_name
     password  = "password"
     user = User.create!(battle_tag: "#{name}##{n}",
                         name: name,
@@ -26,7 +26,7 @@ role_moderator = Role.find_by(name: :moderator)
     user.roles << role_moderator
   else
 
-    name  = Faker::Name.name
+    name  = Faker::Name.first_name
     password  = "password"
     user = User.create!(battle_tag: "#{name}##{n}",
                         name: name,
@@ -75,11 +75,40 @@ Guild.delete_all
 #                region: 'eu')
 #end
 
+# [
+#   'Boggyb',
+#   'Dougallxin',
+#   'Airroh',
+#   'Klik',
+#   'Tree',
+#   'Aelloon',
+#   'Talanvor',
+#   'Citruss',
+#   'Nesaru',
+#   'Takaoni',
+#   'Nephani',
+#   'Tayloreds',
+#   'Kogeth',
+#   'Kulldar',
+#   'Blinks',
+#   'Shaylana',
+#   'Idtrâpdât',
+#   'Noblood',
+#   'Gartzarnn',
+#   'Deaf',
+#   'Vikwin',
+#   'Dyeus',
+# ].each do |character|
+#   Character.create(created_at: (Time.zone.now - 40.days + rand(0..48).hours - rand(0..240).minutes), name: character, realm: 'Hyjal', region: 'us')
+# end
+
 # Create a new raid
 #PopulateRaidsWorker.perform_in(5.seconds)
 
 # Populate standings
-PopulateStandingsWorker.perform_in(90.seconds)
+#PopulateStandingsWorker.perform_in(300.seconds)
+
+#DummyDataWorker.perform_in(360.seconds)
 
 # Create some participations
 #PopulateParticipationsWorker.perform_in(120.seconds)

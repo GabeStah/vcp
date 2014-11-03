@@ -84,7 +84,7 @@ class CharacterHistoryDatatable < AjaxDatatablesRails::Base
     events.collect do |event|
       gain_loss = event.change >= 0 ? 'Gain' : 'Loss'
       if event.parent && event.parent.standing
-        from = "<span class=#{event.parent.standing.character.character_class.short_name}>" + "#{event.parent.standing.character.name}</span>"
+        from = "<span class=#{event.parent.standing.character.character_class ? event.parent.standing.character.character_class.short_name : nil}>" + "#{event.parent.standing.character.name}</span>"
       else
         from = "<i>self</i>"
       end

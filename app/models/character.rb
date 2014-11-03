@@ -58,12 +58,13 @@ class Character < ActiveRecord::Base
             presence: true,
             uniqueness: { case_sensitive: false }
 
-  # Counters
-  define_counter_cache :raids_count do |character|
-    character.raids.count
+  def avatar_content_type
+    @avatar_content_type
   end
-  update_counter_cache :user, :characters_count
-  update_counter_cache :user, :characters_verified_count
+
+  def avatar_content_type=(type)
+    @avatar_content_type = type
+  end
 
   def battle_net_profile
     "http://#{self.region.downcase}.battle.net/wow/#{Settings.locale}/character/#{self.realm.downcase}/#{self.name}/"
@@ -93,12 +94,22 @@ class Character < ActiveRecord::Base
     passed_key == process_key(user.secret_key)
   end
 
+  def portrait_content_type
+    @portrait_content_type
+  end
+
+  def portrait_content_type=(type)
+    @portrait_content_type = type
+  end
+
   # Retrieve the full portrait path
   def portrait_url(id, full = false)
-    if full
-      "http://#{self.region.downcase}.battle.net/static-render/#{self.region.downcase}/#{id.sub!('avatar', 'profilemain')}"
-    else
-      "http://#{self.region.downcase}.battle.net/static-render/#{self.region.downcase}/#{id}"
+    if id
+      if full
+        "http://#{self.region.downcase}.battle.net/static-render/#{self.region.downcase}/#{id.sub!('avatar', 'profilemain')}"
+      else
+        "http://#{self.region.downcase}.battle.net/static-render/#{self.region.downcase}/#{id}"
+      end
     end
   end
 
@@ -158,6 +169,13 @@ class Character < ActiveRecord::Base
       )
     end
   end
+
+  # Counters
+  define_counter_cache :raids_count do |character|
+    character.raids.count
+  end
+  update_counter_cache :user, :characters_count
+  update_counter_cache :user, :characters_verified_count
 
   private
 

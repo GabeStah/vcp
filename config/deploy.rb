@@ -41,8 +41,6 @@ set :unicorn_pid, "/var/www/vcp/shared/tmp/pids/unicorn.pid"
 
 namespace :deploy do
 
-  after 'deploy:publishing', 'deploy:restart_server'
-
   task :restart_server do
     invoke 'deploy:destroy_socket'
     invoke 'deploy:restart_unicorn'
@@ -57,8 +55,6 @@ namespace :deploy do
   task :restart_unicorn do
     invoke 'unicorn:legacy_restart'
   end
-
-  after :publishing, :restart
 
   desc 'Restart application'
   task :restart do
@@ -84,5 +80,8 @@ namespace :deploy do
       end
     end
   end
+
+  after :publishing, :restart
+  after 'deploy:publishing', 'deploy:restart_server'
 
 end

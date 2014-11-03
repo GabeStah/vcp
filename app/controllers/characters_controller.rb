@@ -1,7 +1,7 @@
 class CharactersController < ApplicationController
   load_and_authorize_resource
   before_action :set_character,               only: [:add_to_standing, :claim, :destroy, :edit, :history, :show, :sync, :unclaim, :update]
-  before_action :require_user_owns_character, only: [:sync]
+  #before_action :require_user_owns_character, only: [:sync]
   before_action :user_owns_character?
 
   def add_to_standing

@@ -6,7 +6,7 @@ jQuery ->
 #  $('#raid_ended_at').datetimepicker()
   # Update timestamp entries based on Start Date
   format_date = (val) ->
-    $.formatDateTime('mm/dd/yy gg:ii a', new Date(new Date(val).getTime() + (new Date().getTimezoneOffset() * 60000)))
+    $.formatDateTime('mm/dd/yy gg:ii a', new Date(new Date(val).getTime() + (new Date(val).getTimezoneOffset() * 60000)))
 
   $('input[id^=timestamp_]').val(format_date($('#raid_started_at').val()))
   $('#raid_started_at').on('change', (e) ->

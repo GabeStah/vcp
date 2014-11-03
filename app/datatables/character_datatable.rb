@@ -58,7 +58,7 @@ class CharacterDatatable < AjaxDatatablesRails::Base
           number_with_delimiter(character.achievement_points),
           l(character.created_at.in_time_zone, format: :short),
           can?(:update, character) ?
-            link_to(fa_icon("refresh"), sync_character_path(character), method: :post, title: "Refresh from Battle.net", data: {toggle: 'tooltip'}) : nil,
+            link_to(fa_icon("refresh"), sync_character_path(character), method: :post, title: "Refresh from Battle.net", data: {toggle: 'tooltip', placement: 'left'}) : nil,
         ]
       end
     else

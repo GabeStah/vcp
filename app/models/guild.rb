@@ -82,16 +82,28 @@ class Guild < ActiveRecord::Base
           BattleNetWorker.perform_async(id: self.id, type: 'guild-members')
         when 'guild-members'
           @json['members'].each do |entry|
-            # Create or lookup characterb
-            character = Character.find_or_create_by(name: entry['character']['name'],
-                                                    realm: entry['character']['realm'],
-                                                    region: self.region)
 
-            # Add guild record
-            character.update(guild: self,
-                                        rank: entry['rank'])
-            # Create a character worker
-            BattleNetWorker.perform_async(id: character.id, type: 'character')
+            character = Character.find_by(name: entry['character']['name'],
+                                          realm: entry['character']['realm'],
+                                          region: self.region)
+            if character
+              # Add guild record
+              character.update(guild: self,
+                               rank: entry['rank'])
+              # Create a character worker
+              BattleNetWorker.perform_async(id: character.id, type: 'character')
+            else
+              # Create
+              # Create or lookup character
+              character = Character.create(name: entry['character']['name'],
+                                           realm: entry['character']['realm'],
+                                           region: self.region)
+
+              # Add guild record
+              character.update(guild: self,
+                               rank: entry['rank'])
+              # DO NOT create a worker, worker is created through Character model
+            end
           end
       end
     end

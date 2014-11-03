@@ -23,6 +23,8 @@ class Ability
 
   def moderator
     guest
+    # Allow sync of others' Characters
+    can :sync, Character
     # Allow sync for Classes/Races
     can :sync, CharacterClass
     can :sync, Race

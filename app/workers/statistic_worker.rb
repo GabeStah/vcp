@@ -3,8 +3,8 @@ class StatisticWorker
   include Sidetiq::Schedulable
 
   recurrence do
-    secondly(120)
-    #daily(1).hour_of_day(2)
+    #secondly(300)
+    daily(1).hour_of_day(2)
   end
 
   def perform
