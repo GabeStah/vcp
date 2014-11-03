@@ -31,7 +31,7 @@ class UsersController < ApplicationController
       redirect_to user_path(@user)
     else
       flash[:error] = "Unable to ghost as #{@user.name}."
-      redirect_to :back
+      redirect_to user_path(@user)
     end
   end
 
