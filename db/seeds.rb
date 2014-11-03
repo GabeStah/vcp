@@ -75,32 +75,32 @@ Guild.delete_all
 #                region: 'eu')
 #end
 
-# [
-#   'Boggyb',
-#   'Dougallxin',
-#   'Airroh',
-#   'Klik',
-#   'Tree',
-#   'Aelloon',
-#   'Talanvor',
-#   'Citruss',
-#   'Nesaru',
-#   'Takaoni',
-#   'Nephani',
-#   'Tayloreds',
-#   'Kogeth',
-#   'Kulldar',
-#   'Blinks',
-#   'Shaylana',
-#   'Idtrâpdât',
-#   'Noblood',
-#   'Gartzarnn',
-#   'Deaf',
-#   'Vikwin',
-#   'Dyeus',
-# ].each do |character|
-#   Character.create(created_at: (Time.zone.now - 40.days + rand(0..48).hours - rand(0..240).minutes), name: character, realm: 'Hyjal', region: 'us')
-# end
+[
+  'Boggyb',
+  'Dougallxin',
+  'Airroh',
+  'Klik',
+  'Tree',
+  'Aelloon',
+  'Talanvor',
+  'Citruss',
+  'Nesaru',
+  'Takaoni',
+  'Nephani',
+  'Tayloreds',
+  'Kogeth',
+  'Kulldar',
+  'Blinks',
+  'Shaylana',
+  'Idtrâpdât',
+  'Noblood',
+  'Gartzarnn',
+  'Deaf',
+  'Vikwin',
+  'Dyeus',
+].each do |character|
+  Character.create(created_at: (Time.zone.now - 40.days + rand(0..48).hours - rand(0..240).minutes), name: character, realm: 'Hyjal', region: 'us')
+end
 
 # Create a new raid
 #PopulateRaidsWorker.perform_in(5.seconds)
