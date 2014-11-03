@@ -2,6 +2,8 @@ class PopulateParticipationsWorker
   include Sidekiq::Worker
   include Errors
 
+  sidekiq_options unique: true
+
   def perform
     # Get raid
     raid = Raid.last

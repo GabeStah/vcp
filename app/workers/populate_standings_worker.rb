@@ -2,6 +2,8 @@ class PopulateStandingsWorker
   include Sidekiq::Worker
   include Errors
 
+  sidekiq_options unique: true
+
   def perform(character_limit = 23)
     # Get random characters with data
     characters = Character.where(verified: true).limit(character_limit)

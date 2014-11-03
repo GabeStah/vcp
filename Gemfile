@@ -14,6 +14,7 @@ gem 'sidekiq', github: 'mperham/sidekiq'
 gem 'sidekiq-failures'
 gem 'sidetiq'
 gem 'sidekiq_monitor'
+gem 'sidekiq-unique-jobs'
 gem 'unicorn'
 
 # Enabled for Sidekiq frontend

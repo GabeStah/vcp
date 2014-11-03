@@ -2,6 +2,8 @@ class SyncWorker
   include Sidekiq::Worker
   include Sidetiq::Schedulable
 
+  sidekiq_options unique: true
+
   recurrence do
     #secondly(120)
     daily(1).hour_of_day(2)

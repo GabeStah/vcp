@@ -2,6 +2,8 @@ class DummyDataWorker
   include Sidekiq::Worker
   include Errors
 
+  sidekiq_options unique: true
+
   def perform(raid_count = 20)
 
     standings = Standing.where(active: true)

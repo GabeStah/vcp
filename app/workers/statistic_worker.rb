@@ -2,9 +2,11 @@ class StatisticWorker
   include Sidekiq::Worker
   include Sidetiq::Schedulable
 
+  sidekiq_options unique: true
+
   recurrence do
-    #secondly(300)
-    daily(1).hour_of_day(2)
+    secondly(60)
+    #daily(1).hour_of_day(2)
   end
 
   def perform

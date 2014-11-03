@@ -2,6 +2,8 @@ class BattleNetWorker
   include Sidekiq::Worker
   include Errors
 
+  sidekiq_options unique: true
+
   def perform(options={})
     id = options['id']
     type = options['type']

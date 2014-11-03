@@ -2,6 +2,8 @@ class PopulateRaidsWorker
   include Sidekiq::Worker
   include Errors
 
+  sidekiq_options unique: true
+
   def perform
     # Create a few basic raids
     unless Zone.last.nil?
