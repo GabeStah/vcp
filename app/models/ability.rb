@@ -33,6 +33,7 @@ class Ability
 
   def admin
     moderator
+    can :ghost, User
     can :manage, :all
   end
 end

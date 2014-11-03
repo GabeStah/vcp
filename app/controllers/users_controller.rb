@@ -25,8 +25,7 @@ class UsersController < ApplicationController
 
   def ghost
     authorize! :ghost, @user
-    if Rails.env.development?
-      sign_in(:user, @user)
+    if sign_in(:user, @user)
       flash[:success] = "Successfully ghosting as #{@user.name}."
       redirect_to user_path(@user)
     else
