@@ -75,6 +75,8 @@ Guild.delete_all
 #                region: 'eu')
 #end
 
+sleep(5)
+
 [
   'Boggyb',
   'Dougallxin',

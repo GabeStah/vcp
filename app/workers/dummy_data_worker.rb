@@ -2,9 +2,7 @@ class DummyDataWorker
   include Sidekiq::Worker
   include Errors
 
-  def perform(raid_count)
-
-    raid_count = raid_count || 20
+  def perform(raid_count = 20)
 
     standings = Standing.where(active: true)
     zones = Zone.where(zone_type: 'raid')
