@@ -17,8 +17,8 @@
       </tbody>
     </table>
 
-    <% if Rails.env.development? %>
+    <h3 class="float-right">
       <%= "Total Points: #{Standing.where(active: true).sum(:points)}" %>
-    <% end %>
+    </h3>
   </div>
 </div>

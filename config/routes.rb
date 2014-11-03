@@ -41,6 +41,8 @@ Vcp::Application.routes.draw do
   match '/users/:id/toggle_role/:role_id', to: 'users#toggle_role', via: 'post', as: 'user_toggle_role'
 
   # Help
-  match '/help', to: 'high_voltage/pages#show', via: 'get', id: 'help'
+  match '/help', to: 'high_voltage/pages#show', via: 'get', id: 'index'
+  match '/help/registration', to: 'high_voltage/pages#show', via: 'get', id: 'registration'
+  match '/help/user_profile', to: 'high_voltage/pages#show', via: 'get', id: 'user_profile'
 
 end

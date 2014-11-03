@@ -11,8 +11,12 @@ module ActionView
       def call(template)
         @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML,
                                               autolink:             true,
+                                              fenced_code_blocks:   true,
+                                              highlight:            true,
+                                              no_intra_emphasis:    true,
                                               space_after_headers:  true,
-                                              fenced_code_blocks:   true)
+                                              tables:               true,
+                                              underline:            true)
         "#{@markdown.render(template.source).inspect}.html_safe"
       end
     end
