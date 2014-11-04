@@ -4,7 +4,9 @@ class DummyDataWorker
 
   sidekiq_options unique: true
 
-  def perform(raid_count = 20)
+  def perform(args={})
+    days_old = args[:days_old] || 110
+    raid_count = args[:raid_count] || 100
 
     standings = Standing.where(active: true)
     zones = Zone.where(zone_type: 'raid')
@@ -22,7 +24,7 @@ class DummyDataWorker
       type_randomizer = WeightedRandomizer.new(types)
 
       raid_count.times do |i|
-        raid_start_time = (Time.zone.now - i.days - 30.days + rand(0..48).hours - rand(0..240).minutes)
+        raid_start_time = (Time.zone.now + i.days - days_old.days + rand(0..48).hours - rand(0..240).minutes)
         raid_end_time = (raid_start_time + rand(120..240).minutes)
         raid = Raid.create(
           ended_at: raid_end_time,

@@ -4,7 +4,8 @@ class PopulateCharactersWorker
 
   sidekiq_options unique: true
 
-  def perform
+  def perform(args={})
+    days_old = args[:days_old] || 120
     [
       'Boggyb',
       'Dougallxin',
@@ -20,6 +21,9 @@ class PopulateCharactersWorker
       'Tayloreds',
       'Kogeth',
       'Kulldar',
+      'Kulldos',
+      'Kullded',
+      'Xiae',
       'Blinks',
       'Shaylana',
       'Idtrâpdât',
@@ -29,7 +33,7 @@ class PopulateCharactersWorker
       'Vikwin',
       'Dyeus',
     ].each do |character|
-      Character.create(created_at: (Time.zone.now - 15.days + rand(0..48).hours - rand(0..240).minutes), name: character, realm: 'Hyjal', region: 'us')
+      Character.create(created_at: (Time.zone.now - days_old.days + rand(0..48).hours - rand(0..240).minutes), name: character, realm: 'Hyjal', region: 'us')
     end
   end
 end

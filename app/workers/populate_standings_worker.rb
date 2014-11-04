@@ -15,6 +15,9 @@ class PopulateStandingsWorker
                          points: Standing.calculate_starting_points(seed: seed, players: characters.size, increment: 10))
         seed += 1
       end
+
+      # Set initial dates
+      StandingEvent.where(type: :initial).each {|e| e.update(created_at: e.standing.character.created_at)}
     else
       raise StandardError.new('Verified character set not found.')
     end
