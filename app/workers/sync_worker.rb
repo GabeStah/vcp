@@ -5,7 +5,6 @@ class SyncWorker
   sidekiq_options unique: true
 
   recurrence do
-    #secondly(120)
     daily(1).hour_of_day(2)
   end
 

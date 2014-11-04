@@ -35,4 +35,9 @@ module Vcp
 
     #config.assets.prefix = "/vcp/assets"
   end
+
+  Sidetiq.configure do |config|
+    # Clock resolution in seconds (default: 1).
+    config.resolution = 10
+  end
 end
