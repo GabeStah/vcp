@@ -101,6 +101,8 @@ gem 'merit'
 gem 'high_voltage'
 gem 'redcarpet'
 
+gem 'jquery-turbolinks'
+
 group :development, :test do
   gem 'rspec-rails'
   # The following optional lines are part of the advanced setup.
