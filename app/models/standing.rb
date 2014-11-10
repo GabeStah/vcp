@@ -126,9 +126,13 @@ class Standing < ActiveRecord::Base
     true
   end
 
+  def self.reset_seeded
+    update_all(seeded: false, active: true)
+  end
+
   # Total points for all active Standings
   def self.total_points
-    Standing.where(active: true).sum(:points).round(5)
+    where(active: true).sum(:points).round(5)
   end
 
   def update_statistics

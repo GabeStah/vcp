@@ -2,6 +2,12 @@ defaults: &defaults
   api:
     domain: 'api.battle.net'
 
+  blizzard:
+    reset:
+      day: 'Tuesday'
+      time: '05:00'
+      zone: 'America/Los_Angeles'
+
   cutoff:
     attendance: 15
     delinquent: 30

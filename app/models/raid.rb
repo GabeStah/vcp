@@ -82,7 +82,7 @@ class Raid < ActiveRecord::Base
 
   # All raids between date range
   def self.between(before: Time.zone.now, after: Time.zone.local(1970))
-    where("#{table_name}.started_at <= ?", before).where("#{table_name}.started_at >= ?", after)
+    where("#{table_name}.started_at <= ?", before).where("#{table_name}.started_at >= ?", after).order(:started_at)
   end
 
   def ended_at=(t)
@@ -105,6 +105,8 @@ class Raid < ActiveRecord::Base
         # Create StandingCalculation instance
         standing_calculation = StandingCalculation.new(character: character, participations: participations, raid: self)
       end
+      # Process Standing.seeded update
+      set_seeds
       # After processing, set processed flag
       update_column(:processed, true)
     end
@@ -117,6 +119,29 @@ class Raid < ActiveRecord::Base
     # Reset processed flag
     reset_processed
     process_standing_events
+  end
+
+  # Set all Standing.seeded flags if necessary
+  def set_seeds
+    # check if raid is first of the raid week
+    # Set Chronic time_class
+    Chronic.time_class = ActiveSupport::TimeZone.new(Settings.blizzard.reset.zone)
+    reset_time = Chronic.parse("last #{Settings.blizzard.reset.day} #{Settings.blizzard.reset.time}")
+    # Find raids since reset
+    raids = Raid.between(after: reset_time)
+    # If raid list *includes* this raid and
+    # this is first raid since reset, proceed
+    if raids.include?(self) && raids.first.id == self.id
+      # Reset all :seeded flags for active Standing
+      Standing.reset_seeded
+      # Set :seeded for all attendees
+      # Get all standing_events where player :Attended, grouped by standing
+      standing_events.attended(raid: self).group_by(&:standing).each do |standing|
+        standing[0].update(seeded: true)
+      end
+    end
+    # Reset Chronic zone
+    Chronic.time_class = Time.zone
   end
 
   def self.skip_time_zone_conversion_for_attributes
