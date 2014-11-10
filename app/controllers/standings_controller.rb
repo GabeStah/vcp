@@ -74,13 +74,24 @@ class StandingsController < ApplicationController
   end
 
   def update
-
+    respond_to do |format|
+      if @standing.update_attributes(standing_params)
+        format.html {
+          flash[:success] = "Standing for #{@standing.character.full_title} updated."
+          render standings_path
+        }
+        format.json { respond_with_bip(@standing) }
+      else
+        format.html { render standings_path }
+        format.json { respond_with_bip(@standing) }
+      end
+    end
   end
 
   private
 
     def standing_params
-      params.require(:standing).permit(:character)
+      params.require(:standing).permit(:character, :points, :seeded)
     end
     def set_standing
       @standing = Standing.find(params[:id])

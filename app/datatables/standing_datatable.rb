@@ -2,6 +2,7 @@ class StandingDatatable < AjaxDatatablesRails::Base
   include AjaxDatatablesRails::Extensions::WillPaginate
 
   def_delegators :@view,
+                 :best_in_place,
                  :can?,
                  :current_user,
                  :edit_standing_path,
@@ -9,7 +10,8 @@ class StandingDatatable < AjaxDatatablesRails::Base
                  :link_to,
                  :link_to_if,
                  :format_points,
-                 :retire_standing_path
+                 :retire_standing_path,
+                 :standing_path
 
   def initialize(view, options = {})
     @view = view
@@ -51,21 +53,26 @@ class StandingDatatable < AjaxDatatablesRails::Base
       if can?(:update, standing)
         retire = link_to("Retire", retire_standing_path(standing), method: :post, data: { confirm: "Retire #{standing.character.full_title} from Standings?" }) if can?(:update, standing)
         edit = link_to('Edit', edit_standing_path(standing))
+        color_class = standing.seeded? ? 'green' : 'red'
+        seeded = best_in_place(standing, :seeded, as: :checkbox, url: standing_path(standing), class: color_class)
         [
           name,
           character_class,
           guild,
           realm,
           points,
+          seeded,
           "#{edit} #{retire}",
         ]
       else
+        seeded = "<span class='glyphicon glyphicon-#{standing.seeded ? 'ok green' : 'remove red'}'></span>"
         [
           name,
           character_class,
           guild,
           realm,
           points,
+          seeded
         ]
       end
     end

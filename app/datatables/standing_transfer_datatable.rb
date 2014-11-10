@@ -33,10 +33,9 @@ class StandingTransferDatatable < AjaxDatatablesRails::Base
 
   def data
     records.map do |character|
-      class_name = "<span class=#{character.character_class.short_name}>#{character.character_class.name}</span>"
       [
         link_to(character.name, character),
-        character.character_class.present? ? class_name : nil,
+        character.character_class.present? ? "<span class=#{character.character_class.short_name}>#{character.character_class.name}</span>" : nil,
         "#{character.realm}-#{character.region.upcase}",
         l(character.created_at.in_time_zone, format: :short),
         link_to('Transfer', transfer_standing_path(@standing, character: character), method: :post, data: { confirm: "Transfer Standing from #{@standing.character.full_title} to #{character.full_title}?", toggle: 'tooltip' }, title: "Transfer all Standing associations from #{@standing.character.full_title} to #{character.full_title}")

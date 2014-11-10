@@ -12,6 +12,8 @@ class Standing < ActiveRecord::Base
             uniqueness: true
   validates :points,
             numericality: true
+  validates :seeded,
+            inclusion: [true, false]
 
   def self.calculate_starting_points(args = {})
     seed = args[:seed] || 1
