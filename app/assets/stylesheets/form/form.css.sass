@@ -1,7 +1,9 @@
 /* forms */
-textarea, select, .uneditable-input
+input, textarea, select, .uneditable-input
   border: 1px solid #bbb
   width: 100%
   margin-bottom: 5px
   @include box_sizing
 
+  &[type=checkbox]
+    width: inherit
