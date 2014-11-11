@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141110215101) do
+ActiveRecord::Schema.define(version: 20141110233938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20141110215101) do
     t.datetime "portrait_updated_at"
     t.string   "portrait_fingerprint"
     t.integer  "raids_count",           default: 0,     null: false
+    t.boolean  "visible",               default: true
   end
 
   add_index "characters", ["guild_id"], name: "index_characters_on_guild_id", using: :btree
@@ -278,11 +279,11 @@ ActiveRecord::Schema.define(version: 20141110215101) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "secret_key"
-    t.string   "encrypted_password",        default: "", null: false
+    t.string   "encrypted_password",        default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",             default: 0,  null: false
+    t.integer  "sign_in_count",             default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -293,10 +294,11 @@ ActiveRecord::Schema.define(version: 20141110215101) do
     t.string   "unconfirmed_email"
     t.string   "provider"
     t.string   "uid"
-    t.integer  "characters_count",          default: 0,  null: false
-    t.integer  "characters_verified_count", default: 0,  null: false
+    t.integer  "characters_count",          default: 0,     null: false
+    t.integer  "characters_verified_count", default: 0,     null: false
     t.integer  "sash_id"
     t.integer  "level",                     default: 0
+    t.boolean  "show_hidden_characters",    default: false
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

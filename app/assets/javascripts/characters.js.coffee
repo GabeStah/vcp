@@ -9,7 +9,7 @@ jQuery ->
     columnDefs: [
       {
         className: 'center',
-        targets: ['class-col', 'raids-col', 'joined-col', 'edit-col']
+        targets: ['class-col', 'raids-col', 'joined-col', 'refresh-col', 'visible-col']
       },
       {
         sorting: false

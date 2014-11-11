@@ -7,8 +7,10 @@
 
       <div class="form-group">
         <%= f.label :name %>
-        <br/>
         <%= f.text_field :name, autofocus: true, class: 'form-control' %>
+
+        <%= f.label :show_hidden_characters %>
+        <%= f.check_box :show_hidden_characters %>
       </div>
 
       <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>

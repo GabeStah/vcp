@@ -39,8 +39,9 @@
         <th class="raids-col">Raids</th>
         <th class="achievement-points-col">Achievement Points</th>
         <th class="joined-col">Joined</th>
-        <% if current_user && current_user == @user %>
-          <th class="nosort edit-col">Edit</th>
+        <% if (current_user && current_user == @user) || can?(:manage, Character) %>
+          <th class="nosort refresh-col">Refresh</th>
+          <th class="nosort visible-col">Visible</th>
         <% end %>
         </thead>
         <tbody>

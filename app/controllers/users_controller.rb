@@ -102,7 +102,8 @@ class UsersController < ApplicationController
       params.require(:user).permit(:battle_tag,
                                    :created_at,
                                    :password,
-                                   :password_confirmation)
+                                   :password_confirmation,
+                                   :show_hidden_characters)
     end
     def set_user
       @user = User.find(params[:id])

@@ -47,7 +47,7 @@ class CharactersController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        render json: CharacterDatatable.new(view_context, type: params[:type], user: params[:user])
+        render json: CharacterDatatable.new(view_context, type: params[:type], user: params[:user] ? User.find(params[:user]) : nil)
       end
     end
   end
@@ -91,7 +91,8 @@ class CharactersController < ApplicationController
       params.require(:character).permit(:created_at,
                                         :name,
                                         :realm,
-                                        :region)
+                                        :region,
+                                        :visible)
     end
 
     def require_user_owns_character

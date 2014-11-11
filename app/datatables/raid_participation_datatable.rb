@@ -45,10 +45,10 @@ class RaidParticipationDatatable < AjaxDatatablesRails::Base
         [
           link_to(participation.character.name, participation.character),
           "#{participation.character.realm}-#{participation.character.region.upcase}",
-          best_in_place_if(can?(:manage, participation), participation, :online, as: :checkbox, url: participation_path(participation)),
-          best_in_place_if(can?(:manage, participation), participation, :in_raid, as: :checkbox, url: participation_path(participation)),
-          best_in_place_if(can?(:manage, participation), participation, :unexcused, as: :checkbox, url: participation_path(participation)),
-          best_in_place_if(can?(:manage, participation), participation, :timestamp, as: :input, url: participation_path(participation), display_with: lambda { |p| l(p) }),
+          best_in_place(participation, :online, as: :checkbox, url: participation_path(participation)),
+          best_in_place(participation, :in_raid, as: :checkbox, url: participation_path(participation)),
+          best_in_place(participation, :unexcused, as: :checkbox, url: participation_path(participation)),
+          best_in_place(participation, :timestamp, as: :input, url: participation_path(participation), display_with: lambda { |p| l(p) }),
           search_icon,
           link_to_if(can?(:destroy, participation), 'Delete', participation, method: :delete, data: { confirm: "You sure?" })
         ]
