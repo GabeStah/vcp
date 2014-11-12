@@ -48,7 +48,7 @@ end
 module APP_VERSION
   MAJOR = 0
   MINOR = 8
-  TINY = 14
+  TINY = 22
 
   def self.print
     "#{MAJOR}.#{MINOR}.#{TINY}"

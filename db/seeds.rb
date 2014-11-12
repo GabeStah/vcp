@@ -12,31 +12,31 @@ User.delete_all
 # user.save!
 #
 
-role_moderator = Role.find_by(name: :moderator)
-
-# Add users
-10.times do |n|
-  if n >= 5
-    name  = Faker::Name.first_name
-    password  = "password"
-    user = User.create!(battle_tag: "#{name}##{n}",
-                        name: name,
-                        password: password,
-                        password_confirmation: password)
-    user.roles << role_moderator
-  else
-
-    name  = Faker::Name.first_name
-    password  = "password"
-    user = User.create!(battle_tag: "#{name}##{n}",
-                        name: name,
-                        password: password,
-                        password_confirmation: password)
-  end
-
-  #user.skip_confirmation!
-  user.save!
-end
+# role_moderator = Role.find_by(name: :moderator)
+#
+# # Add users
+# 10.times do |n|
+#   if n >= 5
+#     name  = Faker::Name.first_name
+#     password  = "password"
+#     user = User.create!(battle_tag: "#{name}##{n}",
+#                         name: name,
+#                         password: password,
+#                         password_confirmation: password)
+#     user.roles << role_moderator
+#   else
+#
+#     name  = Faker::Name.first_name
+#     password  = "password"
+#     user = User.create!(battle_tag: "#{name}##{n}",
+#                         name: name,
+#                         password: password,
+#                         password_confirmation: password)
+#   end
+#
+#   #user.skip_confirmation!
+#   user.save!
+# end
 
 CharacterClass.delete_all
 # Class populate
