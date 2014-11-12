@@ -13,6 +13,7 @@ Vcp::Application.routes.draw do
     resources :zones,   only: [:create, :destroy, :index, :update]
     resources :guilds
     resources :participations, only: [:destroy, :update]
+    match '/admin/participations/:id/duplicate', to: 'participations#duplicate', via: 'post', as: 'duplicate_participation'
     mount Sidekiq::Web => '/sidekiq', as: 'sidekiq'
     mount Sidekiq::Monitor::Engine => '/sidekiqmonitor'
     #mount Sidetiq::Web => '/sidekiq/sidetiq'

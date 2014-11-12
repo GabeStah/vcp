@@ -8,6 +8,17 @@ class ParticipationsController < ApplicationController
     redirect_to @participation.raid
   end
 
+  def duplicate
+    new_participation = @participation.dup
+    new_participation.timestamp = @participation.timestamp + 1.minute
+    if new_participation.save
+      flash[:success] = "Participation for #{@participation.character.full_title} duplicated."
+    else
+      flash[:error] = "Participation for #{@participation.character.full_title} cannot be duplicated."
+    end
+    redirect_to @participation.raid
+  end
+
   def update
     respond_to do |format|
       if @participation.update_attributes(participation_params)

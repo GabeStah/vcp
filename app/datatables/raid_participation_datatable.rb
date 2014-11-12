@@ -6,6 +6,8 @@ class RaidParticipationDatatable < AjaxDatatablesRails::Base
                  :best_in_place_if,
                  :can?,
                  :current_user,
+                 :duplicate_participation_path,
+                 :fa_icon,
                  :l,
                  :link_to,
                  :link_to_if,
@@ -42,6 +44,7 @@ class RaidParticipationDatatable < AjaxDatatablesRails::Base
     if can? :manage, Participation
       records.map do |participation|
         search_icon = "<span class='glyphicon glyphicon-search raid-participation-event-tooltip' data-tip='#{participation.event(participation.previous(@raid.participations))}'></span>"
+        duplicate_link = link_to(fa_icon("plus-square lg", class: 'green'), duplicate_participation_path(participation), method: :post)
         [
           link_to(participation.character.name, participation.character),
           "#{participation.character.realm}-#{participation.character.region.upcase}",
@@ -50,7 +53,7 @@ class RaidParticipationDatatable < AjaxDatatablesRails::Base
           best_in_place(participation, :unexcused, as: :checkbox, url: participation_path(participation)),
           best_in_place(participation, :timestamp, as: :input, url: participation_path(participation), display_with: lambda { |p| l(p) }),
           search_icon,
-          link_to_if(can?(:destroy, participation), 'Delete', participation, method: :delete, data: { confirm: "You sure?" })
+          duplicate_link + link_to_if(can?(:destroy, participation), fa_icon("minus-square lg", class: 'red'), participation, method: :delete, data: { confirm: "You sure?" })
         ]
       end
     else
