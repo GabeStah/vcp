@@ -73,10 +73,10 @@ namespace :deploy do
       # end
 
       within release_path do
-        #execute :rake, "db:drop RAILS_ENV=production"
-        #execute :rake, "db:create RAILS_ENV=production"
+        execute :rake, "db:drop RAILS_ENV=production"
+        execute :rake, "db:create RAILS_ENV=production"
         execute :rake, "db:migrate RAILS_ENV=production"
-        #execute :rake, "db:seed RAILS_ENV=production"
+        execute :rake, "db:seed RAILS_ENV=production"
       end
     end
   end
