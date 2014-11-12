@@ -20,7 +20,7 @@ class SyncWorker
     #   character.update_from_battle_net
     # end
 
-    Standing.each do |standing|
+    Standing.all.each do |standing|
       standing.character.update_from_battle_net if standing.character
     end
   end
