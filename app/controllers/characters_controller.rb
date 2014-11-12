@@ -5,7 +5,7 @@ class CharactersController < ApplicationController
   before_action :user_owns_character?
 
   def add_to_standing
-    @standing = Standing.new(active: true, character: @character, distribute: true, points: params['initial-points'] ? params['initial-points'] : 0)
+    @standing = Standing.new(active: true, character: @character, distribute: params['distribute'] ? true : false, points: params['initial-points'] ? params['initial-points'] : 0)
     if @standing.save
       flash[:success] = 'Standing Added!'
       redirect_to :back

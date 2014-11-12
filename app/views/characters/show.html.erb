@@ -115,6 +115,10 @@
               <%= fa_icon("plus-square") %>
             </button>
             <%= text_field_tag('initial-points', nil, placeholder: 'initial points') %>
+
+            <span class="clear"><!-- --></span>
+
+            Distribute: <%= check_box_tag('distribute', true, true, title: "Balance Initial Point distribution among Standings?", data: {placement: 'left', toggle: 'tooltip'}) %>
           <% end %>
         </div>
       <% end %>
