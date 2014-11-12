@@ -35,7 +35,7 @@ class PopulateStandingsWorker
 
     seed = 1
     character_list.each do |name|
-      character = Character.find_by(name: name, realm: 'Hyjal', region: 'us')
+      character = Character.find_or_create_by(name: name, realm: 'Hyjal', region: 'us')
       Standing.create!(active: true,
                        character: character,
                        points: Standing.calculate_starting_points(seed: seed, players: character_list.size, increment: 10)) if character
@@ -43,7 +43,9 @@ class PopulateStandingsWorker
     end
 
     # Set initial dates
-    StandingEvent.where(type: :initial).each {|e| e.update(created_at: e.standing.character.created_at)}
+    StandingEvent.where(type: :initial).each do |e|
+      e.update(created_at: e.standing.character.created_at) if e.standing && e.standing.character
+    end
 
     # if characters.size == character_limit
     #   seed = 1
