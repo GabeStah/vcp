@@ -9,15 +9,19 @@ class SyncWorker
   end
 
   def perform
-    Guild.all.each do |guild|
-      # Perform basic update
-      guild.update_from_battle_net(type: 'guild')
-      # Perform member update
-      guild.update_from_battle_net(type: 'guild-members')
-    end
-    # Update all characters not part of a guild
-    Character.where(guild: nil) do |character|
-      character.update_from_battle_net
+    # Guild.all.each do |guild|
+    #   # Perform basic update
+    #   guild.update_from_battle_net(type: 'guild')
+    #   # Perform member update
+    #   guild.update_from_battle_net(type: 'guild-members')
+    # end
+    # # Update all characters not part of a guild
+    # Character.where(guild: nil) do |character|
+    #   character.update_from_battle_net
+    # end
+
+    Standing.each do |standing|
+      standing.character.update_from_battle_net if standing.character
     end
   end
 end

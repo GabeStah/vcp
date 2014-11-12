@@ -55,7 +55,7 @@ jQuery ->
         targets: ['nosort']
       },
     ]
-    lengthMenu: [ [25, 50, 9223372036854775807], [25, 50, "All"] ]
+    lengthMenu: [ [9223372036854775807], ["All"] ]
     order: [[2, "desc" ]]
     pagingType: 'full_numbers'
 

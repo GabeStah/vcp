@@ -78,12 +78,12 @@ Guild.delete_all
 # Create a new raid
 #PopulateRaidsWorker.perform_in(5.seconds)
 
-PopulateCharactersWorker.perform_in(60.seconds, {days_old: 120})
+PopulateCharactersWorker.perform_in(60.seconds, {days_old: 5})
 
 # Populate standings
 PopulateStandingsWorker.perform_in(180.seconds)
 
-DummyDataWorker.perform_in(240.seconds, {raid_count: 100, days_old: 110})
+#DummyDataWorker.perform_in(240.seconds, {raid_count: 100, days_old: 110})
 
 # Create some participations
 #PopulateParticipationsWorker.perform_in(120.seconds)
