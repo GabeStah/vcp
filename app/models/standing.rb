@@ -35,12 +35,12 @@ class Standing < ActiveRecord::Base
     if self.active
       # If active, end date is now and start date is recent :resume or :initial
       end_date = Time.zone.now
-      start_date = standing_events.where.any_of({type: :initial}, {type: :resume}).order(:created_at).last.created_at
+      start_date = standing_events.where.any_of({type: :initial}, {type: :resume}).where(parent_id: nil).order(:created_at).last.created_at
       return start_date, end_date
     else
       # If inactive, end date is recent :retire and start date is prior :resume or :initial
       end_date = standing_events.where(type: :retire).order(:created_at).last.created_at
-      start_date = standing_events.where("#{StandingEvent.table_name}.created-at < ?", end_date).any_of({type: :initial}, {type: :resume}).order(:created_at).last.created_at
+      start_date = standing_events.where("#{StandingEvent.table_name}.created-at < ?", end_date).any_of({type: :initial}, {type: :resume}).where(parent_id: nil).order(:created_at).last.created_at
       return start_date, end_date
     end
   end
